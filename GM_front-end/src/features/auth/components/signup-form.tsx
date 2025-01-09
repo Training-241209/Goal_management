@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FieldError, useForm } from "react-hook-form"
 import { signupFormSchema, SignupSchema } from "../schemas/signup-schema"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/UI/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 
 interface signupFormProps {
   RenderLogin: () => void;
