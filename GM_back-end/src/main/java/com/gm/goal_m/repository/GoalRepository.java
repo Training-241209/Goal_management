@@ -9,5 +9,5 @@ import com.gm.goal_m.model.Goal;
 
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long>{
-    List<Goal> findByUserId(Long userId);
+   // List<Goal> findByUserId(Long userId);
 }
