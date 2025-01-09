@@ -1,12 +1,14 @@
 import { BasePage } from '@/components/base-page'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
-export const Route = createLazyFileRoute('/_auth/auth/base')({
+export const Route = createLazyFileRoute('/home/base')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>
-    <BasePage />
-  </div>
+  return (
+    <div>
+      <BasePage />
+    </div>
+  )
 }
