@@ -21,6 +21,7 @@ import { Route as AuthImport } from './routes/_auth'
 const IndexLazyImport = createFileRoute('/')()
 const HomeBaseLazyImport = createFileRoute('/home/base')()
 const ProtectedDashboardLazyImport = createFileRoute('/_protected/dashboard')()
+const HomeBaseLazyImport = createFileRoute('/_home/base')()
 const AuthAuthSignupLazyImport = createFileRoute('/_auth/auth/signup')()
 const AuthAuthLoginLazyImport = createFileRoute('/_auth/auth/login')()
 
@@ -55,6 +56,12 @@ const ProtectedDashboardLazyRoute = ProtectedDashboardLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_protected/dashboard.lazy').then((d) => d.Route),
 )
+
+const HomeBaseLazyRoute = HomeBaseLazyImport.update({
+  id: '/_home/base',
+  path: '/base',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/_home/base.lazy').then((d) => d.Route))
 
 const AuthAuthSignupLazyRoute = AuthAuthSignupLazyImport.update({
   id: '/auth/signup',
@@ -157,6 +164,7 @@ const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '': typeof ProtectedRouteWithChildren
+  '/base': typeof HomeBaseLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
   '/home/base': typeof HomeBaseLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
