@@ -60,15 +60,11 @@ export function SignUpForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <a href="#" className="underline underline-offset-4">
+              <a href="/home" className="underline underline-offset-4">
                 Login
               </a>
             </div>
-            <div className="mt-2 text-center text-sm">
-              <a href="#" className="underline underline-offset-4">
-                  Back to homepage
-              </a>
-            </div>
+           
           </form>
         </CardContent>
       </Card>
