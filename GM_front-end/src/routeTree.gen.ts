@@ -19,7 +19,6 @@ import { Route as AuthImport } from './routes/_auth'
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
-const HomeBaseLazyImport = createFileRoute('/home/base')()
 const ProtectedDashboardLazyImport = createFileRoute('/_protected/dashboard')()
 const HomeBaseLazyImport = createFileRoute('/_home/base')()
 const AuthAuthSignupLazyImport = createFileRoute('/_auth/auth/signup')()
@@ -42,12 +41,6 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const HomeBaseLazyRoute = HomeBaseLazyImport.update({
-  id: '/home/base',
-  path: '/home/base',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/home/base.lazy').then((d) => d.Route))
 
 const ProtectedDashboardLazyRoute = ProtectedDashboardLazyImport.update({
   id: '/dashboard',
@@ -104,19 +97,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedImport
       parentRoute: typeof rootRoute
     }
+    '/_home/base': {
+      id: '/_home/base'
+      path: '/base'
+      fullPath: '/base'
+      preLoaderRoute: typeof HomeBaseLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_protected/dashboard': {
       id: '/_protected/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof ProtectedDashboardLazyImport
       parentRoute: typeof ProtectedImport
-    }
-    '/home/base': {
-      id: '/home/base'
-      path: '/home/base'
-      fullPath: '/home/base'
-      preLoaderRoute: typeof HomeBaseLazyImport
-      parentRoute: typeof rootRoute
     }
     '/_auth/auth/login': {
       id: '/_auth/auth/login'
@@ -166,7 +159,6 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteWithChildren
   '/base': typeof HomeBaseLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
-  '/home/base': typeof HomeBaseLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
   '/auth/signup': typeof AuthAuthSignupLazyRoute
 }
@@ -174,8 +166,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '': typeof ProtectedRouteWithChildren
+  '/base': typeof HomeBaseLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
-  '/home/base': typeof HomeBaseLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
   '/auth/signup': typeof AuthAuthSignupLazyRoute
 }
@@ -185,30 +177,24 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
+  '/_home/base': typeof HomeBaseLazyRoute
   '/_protected/dashboard': typeof ProtectedDashboardLazyRoute
-  '/home/base': typeof HomeBaseLazyRoute
   '/_auth/auth/login': typeof AuthAuthLoginLazyRoute
   '/_auth/auth/signup': typeof AuthAuthSignupLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/dashboard'
-    | '/home/base'
-    | '/auth/login'
-    | '/auth/signup'
+  fullPaths: '/' | '' | '/base' | '/dashboard' | '/auth/login' | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/dashboard' | '/home/base' | '/auth/login' | '/auth/signup'
+  to: '/' | '' | '/base' | '/dashboard' | '/auth/login' | '/auth/signup'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/_protected'
+    | '/_home/base'
     | '/_protected/dashboard'
-    | '/home/base'
     | '/_auth/auth/login'
     | '/_auth/auth/signup'
   fileRoutesById: FileRoutesById
@@ -241,7 +227,7 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/_protected",
-        "/home/base"
+        "/_home/base"
       ]
     },
     "/": {
@@ -260,12 +246,12 @@ export const routeTree = rootRoute
         "/_protected/dashboard"
       ]
     },
+    "/_home/base": {
+      "filePath": "_home/base.lazy.tsx"
+    },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.lazy.tsx",
       "parent": "/_protected"
-    },
-    "/home/base": {
-      "filePath": "home/base.lazy.tsx"
     },
     "/_auth/auth/login": {
       "filePath": "_auth/auth/login.lazy.tsx",
