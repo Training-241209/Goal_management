@@ -28,6 +28,7 @@ public class Task {
     private Long id;
     private String name;
     private String description;
+    private String type;
     private Status status = Status.PENDING;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
