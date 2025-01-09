@@ -1,9 +1,12 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import SignUpPage from '../../../components/UI/Signup'
 
 export const Route = createLazyFileRoute('/_auth/auth/signup')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/_auth/auth/signup"!</div>
+  return <div>
+    <SignUpPage/>
+  </div>
 }
