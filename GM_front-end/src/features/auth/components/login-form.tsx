@@ -9,7 +9,7 @@ import {
 } from "@/components/UI/card"
 import { Input } from "@/components/UI/input"
 import { Label } from "@/components/UI/label"
-import { useForm } from "react-hook-form"
+import { FieldError, useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "../schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/UI/form"
@@ -34,6 +34,14 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
   function onSubmit(values:LoginSchema){
     console.log(values);
   }
+
+  function handleErrorStyling(value: FieldError | undefined): string {
+    if (value) {
+      return "border-red-600";
+    }
+    return "";
+  }
+
   return (
     <div className="flex flex-col gap-6" >
       <Card>
@@ -55,7 +63,7 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
                     <FormItem>
                       <Label>Email</Label>
                       <FormControl>
-                        <Input className={errors.email ? "border-red-600":""} placeholder="m@example.com" {...field} type="Email"/>
+                        <Input className={handleErrorStyling(errors.email)} placeholder="m@example.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -76,7 +84,7 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
                         </a>
                       </div>
                       <FormControl>
-                        <Input {...field} type="Password" className={errors.password ? "border-red-600":""}/>
+                        <Input {...field} type="Password" className={handleErrorStyling(errors.password)}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
