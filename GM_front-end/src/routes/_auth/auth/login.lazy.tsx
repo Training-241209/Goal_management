@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import NotificationsSignInPageError from '../../../components/UI/Login'
+
+import LoginPage from '../../../components/UI/Login'
 
 export const Route = createLazyFileRoute('/_auth/auth/login')({
   component: RouteComponent,
@@ -7,6 +8,6 @@ export const Route = createLazyFileRoute('/_auth/auth/login')({
 
 function RouteComponent() {
   return <div>
-    < NotificationsSignInPageError />
+    <LoginPage />
   </div>
 }
