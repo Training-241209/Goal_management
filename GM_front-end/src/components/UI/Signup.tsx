@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 
 const providers = [{ id: 'credentials', name: 'Email and password' }];
 
-const Login: (
+const SignUp: (
   provider: AuthProvider,
   formData?: FormData,
 ) => Promise<AuthResponse> | void = async (provider, formData) => {
@@ -31,13 +31,13 @@ const Login: (
   return promise;
 };
 
-export default function NotificationsSignInPageError() {
+export default function SignUpPage() {
   const theme = useTheme();
   return (
     // preview-start
     <AppProvider theme={theme}>
       <SignInPage
-        signIn={Login}
+        signIn={SignUp}
         providers={providers}
         slotProps={{ emailField: { autoFocus: false } }}
       />
