@@ -4,13 +4,12 @@ import { Input } from "@/components/UI/input"
 import { Label } from "@/components/UI/label"
 import { cn } from "@/lib/utils"
 
-
-export function SignUpForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+interface signupFormProps{
+  RenderLogin: ()=> void;
+}
+export function SignUpForm({RenderLogin}:signupFormProps) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">SignUp</CardTitle>
@@ -60,7 +59,7 @@ export function SignUpForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <a href="/home" className="underline underline-offset-4">
+              <a onClick={RenderLogin} className="underline underline-offset-4 cursor-pointer">
                 Login
               </a>
             </div>
