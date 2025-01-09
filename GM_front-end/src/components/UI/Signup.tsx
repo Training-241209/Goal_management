@@ -17,8 +17,9 @@ const SignUp: (
     setTimeout(() => {
       const email = formData?.get('email');
       const password = formData?.get('password');
+      const firstname = formData?.get('firstname');
       alert(
-        `Signing in with "${provider.name}" and credentials: ${email}, ${password}`,
+        `Signing in with "${provider.name}" and credentials: ${email}, ${password} ${firstname}`,
       );
       // preview-start
       resolve({
