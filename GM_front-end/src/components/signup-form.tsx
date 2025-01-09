@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function LoginForm({
+export function SignUpForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -18,14 +18,32 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">SignUp</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Create an account with us!
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="firstname">Firstname</Label>
+                <Input
+                  id="firstname"
+                  type="text"
+                  placeholder="Firstname"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="lastname">Lastname</Label>
+                <Input
+                  id="lastname"
+                  type="text"
+                  placeholder="Lastname"
+                  required
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -38,23 +56,17 @@ export function LoginForm({
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" placeholder="**********" required />
               </div>
               <Button type="submit" className="w-full">
-                Login
+                SignUp
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <a href="#" className="underline underline-offset-4">
-                Sign up
+                Login
               </a>
             </div>
             <div className="mt-2 text-center text-sm">
