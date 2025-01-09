@@ -9,5 +9,5 @@ import com.gm.goal_m.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findUserByUsername(String str);
+   Optional<User> findByUsername(String str);
 }
