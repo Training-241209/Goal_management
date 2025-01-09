@@ -27,6 +27,8 @@ export function LoginForm({
     },
   });
 
+  const{ errors } = form.formState;
+
   function onSubmit(values:LoginSchema){
     console.log(values);
   }
@@ -51,7 +53,7 @@ export function LoginForm({
                     <FormItem>
                       <Label>Email</Label>
                       <FormControl>
-                        <Input placeholder="m@example.com" {...field} type="Email"/>
+                        <Input className={errors.email ? "border-red-600":""} placeholder="m@example.com" {...field} type="Email"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -72,7 +74,7 @@ export function LoginForm({
                         </a>
                       </div>
                       <FormControl>
-                        <Input {...field} type="Password"/>
+                        <Input {...field} type="Password" className={errors.password ? "border-red-600":""}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -89,11 +91,7 @@ export function LoginForm({
                   Sign up
                 </a>
               </div>
-              <div className="mt-2 text-center text-sm">
-                <a href="#" className="underline underline-offset-4">
-                  Back to homepage
-                </a>
-              </div>
+              
             </form>
           </Form>
         </CardContent>
