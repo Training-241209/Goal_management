@@ -14,10 +14,12 @@ import { loginSchema, LoginSchema } from "../schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+interface loginFormProps{
+  RenderSignUp: ()=> void;
+}
+
+
+export function LoginForm({RenderSignUp}: loginFormProps) {
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -33,7 +35,7 @@ export function LoginForm({
     console.log(values);
   }
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6" >
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -87,7 +89,7 @@ export function LoginForm({
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="/signup" className="underline underline-offset-4">
+                <a onClick={RenderSignUp} className="underline underline-offset-4 cursor-pointer">
                   Sign up
                 </a>
               </div>
