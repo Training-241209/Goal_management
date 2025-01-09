@@ -30,7 +30,7 @@ const ProtectedRoute = ProtectedImport.update({
   id: '/_protected',
   getParentRoute: () => rootRoute,
 } as any)
-./routes/_home/base.lazy
+
 const AuthRoute = AuthImport.update({
   id: '/_auth',
   getParentRoute: () => rootRoute,
