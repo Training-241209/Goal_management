@@ -1,18 +1,18 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/UI/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/UI/card"
+import { Input } from "@/components/UI/input"
+import { Label } from "@/components/UI/label"
 import { useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "../schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/UI/form"
 
 export function LoginForm({
   className,

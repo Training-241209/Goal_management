@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Button } from "./ui/button";
+import { Button } from "./UI/button";
 
 
 export function Navbar() {

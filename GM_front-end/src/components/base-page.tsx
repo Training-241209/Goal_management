@@ -2,7 +2,9 @@ import { LoginForm } from "@/features/auth/components/login-form";
 import { Navbar } from "./navbar";
 import { TypeAnimation } from "react-type-animation";
 import wave from "@/assets/wave_W.svg"
-export function BasePage() {
+
+
+export function BasePage({ children }: { children: React.ReactNode }) {
     return (
         <>
             {/* <Navbar /> */}
@@ -41,7 +43,7 @@ export function BasePage() {
                         />
                     </div>
                     <div className="rounded-lg shadow-lg w-full max-w-sm">
-                        <LoginForm />
+                        {children}
                     </div>
                 </div>
             </div>
