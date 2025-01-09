@@ -23,9 +23,9 @@ public Goal createGoal(Goal goal) {
     return goalRepository.save(goal);
 }  
 
-public List<Goal> findAllUserGoals (int id){
+/*public List<Goal> findAllUserGoals (int id){
     return goalRepository.findByUserId((long) id);
-}
+}*/
 
 public Goal updateGoalEndDate(int id, LocalDate newEndDate){
     Goal goal = getGoalById(id);

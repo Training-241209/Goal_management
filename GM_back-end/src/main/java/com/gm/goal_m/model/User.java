@@ -23,9 +23,13 @@ public class User {
     private Long userId;
 
     @Column(name = "user_name", unique = true)
-    private String userName;
+    private String username;
 
     private String password;
+
+    private String firstName;
+
+    private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
