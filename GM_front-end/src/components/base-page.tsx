@@ -1,5 +1,3 @@
-import { LoginForm } from "@/features/auth/components/login-form";
-import { Navbar } from "./navbar";
 import { TypeAnimation } from "react-type-animation";
 import wave from "@/assets/wave_W.svg"
 
