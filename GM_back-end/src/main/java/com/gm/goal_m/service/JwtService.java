@@ -43,4 +43,14 @@ public class JwtService {
         return new User(claims.get("email", String.class), claims.get("firstName", String.class),
                 claims.get("lastName", String.class));
     }
+
+    public User decodeTokenById(String token) {
+        var claims = Jwts.parserBuilder()
+                .setSigningKey(jwtConfiguration.getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return new User(claims.get("userId", Long.class));
+    }
 }
