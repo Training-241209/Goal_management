@@ -21,7 +21,7 @@ import com.gm.goal_m.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins="http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -36,7 +36,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRequestRegDTO userRequestRegDTO) {
-        User user = new User(userRequestRegDTO.getUsername(), userRequestRegDTO.getPassword());
+        User user = new User(userRequestRegDTO.getEmail(), userRequestRegDTO.getPassword());
         try {
             userService.registerUser(user);
             return ResponseEntity.ok().body("User succesfully registered");
