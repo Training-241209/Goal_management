@@ -1,7 +1,9 @@
 package com.gm.goal_m.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,13 +48,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> userLogin(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+    public ResponseEntity<Object> userLogin(@Valid @RequestBody UserLoginRequest userLoginRequest) {
         String theToken = "";
         User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword(), 
         userLoginRequest.getFirstName(), userLoginRequest.getLastName());
         if (userService.canLogIn(userLoginRequest)) {
             theToken = jwtService.generateToken(user);
-            return ResponseEntity.ok().body(theToken);
+            Map<String, String> responseWithToken = new HashMap<>();
+            responseWithToken.put("token", theToken);
+            return ResponseEntity.ok().body(responseWithToken);
         } else if (userService.findUserByEmail(user.getEmail()) != null) {
             return ResponseEntity.status(401).body("The password is incorrect");
         } else {
