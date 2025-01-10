@@ -9,10 +9,11 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useForm } from "react-hook-form"
+import { FieldError, useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "../schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { useLogin } from "../hooks/use-login"
 
 interface loginFormProps{
   RenderSignUp: ()=> void;
@@ -21,6 +22,7 @@ interface loginFormProps{
 
 export function LoginForm({RenderSignUp}: loginFormProps) {
 
+  const {mutate: login, isPending} = useLogin();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -32,8 +34,17 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
   const{ errors } = form.formState;
 
   function onSubmit(values:LoginSchema){
-    console.log(values);
+    login(values);
+
   }
+
+  function handleErrorStyling(value: FieldError | undefined): string {
+    if (value) {
+      return "border-red-600";
+    }
+    return "";
+  }
+
   return (
     <div className="flex flex-col gap-6" >
       <Card>
@@ -55,7 +66,7 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
                     <FormItem>
                       <Label>Email</Label>
                       <FormControl>
-                        <Input className={errors.email ? "border-red-600":""} placeholder="m@example.com" {...field} type="Email"/>
+                        <Input className={handleErrorStyling(errors.email)} placeholder="m@example.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -76,20 +87,20 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
                         </a>
                       </div>
                       <FormControl>
-                        <Input {...field} type="Password" className={errors.password ? "border-red-600":""}/>
+                        <Input {...field} type="Password" className={handleErrorStyling(errors.password)}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isPending}>
                   Login
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a onClick={RenderSignUp} className="underline underline-offset-4 cursor-pointer">
+                <a aria-disabled={isPending} onClick={RenderSignUp} className="underline underline-offset-4 cursor-pointer">
                   Sign up
                 </a>
               </div>

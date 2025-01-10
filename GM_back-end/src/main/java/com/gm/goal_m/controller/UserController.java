@@ -1,34 +1,68 @@
 package com.gm.goal_m.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gm.goal_m.dto.UserLoginRequest;
 import com.gm.goal_m.dto.UserRequestRegDTO;
+import com.gm.goal_m.model.User;
+import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
     @Autowired 
-    public UserController (UserService userService){
+    public UserController (UserService userService, JwtService jwtService){
         this.userService = userService;
+        this.jwtService  = jwtService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRequestRegDTO userRequestRegDTO){
+        User user = new User(userRequestRegDTO.getUsername(), userRequestRegDTO.getPassword());
         try {
-            userService.registerUser(userRequestRegDTO);
+            userService.registerUser(user);
             return ResponseEntity.ok().body("User succesfully registered");
         } catch (Exception e){
             return ResponseEntity.status(400).body("The user cannot be registered");
         }
     }
     
+    @PostMapping("/login")
+    public ResponseEntity<String> userLogin( @RequestBody UserLoginRequest userLoginRequest){
+        String theToken = "";        
+        User user = new User(userLoginRequest.getUsername(), userLoginRequest.getPassword());
+        if(userService.canLogIn(userLoginRequest)){
+            theToken = jwtService.generateToken(user);
+            return ResponseEntity.ok().body(theToken);
+        }
+        else if(userService.getAllUsers().contains(user)){
+            return ResponseEntity.status(401).body("The password is incorrect");
+        }
+        else {
+            return ResponseEntity.status(404).body("User not found");
+        }
+    }
+
+    @GetMapping("/allusers")
+    public ResponseEntity<List<User>> findAllUsers(){
+        List<User> users = new ArrayList<>();
+        users = userService.getAllUsers();
+        return ResponseEntity.ok().body(users);
+    }
 }
