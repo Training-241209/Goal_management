@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @Entity
 @Table(name = "goal")
@@ -32,6 +31,9 @@ public class Goal {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
-    private User user; 
+    private User user;
+
+    @OneToMany(mappedBy ="goal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
 
 }

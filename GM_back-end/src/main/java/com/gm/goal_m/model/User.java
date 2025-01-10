@@ -22,8 +22,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "user_name", unique = true)
-    private String username;
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 
     private String password;
 
@@ -34,17 +34,24 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
 
-    public User(){
+    public User() {
 
     }
 
-    public User (String username, String password){
-        this.username = username;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public User (String username, String firstName, String lastName){
-        this.username = username;
+    public User(String email, String firstName, String lastName){
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }

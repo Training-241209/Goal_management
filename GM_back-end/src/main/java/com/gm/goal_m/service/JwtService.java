@@ -17,23 +17,22 @@ public class JwtService {
     private final JwtConfiguration jwtConfiguration;
 
     @Autowired
-    public JwtService(JwtConfiguration jwtConfiguration){
+    public JwtService(JwtConfiguration jwtConfiguration) {
         this.jwtConfiguration = jwtConfiguration;
     }
 
     public String generateToken(User user) {
         return Jwts.builder()
-
-                .claim("username", user.getUsername())
+                .claim("userId", user.getUserId())
+                .claim("email", user.getEmail())
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) 
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(jwtConfiguration.getSecretKey())
                 .compact();
     }
 
-  
     public User decodeToken(String token) {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
@@ -41,7 +40,7 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return new User(claims.get("username", String.class), claims.get("firstName", String.class),
-        claims.get("lastName", String.class));
+        return new User(claims.get("email", String.class), claims.get("firstName", String.class),
+                claims.get("lastName", String.class));
     }
 }
