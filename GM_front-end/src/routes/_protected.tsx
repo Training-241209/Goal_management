@@ -1,3 +1,4 @@
+import { DashAuth } from '@/dashAuth'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected')({
@@ -5,7 +6,9 @@ export const Route = createFileRoute('/_protected')({
 })
 
 function RouteComponent() {
-  return <div>
-    <Outlet />
-  </div>
+  return (
+      <DashAuth>
+          <Outlet />
+      </DashAuth>
+    )
 }
