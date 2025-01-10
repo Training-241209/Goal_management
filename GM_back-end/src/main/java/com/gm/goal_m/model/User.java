@@ -33,4 +33,19 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
+
+    public User(){
+
+    }
+
+    public User (String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
+    public User (String username, String firstName, String lastName){
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
