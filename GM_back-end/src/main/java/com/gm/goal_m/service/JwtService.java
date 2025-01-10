@@ -53,15 +53,25 @@ public class JwtService {
 
         return new User(claims.get("userId", Long.class));
     }
+
+    public long  getUserId(String token) {
+        var claims = Jwts.parserBuilder()
+                .setSigningKey(jwtConfiguration.getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return new User(claims.get("userId", Long.class)).getUserId();
+    }
+
     public boolean isTokenValid(String token) {
         try {
-            // Parse the token to validate it
             Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
                 .build()
                 .parseClaimsJws(token);
     
-            return true; // Token is valid
+            return true;
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             System.out.println("Token has expired: " + e.getMessage());
             return false;
