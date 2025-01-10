@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gm.goal_m.dto.AddTaskDTO;
+import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
 import com.gm.goal_m.dto.TaskRequestDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
@@ -49,8 +50,6 @@ public class TaskController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing request body");
             }
 
-
-
             Optional <Task> retValue = taskService.getTaskById(task.getId());
 
             if(!retValue.isPresent()){
@@ -89,11 +88,27 @@ public class TaskController {
             if(addTaskDTO == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing request body");
             }
-
-           
-            System.out.println(addTaskDTO.getTimeFrames().get(0));
             Task retBody = taskService.persistTask(addTaskDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body( retBody );
+            return ResponseEntity.status(HttpStatus.CREATED).body( retBody);
+
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Task " + e.getMessage());
+        }
+        
+    }
+
+    @PostMapping("/task/timeframe")
+    public ResponseEntity<?> addTimeFrameToTask(@RequestBody AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
+
+        try{
+
+            if(addTimeFrameByTaskIdDTO == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing request body");
+            }
+            taskService.addTimeFrameToTask(addTimeFrameByTaskIdDTO);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Successfull");
 
 
         }catch (Exception e){

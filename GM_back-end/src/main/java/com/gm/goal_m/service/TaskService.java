@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.Util.Enums.TaskType;
 import com.gm.goal_m.dto.AddTaskDTO;
+import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
 import com.gm.goal_m.dto.AddTimeFrameDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
@@ -25,8 +26,9 @@ public class TaskService {
     private TimeFrameService timeFrameService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository){
+    public TaskService(TaskRepository taskRepository, TimeFrameService timeFrameService){
         this.taskRepository = taskRepository;
+        this.timeFrameService = timeFrameService;
     }
 
     public List<Task> getAllTasks() {
@@ -40,14 +42,18 @@ public class TaskService {
     public Task persistTask(AddTaskDTO addTaskDTO) {
 
 
+        try {
+            
+        } catch (Exception e) {
+  
+        }
             Task newTask = new Task();
             newTask.setName(addTaskDTO.getName());
             newTask.setDescription(addTaskDTO.getDescription());
             newTask.setType(addTaskDTO.getType());
 
-            Task initTask = initTask(newTask);//for relation
+            Task initTask = initTask(newTask);
 
-            List <TimeFrame> timeFramesArrayList = initTask.getTimeFrames();
             for( AddTimeFrameDTO addTimeFrameDTO : addTaskDTO.getTimeFrames()){
 
                 LocalTime startTime = addTimeFrameDTO.getStartTime();
@@ -58,19 +64,12 @@ public class TaskService {
                 timeFrame.setObjective(addTimeFrameDTO.getObjective());
                 timeFrame.setStartTime(startTime);
                 timeFrame.setEndTime(endTime);
+                timeFrame.setTask(initTask);
 
-
-                System.out.println(timeFrame);
-
-                timeFramesArrayList.add(timeFrameService.persist(timeFrame));
-                System.out.println(timeFrame);
+                initTask.getTimeFrames().add(timeFrameService.persist(timeFrame));
+           
 
             }
-
-            // newTask.setId(initTask.getId());
-            // newTask.setTimeFrames(timeFramesArrayList);
-
-            // System.out.println(newTask);
 
         return taskRepository.save(initTask);
     }
@@ -85,5 +84,27 @@ public class TaskService {
 
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
+    }
+
+    
+    public void addTimeFrameToTask(AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
+
+        Optional <Task> taskOpt = getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
+
+        if(!taskOpt.isPresent()){
+            throw new UnsupportedOperationException("Task NotFound");
+        }
+
+        Task task = taskOpt.get();
+
+        TimeFrame timeFrame = new TimeFrame();
+        timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
+        timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
+        timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
+        timeFrame.setTask(task);
+
+        task.getTimeFrames().add(timeFrame);
+        taskRepository.save(task);
+
     }
 }

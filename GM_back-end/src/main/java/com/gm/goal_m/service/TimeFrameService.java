@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.dto.AddTaskDTO;
-import com.gm.goal_m.dto.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
+import com.gm.goal_m.dto.GetTaskIdDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
@@ -31,8 +32,8 @@ public class TimeFrameService {
         return timeFrameRepository.save(timeFrame);
     }
 
-    public List<TimeFrame> getAllTimeFramesByTaskId(AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
-        Optional<Task> task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
+    public List<TimeFrame> getAllTimeFramesByTaskId(GetTaskIdDTO getTaskIdDTO) {
+        Optional<Task> task = taskService.getTaskById(getTaskIdDTO.getTaskId());
 
         if(!task.isPresent()){
             throw new UnsupportedOperationException("Task NotFound");
@@ -40,7 +41,7 @@ public class TimeFrameService {
         return timeFrameRepository.findByTask(task.get());
     }
 
-    public TimeFrame addTimeFrameByTaskId(AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
+    public TimeFrame addTimeFrameByTaskId(AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
 
         Optional <Task> task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
 
