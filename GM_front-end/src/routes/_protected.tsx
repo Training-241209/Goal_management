@@ -1,4 +1,4 @@
-import { DashAuth } from '@/dashAuth'
+import { SideBar } from '@/components/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected')({
@@ -7,8 +7,11 @@ export const Route = createFileRoute('/_protected')({
 
 function RouteComponent() {
   return (
-      <DashAuth>
+      <div className="App flex">
+        <SideBar />
+        <div className="Content flex-1">
           <Outlet />
-      </DashAuth>
-    )
+        </div>
+      </div>
+  )
 }
