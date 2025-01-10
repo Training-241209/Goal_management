@@ -53,4 +53,25 @@ public class JwtService {
 
         return new User(claims.get("userId", Long.class));
     }
+    public boolean isTokenValid(String token) {
+        try {
+            // Parse the token to validate it
+            Jwts.parserBuilder()
+                .setSigningKey(jwtConfiguration.getSecretKey())
+                .build()
+                .parseClaimsJws(token);
+    
+            return true; // Token is valid
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.out.println("Token has expired: " + e.getMessage());
+            return false;
+        } catch (io.jsonwebtoken.SignatureException e) {
+            System.out.println("Invalid token signature: " + e.getMessage());
+            return false;
+        } catch (io.jsonwebtoken.JwtException e) {
+            System.out.println("Invalid token: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
