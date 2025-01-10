@@ -34,8 +34,9 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRequestRegDTO userRequestRegDTO){
+        User user = new User(userRequestRegDTO.getUsername(), userRequestRegDTO.getPassword());
         try {
-            userService.registerUser(userRequestRegDTO);
+            userService.registerUser(user);
             return ResponseEntity.ok().body("User succesfully registered");
         } catch (Exception e){
             return ResponseEntity.status(400).body("The user cannot be registered");
