@@ -1,4 +1,5 @@
-import { DashAuth } from '@/dashAuth'
+import { Dashboard } from '@/components/dashboard'
+
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_protected/dashboard')({
@@ -6,7 +7,7 @@ export const Route = createLazyFileRoute('/_protected/dashboard')({
 })
 
 function RouteComponent() {
-  return <div>
-    <DashAuth />
-  </div>
+  return <> 
+    <Dashboard />
+  </>
 }

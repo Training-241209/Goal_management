@@ -7,9 +7,9 @@ interface DashAuthProps {
 
 export function DashAuth({ children }: DashAuthProps){
     return <>
-        <div className="App">
+        <div className="App flex">
             <SideBar />
-            <div className="Content">
+            <div className="Content flex-1">
              {children}
             </div>
         </div>
