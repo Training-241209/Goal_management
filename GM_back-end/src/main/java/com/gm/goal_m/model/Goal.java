@@ -36,8 +36,7 @@ public class Goal {
     @OneToMany(mappedBy ="goal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List <Task> tasks = new ArrayList<> ();
+  
      
 
 }
