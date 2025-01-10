@@ -30,8 +30,8 @@ public class Goal {
     private Boolean status = false;
     private String type;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
-    // private User user; 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
+    private User user; 
 
 }
