@@ -15,6 +15,8 @@ import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.service.TaskService;
 import com.gm.goal_m.service.TimeFrameService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +44,7 @@ public class TaskController {
         
     }
     @GetMapping("/task")
-    public ResponseEntity<?> getTask(@RequestBody TaskRequestDTO task) {
+    public ResponseEntity<?> getTask(@Valid @RequestBody TaskRequestDTO task) {
 
         try{
 
@@ -81,7 +83,7 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<?> addTask(@RequestBody AddTaskDTO addTaskDTO) {
+    public ResponseEntity<?> addTask(@Valid @RequestBody AddTaskDTO addTaskDTO) {
 
         try{
 
@@ -99,7 +101,7 @@ public class TaskController {
     }
 
     @PostMapping("/task/timeframe")
-    public ResponseEntity<?> addTimeFrameToTask(@RequestBody AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
+    public ResponseEntity<?> addTimeFrameToTask(@Valid @RequestBody AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
 
         try{
 

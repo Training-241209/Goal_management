@@ -25,8 +25,7 @@ public class AddTaskDTO {
     @NotBlank(message = "Missing description")
     private String description;
 
-    @NotBlank(message = "Missing Type")
-    private TaskType type;
+    private TaskType type = TaskType.GOAL;
     private ArrayList <AddTimeFrameDTO> timeFrames;
 
 }
