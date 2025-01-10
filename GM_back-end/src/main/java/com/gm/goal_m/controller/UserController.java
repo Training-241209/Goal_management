@@ -20,6 +20,7 @@ import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,6 +30,9 @@ public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
+
+    @Autowired
+    private HttpSession session;
 
     @Autowired
     public UserController(UserService userService, JwtService jwtService) {
@@ -56,6 +60,7 @@ public class UserController {
             theToken = jwtService.generateToken(user);
             Map<String, String> responseWithToken = new HashMap<>();
             responseWithToken.put("token", theToken);
+            session.setAttribute("authToken", theToken);
             return ResponseEntity.ok().body(responseWithToken);
         } else if (userService.findUserByEmail(user.getEmail()) != null) {
             return ResponseEntity.status(401).body("The password is incorrect");

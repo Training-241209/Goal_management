@@ -54,6 +54,10 @@ public class JwtService {
         return new User(claims.get("userId", Long.class));
     }
 
+    /**
+     * @param token
+     * @return
+     */
     public long  getUserId(String token) {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
