@@ -1,23 +1,25 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/UI/button"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/UI/card"
-import { Input } from "@/components/UI/input"
-import { Label } from "@/components/UI/label"
-import { useForm } from "react-hook-form"
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { FieldError, useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "../schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/UI/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+interface loginFormProps{
+  RenderSignUp: ()=> void;
+}
+
+
+export function LoginForm({RenderSignUp}: loginFormProps) {
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -32,8 +34,16 @@ export function LoginForm({
   function onSubmit(values:LoginSchema){
     console.log(values);
   }
+
+  function handleErrorStyling(value: FieldError | undefined): string {
+    if (value) {
+      return "border-red-600";
+    }
+    return "";
+  }
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6" >
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -53,7 +63,7 @@ export function LoginForm({
                     <FormItem>
                       <Label>Email</Label>
                       <FormControl>
-                        <Input className={errors.email ? "border-red-600":""} placeholder="m@example.com" {...field} type="Email"/>
+                        <Input className={handleErrorStyling(errors.email)} placeholder="m@example.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -74,7 +84,7 @@ export function LoginForm({
                         </a>
                       </div>
                       <FormControl>
-                        <Input {...field} type="Password" className={errors.password ? "border-red-600":""}/>
+                        <Input {...field} type="Password" className={handleErrorStyling(errors.password)}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -87,7 +97,7 @@ export function LoginForm({
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="/signup" className="underline underline-offset-4">
+                <a onClick={RenderSignUp} className="underline underline-offset-4 cursor-pointer">
                   Sign up
                 </a>
               </div>

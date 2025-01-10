@@ -23,21 +23,15 @@ public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     private String description;
-
     private LocalDate startDate;
-
     private LocalDate endDate;
-
     private Boolean status = false;
-
     private String type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
-    private User user; 
+    // @ManyToOne
+    // @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
+    // private User user; 
 
 }

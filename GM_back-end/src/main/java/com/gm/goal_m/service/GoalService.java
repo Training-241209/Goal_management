@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.repository.GoalRepository;
 
+
 @Service
 public class GoalService {
 

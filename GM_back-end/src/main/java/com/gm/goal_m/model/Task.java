@@ -3,21 +3,19 @@ package com.gm.goal_m.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gm.goal_m.Util.Enums.TaskStatus;
+import com.gm.goal_m.Util.Enums.TaskType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
-enum Status {
-    PENDING,
-    ACTIVE,
-    MISSED,
-}
 
 @Data
 @Entity
@@ -28,12 +26,13 @@ public class Task {
     private Long id;
     private String name;
     private String description;
-    private String type;
-    private Status status = Status.PENDING;
+    private TaskType type;
+    
+    private TaskStatus status = TaskStatus.PENDING;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List <TimeFrame> timeframes = new ArrayList<>();
-      
+    private List <TimeFrame> timeframeS = new ArrayList<> ();
+     
     
 }
 
