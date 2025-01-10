@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import com.gm.goal_m.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -34,7 +36,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRequestRegDTO userRequestRegDTO) {
-        User user = new User(userRequestRegDTO.getUsername(), userRequestRegDTO.getPassword());
+        User user = new User(userRequestRegDTO.getEmail(), userRequestRegDTO.getPassword());
         try {
             userService.registerUser(user);
             return ResponseEntity.ok().body("User succesfully registered");
