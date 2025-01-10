@@ -2,6 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { LoginSchema } from "../schemas/login-schema";
+import { axiosInstance } from "@/lib/axios-config";
 
 export function useLogin() {
   const queryClient = useQueryClient();
@@ -9,19 +10,13 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: async (values: LoginSchema) => {
-      return {
-        accessToken: 'mockAccessToken123',
-        user: {
-          id: 1,
-          name: 'John Doe',
-          email: values.email,
-        },
-      };
+        const resp = await axiosInstance.post("/user/login", values);
+        return resp.data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries();
       console.log("Logged in successfully.");
-      localStorage.setItem('jwtToken', data.accessToken); 
+      console.log(data)
       router.navigate({ to: "/dashboard" });
     },
     onError: () => {
