@@ -23,7 +23,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(User user){
+    public User registerUser(User user) {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         return userRepository.save(user);
@@ -38,7 +38,7 @@ public class UserService {
         }
     }
 
-    public User findUSerByUsername(String str){
+    public User findUSerByUsername(String str) {
         return userRepository.findByUsername(str).get();
     }
 
@@ -47,7 +47,7 @@ public class UserService {
         List<User> users = new ArrayList<>();
         users = getAllUsers();
         for (User myUser : users) {
-            if (myUser.getUsername().equals(userLoginRequest.getUsername())) {
+            if (myUser.getUsername().equals(userLoginRequest.getEmail())) {
                 if (passwordEncoder.matches(userLoginRequest.getPassword(), myUser.getPassword())) {
                     correctCredentials = true;
                 } else {
