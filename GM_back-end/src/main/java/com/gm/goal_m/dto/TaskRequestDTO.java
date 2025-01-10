@@ -7,5 +7,4 @@ import lombok.Data;
 @Data
 public class TaskRequestDTO {
     private Long id;
-    private TaskType type;
 }

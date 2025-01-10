@@ -30,8 +30,8 @@ public class Task {
     private TaskStatus status = TaskStatus.PENDING;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List <TimeFrame> timeframeS = new ArrayList<> ();
-     
+    private List <TimeFrame> timeFrames = new ArrayList<> ();
+      
     
 }
 

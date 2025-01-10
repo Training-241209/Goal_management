@@ -14,6 +14,7 @@ import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.service.TaskService;
 import com.gm.goal_m.service.TimeFrameService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,13 +29,9 @@ import java.util.Optional;
 public class TaskController {
 
     private TaskService taskService;
-    private TimeFrameService timeFrameService;
-
-
 
    @Autowired
-    public TaskController (TaskService taskService, TimeFrameService timeFrameService){
-        this.timeFrameService = timeFrameService;
+    public TaskController (TaskService taskService){
         this.taskService = taskService; 
     }
 
@@ -54,7 +51,7 @@ public class TaskController {
 
 
 
-            Optional <Task> retValue = taskService.getTask(task.getId(), task.getType());
+            Optional <Task> retValue = taskService.getTaskById(task.getId());
 
             if(!retValue.isPresent()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task Not found");
@@ -101,6 +98,21 @@ public class TaskController {
 
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Task " + e.getMessage());
+        }
+        
+    }
+
+    @DeleteMapping("/tasks")
+    public ResponseEntity<?> deleteTask() {
+
+        try{
+
+            taskService.deleteAllTasks();
+            return ResponseEntity.status(HttpStatus.CREATED).body("Delete Successfull");
+
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Task" + e.getMessage());
         }
         
     }

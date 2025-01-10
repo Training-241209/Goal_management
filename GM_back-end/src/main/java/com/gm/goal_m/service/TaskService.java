@@ -2,6 +2,7 @@ package com.gm.goal_m.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +25,8 @@ public class TaskService {
     private TimeFrameService timeFrameService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TimeFrameService timeFrameService){
+    public TaskService(TaskRepository taskRepository){
         this.taskRepository = taskRepository;
-        this.timeFrameService = timeFrameService;
-    }
-
-    public Optional <Task> getTask(Long id, TaskType type) {
-        return taskRepository.findById(id);
     }
 
     public List<Task> getAllTasks() {
@@ -51,35 +47,43 @@ public class TaskService {
 
             Task initTask = initTask(newTask);//for relation
 
-            List <TimeFrame> timeFramesArrayList = new ArrayList<>();
+            List <TimeFrame> timeFramesArrayList = initTask.getTimeFrames();
             for( AddTimeFrameDTO addTimeFrameDTO : addTaskDTO.getTimeFrames()){
 
-                LocalDateTime startTime = LocalDateTime.of(LocalDate.now(),addTimeFrameDTO.getStartTime());
-                LocalDateTime endTime = LocalDateTime.of(LocalDate.now(),addTimeFrameDTO.getEndTime());
+                LocalTime startTime = addTimeFrameDTO.getStartTime();
+                LocalTime endTime = addTimeFrameDTO.getEndTime();
 
-                TimeFrame timeframe = new TimeFrame();
-                timeframe.setTask(initTask);
-                timeframe.setObjective(addTimeFrameDTO.getObjective());
-                timeframe.setStartTime(startTime);
-                timeframe.setEndTime(endTime);
+                TimeFrame timeFrame = new TimeFrame();
+                timeFrame.setTask(initTask);
+                timeFrame.setObjective(addTimeFrameDTO.getObjective());
+                timeFrame.setStartTime(startTime);
+                timeFrame.setEndTime(endTime);
 
 
-                System.out.println(timeframe);
+                System.out.println(timeFrame);
 
-                timeFramesArrayList.add(timeFrameService.persist(timeframe));
-                System.out.println(timeframe);
+                timeFramesArrayList.add(timeFrameService.persist(timeFrame));
+                System.out.println(timeFrame);
 
             }
 
-            newTask.setId(initTask.getId());
-            newTask.setTimeframeS(timeFramesArrayList);
+            // newTask.setId(initTask.getId());
+            // newTask.setTimeFrames(timeFramesArrayList);
 
             // System.out.println(newTask);
 
-        return taskRepository.save(newTask);
+        return taskRepository.save(initTask);
     }
     
     public void updateTask(Task task) {
         taskRepository.save(task);
+    }
+
+    public void deleteAllTasks() {
+        taskRepository.deleteAll();
+    }
+
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
     }
 }

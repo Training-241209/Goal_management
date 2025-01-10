@@ -1,6 +1,7 @@
 package com.gm.goal_m.model;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,8 +25,8 @@ public class TimeFrame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String objective;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     private boolean status = true;
 
