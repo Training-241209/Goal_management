@@ -1,3 +1,4 @@
+import { SideBar } from '@/components/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected')({
@@ -5,7 +6,12 @@ export const Route = createFileRoute('/_protected')({
 })
 
 function RouteComponent() {
-  return <div>
-    <Outlet />
-  </div>
+  return (
+      <div className="App flex">
+        <SideBar />
+        <div className="Content flex-1">
+          <Outlet />
+        </div>
+      </div>
+  )
 }

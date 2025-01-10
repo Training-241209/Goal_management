@@ -1,6 +1,4 @@
 package com.gm.goal_m.dto;
-
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -9,7 +7,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AddTimeFrameDTO {
+public class AddTimeFrameToTaskIdDTO {
+
+
+    private Long taskId;
 
     @NotBlank(message = "Missing Objective")
     private String objective;

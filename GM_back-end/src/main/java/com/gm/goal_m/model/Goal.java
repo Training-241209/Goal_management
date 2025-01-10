@@ -22,7 +22,7 @@ public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String objective;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -35,5 +35,9 @@ public class Goal {
 
     @OneToMany(mappedBy ="goal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List <Task> tasks = new ArrayList<> ();
+     
 
 }
