@@ -4,11 +4,12 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class AddGoal {
+import lombok.Data;
+
+@Data
+public class AddGoalDTO {
     private String objective;
     private String description;
-
-    private Boolean status;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate startDay;
