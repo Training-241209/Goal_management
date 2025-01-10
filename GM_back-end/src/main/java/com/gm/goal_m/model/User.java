@@ -38,7 +38,7 @@ public class User {
 
     } 
 
-    public User(long userId){
+    public User(Long userId){
         this.userId = userId;
     }
 

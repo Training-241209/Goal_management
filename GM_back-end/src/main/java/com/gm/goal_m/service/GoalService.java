@@ -57,4 +57,13 @@ public void deleteAllGoals() {
     goalRepository.deleteAll();
 }
 
+public List<Goal> getAllTasks() {
+    return goalRepository.findAll();
+}
+
+public List<Goal> getAllUserGoals() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getAllUserGoals'");
+}
+
 }

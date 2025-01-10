@@ -31,8 +31,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findUserById(int id) {
-        Optional<User> userContainer = userRepository.findById((long) id);
+    public User findUserById(Long id) {
+        Optional<User> userContainer = userRepository.findById(id);
         if (userContainer.isPresent()) {
             return userContainer.get();
         } else {
