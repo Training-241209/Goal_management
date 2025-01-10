@@ -13,6 +13,7 @@ import { FieldError, useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "../schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { useLogin } from "../hooks/use-login"
 
 interface loginFormProps{
   RenderSignUp: ()=> void;
@@ -21,6 +22,7 @@ interface loginFormProps{
 
 export function LoginForm({RenderSignUp}: loginFormProps) {
 
+  const {mutate: login, isPending} = useLogin();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -32,7 +34,8 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
   const{ errors } = form.formState;
 
   function onSubmit(values:LoginSchema){
-    console.log(values);
+    login(values);
+
   }
 
   function handleErrorStyling(value: FieldError | undefined): string {
@@ -91,13 +94,13 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
                   )}
                 />
                 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isPending}>
                   Login
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a onClick={RenderSignUp} className="underline underline-offset-4 cursor-pointer">
+                <a aria-disabled={isPending} onClick={RenderSignUp} className="underline underline-offset-4 cursor-pointer">
                   Sign up
                 </a>
               </div>
