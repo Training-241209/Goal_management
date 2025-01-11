@@ -27,18 +27,15 @@ import com.gm.goal_m.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
+@RestController
 @RequestMapping("/api/user/")
 public class GoalController {
 
     private GoalService goalService;
-
-    @Autowired
     private JwtService jwtService;
-
-    @Autowired
     private UserService userService;
 
      @Autowired
@@ -51,6 +48,8 @@ public class GoalController {
         try{
 
             Long userId = (long) 1;
+            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
+
             User user = userService.findUserById(userId);
 
             Goal retBody  = goalService.addGoalByUser(user, addGoalDTO);
@@ -77,6 +76,8 @@ public class GoalController {
     public ResponseEntity<?> getAllGoals(HttpServletRequest request) {
         try{
             Long userId = (long) 1;
+            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
+
             User user = userService.findUserById(userId);
 
             List <Goal> retValue = goalService.getGoalsByUser(user);

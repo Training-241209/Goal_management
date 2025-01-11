@@ -80,33 +80,14 @@ public class TaskService {
         taskRepository.deleteAll();
     }
 
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
-    }
+    public Task getTaskById(Long id) {
 
-    
-    public void addTimeFrameToTask(AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
-
-        Optional <Task> taskOpt = getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
-
-        System.out.println(taskOpt.get());
-
+        Optional <Task> taskOpt = taskRepository.findById(id);
+        
         if(!taskOpt.isPresent()){
             throw new UnsupportedOperationException("Task NotFound");
         }
-
-        Task task = taskOpt.get();
-
-        TimeFrame timeFrame = new TimeFrame();
-        timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
-        timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
-        timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
-        timeFrame.setTask(task);
-        timeFrameService.persist(timeFrame);
-
-        task.getTimeFrames().add(timeFrame);
-
-        taskRepository.save(task);
-
+        return  taskOpt.get();
     }
+
 }

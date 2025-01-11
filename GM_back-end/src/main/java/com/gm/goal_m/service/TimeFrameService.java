@@ -12,10 +12,14 @@ import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
 
+import jakarta.validation.Valid;
+
 @Service
 public class TimeFrameService {
 
     private TimeFrameRepository timeFrameRepository;
+    
+    @Autowired
     private TaskService taskService;
 
     @Autowired
@@ -23,7 +27,7 @@ public class TimeFrameService {
         this.timeFrameRepository = timeFrameRepository;
     }
     
-    public TimeFrame updateTimeFrame(TimeFrame timeFrame) {
+    public TimeFrame update(TimeFrame timeFrame) {
         return timeFrameRepository.save(timeFrame);
     }
 
@@ -31,30 +35,20 @@ public class TimeFrameService {
         return timeFrameRepository.save(timeFrame);
     }
 
-    public List<TimeFrame> getAllTimeFramesByTaskId(GetTaskIdDTO getTaskIdDTO) {
-        Optional<Task> task = taskService.getTaskById(getTaskIdDTO.getTaskId());
 
-        if(!task.isPresent()){
-            throw new UnsupportedOperationException("Task NotFound");
-        }
-        return timeFrameRepository.findByTask(task.get());
-    }
-
-    public TimeFrame addTimeFrameByTaskId(AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
-
-        Optional <Task> task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
-
-        if(!task.isPresent()){
-            throw new UnsupportedOperationException("Task NotFound");
-        }
+    public void addTimeFrameToTask(Task task, AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
 
         TimeFrame timeFrame = new TimeFrame();
         timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
         timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
         timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
-        timeFrame.setTask(task.get());
+        timeFrame.setTask(task);
 
-        return timeFrameRepository.save(timeFrame);
+        persist(timeFrame);
+
+        task.getTimeFrames().add(timeFrame);
+        
+        taskService.updateTask(task);
     }
     
 }
