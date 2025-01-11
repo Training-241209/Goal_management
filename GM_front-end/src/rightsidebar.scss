@@ -32,3 +32,7 @@ $breakpoint-xxl: 1600px !default;
 .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout {
     justify-content: space-between;
 }
+
+.aria-selected\:opacity-100[aria-selected="true"]{
+    background-color: #a855f7;
+}
