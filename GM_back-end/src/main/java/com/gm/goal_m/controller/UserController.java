@@ -1,7 +1,9 @@
 package com.gm.goal_m.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,30 +32,37 @@ public class UserController {
     private final JwtService jwtService;
 
     @Autowired
+    private HttpSession session;
+
+    @Autowired
     public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRequestRegDTO userRequestRegDTO) {
-        User user = new User(userRequestRegDTO.getEmail(), userRequestRegDTO.getPassword());
+    public ResponseEntity<String> registerUser(@ Valid @RequestBody UserRequestRegDTO userRequestRegDTO) {
         try {
-            userService.registerUser(user);
+            userService.registerUser(userRequestRegDTO);
             return ResponseEntity.ok().body("User succesfully registered");
         } catch (Exception e) {
-            return ResponseEntity.status(400).body("The user cannot be registered");
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("User not registered at this time");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> userLogin(@RequestBody UserLoginRequest userLoginRequest) {
+    public ResponseEntity<Object> userLogin(@Valid @RequestBody UserLoginRequest userLoginRequest) {
         String theToken = "";
-        User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+        User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword(), 
+        userLoginRequest.getFirstName(), userLoginRequest.getLastName());
         if (userService.canLogIn(userLoginRequest)) {
             theToken = jwtService.generateToken(user);
-            return ResponseEntity.ok().body(theToken);
-        } else if (userService.getAllUsers().contains(user)) {
+            Map<String, String> responseWithToken = new HashMap<>();
+            responseWithToken.put("token", theToken);
+            session.setAttribute("authToken", theToken);
+            return ResponseEntity.ok().body(responseWithToken);
+        } else if (userService.findUserByEmail(user.getEmail()) != null) {
             return ResponseEntity.status(401).body("The password is incorrect");
         } else {
             return ResponseEntity.status(404).body("User not found");

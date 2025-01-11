@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.gm.goal_m.dto.UserLoginRequest;
+import com.gm.goal_m.dto.UserRequestRegDTO;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.UserRepository;
 
@@ -16,21 +17,22 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
+  
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(User user) {
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
+    public User registerUser(UserRequestRegDTO userRequestRegDTO) {
+        String hashedPassword = passwordEncoder.encode(userRequestRegDTO.getPassword());
+        User user = new User(userRequestRegDTO.getEmail(), hashedPassword, 
+        userRequestRegDTO.getFirstName(), userRequestRegDTO.getLastName());
         return userRepository.save(user);
     }
 
-    public User findUserById(int id) {
-        Optional<User> userContainer = userRepository.findById((long) id);
+    public User findUserById(Long id) {
+        Optional<User> userContainer = userRepository.findById(id);
         if (userContainer.isPresent()) {
             return userContainer.get();
         } else {
@@ -38,26 +40,26 @@ public class UserService {
         }
     }
 
-    public User findUSerByUsername(String str) {
-        return userRepository.findByUsername(str).get();
+    public User findUserByEmail(String str) {
+        if(userRepository.findByEmail(str).isPresent()){
+            return userRepository.findByEmail(str).get();
+        } else {
+            return null;
+        }
     }
 
     public boolean canLogIn(UserLoginRequest userLoginRequest) {
         boolean correctCredentials = false;
-        List<User> users = new ArrayList<>();
-        users = getAllUsers();
-        for (User myUser : users) {
-            if (myUser.getUsername().equals(userLoginRequest.getEmail())) {
-                if (passwordEncoder.matches(userLoginRequest.getPassword(), myUser.getPassword())) {
-                    correctCredentials = true;
-                } else {
-                    correctCredentials = false;
-                }
+        User myUser = new User();
+        if(findUserByEmail(userLoginRequest.getEmail()) != null){
+            myUser = findUserByEmail(userLoginRequest.getEmail());
+            if(passwordEncoder.matches(userLoginRequest.getPassword(), myUser.getPassword())){
+                correctCredentials = true;
             }
         }
         return correctCredentials;
     }
-
+   
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         if (userRepository.findAll() != null) {

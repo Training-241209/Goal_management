@@ -2,6 +2,7 @@ package com.gm.goal_m.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.Util.Enums.TaskType;
 import com.gm.goal_m.dto.AddTaskDTO;
+import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
 import com.gm.goal_m.dto.AddTimeFrameDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
@@ -29,10 +31,6 @@ public class TaskService {
         this.timeFrameService = timeFrameService;
     }
 
-    public Optional <Task> getTask(Long id, TaskType type) {
-        return taskRepository.findById(id);
-    }
-
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
@@ -44,42 +42,69 @@ public class TaskService {
     public Task persistTask(AddTaskDTO addTaskDTO) {
 
 
+        try {
+            
+        } catch (Exception e) {
+  
+        }
             Task newTask = new Task();
             newTask.setName(addTaskDTO.getName());
             newTask.setDescription(addTaskDTO.getDescription());
             newTask.setType(addTaskDTO.getType());
 
-            Task initTask = initTask(newTask);//for relation
+            Task initTask = initTask(newTask);
 
-            List <TimeFrame> timeFramesArrayList = new ArrayList<>();
             for( AddTimeFrameDTO addTimeFrameDTO : addTaskDTO.getTimeFrames()){
 
-                LocalDateTime startTime = LocalDateTime.of(LocalDate.now(),addTimeFrameDTO.getStartTime());
-                LocalDateTime endTime = LocalDateTime.of(LocalDate.now(),addTimeFrameDTO.getEndTime());
+                LocalTime startTime = addTimeFrameDTO.getStartTime();
+                LocalTime endTime = addTimeFrameDTO.getEndTime();
 
-                TimeFrame timeframe = new TimeFrame();
-                timeframe.setTask(initTask);
-                timeframe.setObjective(addTimeFrameDTO.getObjective());
-                timeframe.setStartTime(startTime);
-                timeframe.setEndTime(endTime);
+                TimeFrame timeFrame = new TimeFrame();
+                timeFrame.setTask(initTask);
+                timeFrame.setObjective(addTimeFrameDTO.getObjective());
+                timeFrame.setStartTime(startTime);
+                timeFrame.setEndTime(endTime);
+                timeFrame.setTask(initTask);
 
-
-                System.out.println(timeframe);
-
-                timeFramesArrayList.add(timeFrameService.persist(timeframe));
-                System.out.println(timeframe);
+                initTask.getTimeFrames().add(timeFrameService.persist(timeFrame));
+           
 
             }
 
-            newTask.setId(initTask.getId());
-            newTask.setTimeframeS(timeFramesArrayList);
-
-            // System.out.println(newTask);
-
-        return taskRepository.save(newTask);
+        return taskRepository.save(initTask);
     }
     
     public void updateTask(Task task) {
         taskRepository.save(task);
+    }
+
+    public void deleteAllTasks() {
+        taskRepository.deleteAll();
+    }
+
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
+    }
+
+    
+    public void addTimeFrameToTask(AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
+
+        Optional <Task> taskOpt = getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
+
+        if(!taskOpt.isPresent()){
+            throw new UnsupportedOperationException("Task NotFound");
+        }
+
+        Task task = taskOpt.get();
+
+        TimeFrame timeFrame = new TimeFrame();
+        timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
+        timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
+        timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
+        timeFrame.setTask(task);
+
+        task.getTimeFrames().add(timeFrame);
+        taskRepository.save(task);
+
     }
 }
