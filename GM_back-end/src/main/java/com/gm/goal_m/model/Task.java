@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gm.goal_m.Util.Enums.TaskStatus;
-import com.gm.goal_m.Util.Enums.TaskType;
+import com.gm.goal_m.Util.Enums.Task.TaskStatus;
+import com.gm.goal_m.Util.Enums.Task.TaskType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

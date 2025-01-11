@@ -3,6 +3,7 @@ package com.gm.goal_m.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gm.goal_m.dto.AddGoalDTO;
-import com.gm.goal_m.dto.AddTaskDTO;
-import com.gm.goal_m.dto.TaskRequestDTO;
+import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
+import com.gm.goal_m.dto.GoalDTOs.GoalIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.TaskRequestDTO;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.User;
@@ -25,88 +27,68 @@ import com.gm.goal_m.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
-@RequestMapping("/api")
+@RestController
+@RequestMapping("/api/user/")
 public class GoalController {
 
     private GoalService goalService;
     private JwtService jwtService;
     private UserService userService;
 
-    public GoalController (GoalService goalService, JwtService jwtService, UserService userService){
+     @Autowired
+    public GoalController (GoalService goalService, UserService userService){
         this.goalService = goalService;
-        this.jwtService = jwtService;
         this.userService = userService;
     }
 
     @PostMapping("/goal")
-    public ResponseEntity<?> addGoal(@RequestBody AddGoalDTO addGoalDTO, HttpServletRequest request) {
-
+    public ResponseEntity<?> addGoalByUser(@RequestBody AddGoalDTO addGoalDTO, HttpServletRequest request) {
         try{
-            if(addGoalDTO == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing request body");
-            }
 
-            // Long userId = Long.parseLong(String.valueOf(request.getAttribute("userId")));
-            // User worker = userService.findUserById(userId);
+            Long userId = (long) 1;
+            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
 
-            // User user = jwtService.decodeTokenById(request.getHeader("Authorization"));
+            User user = userService.findUserById(userId);
 
-            // System.out.println(user);
+            Goal retBody  = goalService.addGoalByUser(user, addGoalDTO);
 
-
-
-         
-
-            Goal retBody = goalService.createGoal(addGoalDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Boal: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Goal: " + e.getMessage());
         }     
     }
-    
 
-    @PostMapping("/goal/task")
-    public ResponseEntity<?> addTaskToGoal(@RequestBody AddGoalDTO addGoalDTO) {
-        try{
-            if(addGoalDTO == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing request body");
-            }
-            Goal retBody = goalService.createGoal(addGoalDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body( retBody);
-
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Boal: " + e.getMessage());
-        }   
-    }
-
-    @DeleteMapping("/goals")
-    public ResponseEntity<?> deleteAllGoals() {
+    @DeleteMapping("/goal")
+    public ResponseEntity<?> deleteGoalById(@RequestBody GoalIdDTO goaIdDTO){
 
         try{
-            goalService.deleteAllGoals();
-            return ResponseEntity.status(HttpStatus.CREATED).body("Deleted Successfull");
+            goalService.deleteGoalById(goaIdDTO.getGoalId());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deleted goal Successfull");
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Goal" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Goal " + e.getMessage());
         }
         
     }
 
     @GetMapping("/goals")
-    public ResponseEntity<?> getAllGoals() {
-
+    public ResponseEntity<?> getAllGoals(HttpServletRequest request) {
         try{
+            Long userId = (long) 1;
+            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
 
-            List <Goal> retValue = goalService.getAllTasks();
+            User user = userService.findUserById(userId);
+
+            List <Goal> retValue = goalService.getGoalsByUser(user);
             return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
 
 
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get all goals: " + e.getMessage());
         }
-        
+     
     }
 
     

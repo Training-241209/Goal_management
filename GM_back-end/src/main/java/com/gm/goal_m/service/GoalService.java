@@ -6,64 +6,86 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gm.goal_m.dto.AddGoalDTO;
+import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
 import com.gm.goal_m.model.Goal;
+import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.GoalRepository;
 
 
 @Service
 public class GoalService {
 
-private final GoalRepository goalRepository;
+    private  GoalRepository goalRepository;
+    private UserService userService;
 
-@Autowired
-public GoalService (GoalRepository goalRepository){
-    this.goalRepository = goalRepository;
-}
-    
-public Goal createGoal(AddGoalDTO addGoalDTO) {
-    Goal goal = new Goal();
-    goal.setObjective(addGoalDTO.getObjective());
-    goal.setDescription(addGoalDTO.getDescription());
-    goal.setStartDate(addGoalDTO.getStartDay());
-    goal.setEndDate(addGoalDTO.getEndDay());
-    return goalRepository.save(goal);
-}  
+   
+    public GoalService (GoalRepository goalRepository, UserService userService){
+        this.goalRepository = goalRepository;
+        this.userService = userService;
+    }
+        
+    public Goal createGoal(AddGoalDTO addGoalDTO) {
+        Goal goal = new Goal();
+        goal.setObjective(addGoalDTO.getObjective());
+        goal.setDescription(addGoalDTO.getDescription());
+        goal.setStartDate(addGoalDTO.getStartDay());
+        goal.setEndDate(addGoalDTO.getEndDay());
+        return goalRepository.save(goal);
+    }  
 
-/*public List<Goal> findAllUserGoals (Long id){
-    return goalRepository.findByUserId((long) id);
-}*/
+    public Goal updateGoalEndDate(Long id, LocalDate newEndDate){
+        Goal goal = getGoalById(id);
+        if(goal != null){
+            goal.setEndDate(newEndDate);
+            goalRepository.save(goal);
+            return goal;
+        } else {
+            return null;
+        }
+    }
 
-public Goal updateGoalEndDate(Long id, LocalDate newEndDate){
-    Goal goal = getGoalById(id);
-    if(goal != null){
-        goal.setEndDate(newEndDate);
+    public Goal getGoalById(Long id){
+        if(goalRepository.findById((long) id).isPresent()){
+            return goalRepository.findById((long) id).get();
+        } else {
+            return null;
+        }
+    }
+
+    public List<Goal> getAllTasks() {
+        return goalRepository.findAll();
+    }
+
+
+    public Goal addGoalByUser(User user, AddGoalDTO addGoalDTO) {
+
+        Goal goal = new Goal();
+        goal.setObjective(addGoalDTO.getObjective());
+        goal.setDescription(addGoalDTO.getDescription());
+        goal.setType(addGoalDTO.getType());
+        goal.setStartDate(addGoalDTO.getEndDay());
+        goal.setEndDate(addGoalDTO.getEndDay());
+        goal.setUser(user);
+
+        
+
+        user.getGoals().add(goal);
+
+        userService.updateUser(user);
+
+        return goalRepository.save(goal);
+    }
+
+    public List<Goal> getGoalsByUser(User user) {
+        return goalRepository.findByUser(user);
+    }
+
+    public void deleteGoalById(Long goalId) {
+        goalRepository.deleteById(goalId);
+    }
+
+    public void update(Goal goal) {
         goalRepository.save(goal);
-        return goal;
-    } else {
-        return null;
     }
-}
-
-public Goal getGoalById(Long id){
-    if(goalRepository.findById((long) id).isPresent()){
-        return goalRepository.findById((long) id).get();
-    } else {
-        return null;
-    }
-}
-
-public void deleteAllGoals() {
-    goalRepository.deleteAll();
-}
-
-public List<Goal> getAllTasks() {
-    return goalRepository.findAll();
-}
-
-public List<Goal> getAllUserGoals() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getAllUserGoals'");
-}
 
 }

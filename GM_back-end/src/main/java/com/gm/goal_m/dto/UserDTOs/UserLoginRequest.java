@@ -1,4 +1,4 @@
-package com.gm.goal_m.dto;
+package com.gm.goal_m.dto.UserDTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UserRequestRegDTO {
+public class UserLoginRequest {
+
     @NotBlank(message = "Email is required")
-    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "The email must have a correct format")
+    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$" , message = "The email must have a correct format")
     private String email;
 
     @NotBlank(message = "Password is required")
@@ -17,5 +18,6 @@ public class UserRequestRegDTO {
     private String password;
 
     private String firstName;
+
     private String lastName;
 }

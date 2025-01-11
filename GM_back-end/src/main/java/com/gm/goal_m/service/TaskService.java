@@ -1,80 +1,60 @@
 package com.gm.goal_m.service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gm.goal_m.Util.Enums.TaskType;
-import com.gm.goal_m.dto.AddTaskDTO;
-import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
-import com.gm.goal_m.dto.AddTimeFrameDTO;
+import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameDTO;
+import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TaskRepository;
-import com.gm.goal_m.repository.TimeFrameRepository;
 
 @Service
 public class TaskService {
   
     private TaskRepository taskRepository;
-    private TimeFrameService timeFrameService;
+    private GoalService goalService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TimeFrameService timeFrameService){
+    public TaskService(TaskRepository taskRepository, GoalService goalService){
         this.taskRepository = taskRepository;
-        this.timeFrameService = timeFrameService;
+        this.goalService = goalService;
     }
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    public Task initTask (Task task) {
+    public Task persist (Task task) {
         return taskRepository.save(task);
     }
 
-    public Task persistTask(AddTaskDTO addTaskDTO) {
-
-
-        try {
+    public Task AddTaskByGoalId (AddTaskByGoalIdDTO addTaskDTO) {
             
-        } catch (Exception e) {
+            Goal goal = goalService.getGoalById(addTaskDTO.getGoalId());  
+
+            Task task = new Task();
+            task.setName(addTaskDTO.getName());
+            task.setDescription(addTaskDTO.getDescription());
+            task.setType(addTaskDTO.getType());
+            task.setGoal(goal);
+
+            Task retTask = persist(task);
+
+            goal.getTasks().add(retTask);
+
+            goalService.update(goal);
   
-        }
-            Task newTask = new Task();
-            newTask.setName(addTaskDTO.getName());
-            newTask.setDescription(addTaskDTO.getDescription());
-            newTask.setType(addTaskDTO.getType());
-
-            Task initTask = initTask(newTask);
-
-            for( AddTimeFrameDTO addTimeFrameDTO : addTaskDTO.getTimeFrames()){
-
-                LocalTime startTime = addTimeFrameDTO.getStartTime();
-                LocalTime endTime = addTimeFrameDTO.getEndTime();
-
-                TimeFrame timeFrame = new TimeFrame();
-                timeFrame.setTask(initTask);
-                timeFrame.setObjective(addTimeFrameDTO.getObjective());
-                timeFrame.setStartTime(startTime);
-                timeFrame.setEndTime(endTime);
-                timeFrame.setTask(initTask);
-
-                initTask.getTimeFrames().add(timeFrameService.persist(timeFrame));
-           
-
-            }
-
-        return taskRepository.save(initTask);
+        return  retTask;
     }
-    
-    public void updateTask(Task task) {
+
+
+    public void update(Task task) {
         taskRepository.save(task);
     }
 
@@ -82,29 +62,14 @@ public class TaskService {
         taskRepository.deleteAll();
     }
 
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
-    }
+    public Task getTaskById(Long id) {
 
-    
-    public void addTimeFrameToTask(AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
-
-        Optional <Task> taskOpt = getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
-
+        Optional <Task> taskOpt = taskRepository.findById(id);
+        
         if(!taskOpt.isPresent()){
             throw new UnsupportedOperationException("Task NotFound");
         }
-
-        Task task = taskOpt.get();
-
-        TimeFrame timeFrame = new TimeFrame();
-        timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
-        timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
-        timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
-        timeFrame.setTask(task);
-
-        task.getTimeFrames().add(timeFrame);
-        taskRepository.save(task);
-
+        return  taskOpt.get();
     }
+
 }

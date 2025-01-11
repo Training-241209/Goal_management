@@ -1,4 +1,4 @@
-package com.gm.goal_m.dto;
+package com.gm.goal_m.dto.UserDTOs;
 
 import lombok.Data;
 

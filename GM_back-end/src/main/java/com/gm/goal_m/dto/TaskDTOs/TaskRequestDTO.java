@@ -1,6 +1,4 @@
-package com.gm.goal_m.dto;
-
-import com.gm.goal_m.Util.Enums.TaskType;
+package com.gm.goal_m.dto.TaskDTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

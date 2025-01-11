@@ -58,14 +58,14 @@ public class JwtService {
      * @param token
      * @return
      */
-    public long  getUserId(String token) {
+    public Long  getUserId(String token) {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        return new User(claims.get("userId", Long.class)).getUserId();
+        return claims.get("userId", Long.class);
     }
 
     public boolean isTokenValid(String token) {
