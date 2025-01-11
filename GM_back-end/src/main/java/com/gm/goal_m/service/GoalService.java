@@ -16,13 +16,12 @@ import com.gm.goal_m.repository.GoalRepository;
 public class GoalService {
 
     private  GoalRepository goalRepository;
-
-    @Autowired
     private UserService userService;
 
-    @Autowired
-    public GoalService (GoalRepository goalRepository){
+   
+    public GoalService (GoalRepository goalRepository, UserService userService){
         this.goalRepository = goalRepository;
+        this.userService = userService;
     }
         
     public Goal createGoal(AddGoalDTO addGoalDTO) {

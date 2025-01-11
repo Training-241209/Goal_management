@@ -16,14 +16,15 @@ import com.gm.goal_m.service.TimeFrameService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/user/goal/Task")
+@RequestMapping("/api/user/goal/task")
 public class TimeFrameController {
-    
+
     private TimeFrameService timeFrameService;
     private TaskService taskService;
 
-    public TimeFrameController (TimeFrameService timeFrameService){
+    public TimeFrameController (TimeFrameService timeFrameService,TaskService taskService ){
         this.timeFrameService = timeFrameService;
+        this.taskService = taskService;
     }
 
     @PostMapping("timeframe")

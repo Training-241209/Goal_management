@@ -39,8 +39,9 @@ public class GoalController {
     private UserService userService;
 
      @Autowired
-    public GoalController (GoalService goalService){
+    public GoalController (GoalService goalService, UserService userService){
         this.goalService = goalService;
+        this.userService = userService;
     }
 
     @PostMapping("/goal")

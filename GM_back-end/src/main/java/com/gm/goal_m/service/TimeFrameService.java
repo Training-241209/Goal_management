@@ -16,15 +16,13 @@ import jakarta.validation.Valid;
 
 @Service
 public class TimeFrameService {
-
     private TimeFrameRepository timeFrameRepository;
-    
-    @Autowired
     private TaskService taskService;
 
     @Autowired
-    public TimeFrameService(TimeFrameRepository timeFrameRepository){
+    public TimeFrameService(TimeFrameRepository timeFrameRepository, TaskService taskService){
         this.timeFrameRepository = timeFrameRepository;
+        this.taskService = taskService;
     }
     
     public TimeFrame update(TimeFrame timeFrame) {
@@ -48,7 +46,7 @@ public class TimeFrameService {
 
         task.getTimeFrames().add(timeFrame);
         
-        taskService.updateTask(task);
+        taskService.update(task);
     }
     
 }
