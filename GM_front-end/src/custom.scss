@@ -1,5 +1,5 @@
 
-$sidebar-bg-color: whitesmoke !default;
+$sidebar-bg-color: white !default;
 $sidebar-color: black !default;
 $sidebar-width: 270px !default;
 $sidebar-collapsed-width: 80px !default;
@@ -23,7 +23,7 @@ $breakpoint-xxl: 1600px !default;
     background-color: $icon-bg-color;
   
     &:hover {
-      background-color: #f97316;
+      background-color: #a855f7;
       color: #ffffff;
     }
 }
@@ -32,7 +32,7 @@ $breakpoint-xxl: 1600px !default;
 .pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item:hover{
     color: $sidebar-color;
     .pro-icon-wrapper{
-        background-color: #f97316;
+        background-color: #a855f7;
         color: #ffffff;
     }
     &:hover{
@@ -43,7 +43,7 @@ $breakpoint-xxl: 1600px !default;
 .pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item:focus{
     color: #983dc6;
     .pro-icon-wrapper{
-        background-color: #f97316;
+        background-color: #a855f7;
         color: #ffffff;
     }
 }

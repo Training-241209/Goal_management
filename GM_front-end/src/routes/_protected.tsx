@@ -1,5 +1,7 @@
 import { SideBar } from '@/components/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import "@/index.css"
+import { RightSideBar } from '@/components/rightSideBar'
 
 export const Route = createFileRoute('/_protected')({
   component: RouteComponent,
@@ -7,11 +9,12 @@ export const Route = createFileRoute('/_protected')({
 
 function RouteComponent() {
   return (
-      <div className="App flex">
+      <div className="app flex">
         <SideBar />
-        <div className="Content flex-1">
+        <main className="content flex-1 bg-gray-100 overflow-auto">
           <Outlet />
-        </div>
+        </main>
+        <RightSideBar />
       </div>
   )
 }
