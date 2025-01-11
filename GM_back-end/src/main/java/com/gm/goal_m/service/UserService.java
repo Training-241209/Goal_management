@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.gm.goal_m.dto.UserLoginRequest;
-import com.gm.goal_m.dto.UserRequestRegDTO;
+import com.gm.goal_m.dto.UserDTOs.UserLoginRequest;
+import com.gm.goal_m.dto.UserDTOs.UserRequestRegDTO;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.UserRepository;
 

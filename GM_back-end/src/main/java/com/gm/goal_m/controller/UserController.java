@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gm.goal_m.dto.UserLoginRequest;
-import com.gm.goal_m.dto.UserRequestRegDTO;
+import com.gm.goal_m.dto.UserDTOs.UserLoginRequest;
+import com.gm.goal_m.dto.UserDTOs.UserRequestRegDTO;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
