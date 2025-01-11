@@ -1,29 +1,27 @@
 package com.gm.goal_m.service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gm.goal_m.Util.Enums.TaskType;
-import com.gm.goal_m.dto.AddTaskDTO;
-import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
-import com.gm.goal_m.dto.AddTimeFrameDTO;
+import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameDTO;
+import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TaskRepository;
-import com.gm.goal_m.repository.TimeFrameRepository;
 
 @Service
 public class TaskService {
   
     private TaskRepository taskRepository;
     private TimeFrameService timeFrameService;
+
+    @Autowired
+    private GoalService goalService;
 
     @Autowired
     public TaskService(TaskRepository taskRepository, TimeFrameService timeFrameService){
@@ -39,20 +37,17 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public Task persistTask(AddTaskDTO addTaskDTO) {
-
-
-        try {
+    public Task AddTaskByGoalId (AddTaskByGoalIdDTO addTaskDTO) {
             
-        } catch (Exception e) {
-  
-        }
+            Goal goal = goalService.getGoalById(addTaskDTO.getGoalId());
+            
             Task newTask = new Task();
             newTask.setName(addTaskDTO.getName());
             newTask.setDescription(addTaskDTO.getDescription());
             newTask.setType(addTaskDTO.getType());
+            newTask.setGoal(goal);
 
-            Task initTask = initTask(newTask);
+            Task initTask = initTask(newTask);//initialize task to return task with id 
 
             for( AddTimeFrameDTO addTimeFrameDTO : addTaskDTO.getTimeFrames()){
 
@@ -71,6 +66,9 @@ public class TaskService {
 
             }
 
+            goal.getTasks().add(initTask);
+            goalService.update(goal);
+
         return taskRepository.save(initTask);
     }
     
@@ -87,9 +85,11 @@ public class TaskService {
     }
 
     
-    public void addTimeFrameToTask(AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
+    public void addTimeFrameToTask(AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
 
         Optional <Task> taskOpt = getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
+
+        System.out.println(taskOpt.get());
 
         if(!taskOpt.isPresent()){
             throw new UnsupportedOperationException("Task NotFound");
@@ -102,8 +102,10 @@ public class TaskService {
         timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
         timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
         timeFrame.setTask(task);
+        timeFrameService.persist(timeFrame);
 
         task.getTimeFrames().add(timeFrame);
+
         taskRepository.save(task);
 
     }

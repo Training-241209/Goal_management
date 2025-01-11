@@ -1,4 +1,4 @@
-package com.gm.goal_m.dto;
+package com.gm.goal_m.dto.GoalDTOs;
 
 import java.time.LocalDate;
 
@@ -10,6 +10,7 @@ import lombok.Data;
 public class AddGoalDTO {
     private String objective;
     private String description;
+    private String type;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate startDay;

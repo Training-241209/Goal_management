@@ -1,4 +1,4 @@
-package com.gm.goal_m.dto;
+package com.gm.goal_m.dto.TimeFrameDTOs;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

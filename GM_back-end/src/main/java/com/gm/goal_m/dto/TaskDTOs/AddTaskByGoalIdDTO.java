@@ -1,13 +1,9 @@
-package com.gm.goal_m.dto;
+package com.gm.goal_m.dto.TaskDTOs;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gm.goal_m.Util.Enums.TaskType;
-import com.gm.goal_m.model.TimeFrame;
+import com.gm.goal_m.Util.Enums.Task.TaskType;
+import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -18,7 +14,10 @@ enum Type {
 }
 
 @Data
-public class AddTaskDTO {
+public class AddTaskByGoalIdDTO {
+
+    private Long goalId;
+
     @NotBlank(message = "Missing name")
     private String name;
 

@@ -14,6 +14,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Data
 @Entity
 @Table(name = "goal")
@@ -30,11 +33,17 @@ public class Goal {
     private String type;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
     private User user;
 
     @OneToMany(mappedBy ="goal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
+
+    @JsonProperty("userId")
+    public Long getUserId() {
+        return user != null ? user.getUserId() : null;
+    }
 
   
      

@@ -6,9 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gm.goal_m.dto.AddTaskDTO;
-import com.gm.goal_m.dto.AddTimeFrameToTaskIdDTO;
-import com.gm.goal_m.dto.GetTaskIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.GetTaskIdDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
@@ -41,7 +40,7 @@ public class TimeFrameService {
         return timeFrameRepository.findByTask(task.get());
     }
 
-    public TimeFrame addTimeFrameByTaskId(AddTimeFrameToTaskIdDTO addTimeFrameByTaskIdDTO) {
+    public TimeFrame addTimeFrameByTaskId(AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
 
         Optional <Task> task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
 
