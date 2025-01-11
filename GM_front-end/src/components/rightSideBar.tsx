@@ -1,6 +1,8 @@
 import { Avatar, Box } from "@mui/material";
 import { ProSidebar } from "react-pro-sidebar";
-
+import { Calendar } from "@/components/ui/calendar"
+import React from "react";
+import "@/rightsidebar.scss"
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -30,20 +32,31 @@ function stringAvatar(name: string) {
       children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
     };
 }
+
+
 export function RightSideBar(){
+    const [date, setDate] = React.useState<Date | undefined>(new Date())
     return <>
-        <ProSidebar >
-                <div className="mx-5 flex flex-col items-center gap-5 justify-center bg-purple-100">
-                    <Box className="flex items-center gap-3 p-5 border-b-1">
+        <ProSidebar>
+                <div className="mx-5 flex flex-col items-center gap-5 justify-center bg-purple-100 rounded-lg">
+                    <Box className="flex items-center gap-3 p-5 border-b-2 border-gray-400">
                         <Avatar {...stringAvatar('Nick Butani')} />
-                        <Box>
-                            <h1 className="font-semibold"> Nick Butani</h1>
+                        <Box >
+                            <h1 className="font-semibold"> First last</h1>
                             <p className="text-xs font-thin">Role</p>
                         </Box>
                     </Box>
-                    <Box>
-                        <p>The secret of getting ahead is getting started.</p>
+                    <Box className="p-5 justify-center">
+                        <p className="text-center">The secret of getting ahead is getting started.</p>
                     </Box>
+                </div>
+                <div className="mx-5 mb-10 border-purple-500">
+                    <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        className="rounded-md border border-purple-500"
+                    />
                 </div>
         </ProSidebar>
     </>
