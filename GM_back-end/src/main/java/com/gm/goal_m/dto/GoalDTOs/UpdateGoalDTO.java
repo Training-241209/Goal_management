@@ -25,6 +25,9 @@ public class UpdateGoalDTO {
     @NotBlank(message = "Missing type")
     private String type;
 
+    @NotNull(message = "Missing status")
+    private Boolean status;
+
     @NotNull(message = "Missing start date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate startDay;

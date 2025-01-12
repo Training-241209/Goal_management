@@ -80,6 +80,7 @@ public class GoalService {
         goal.setObjective(updateGoalDTO.getObjective());
         goal.setDescription(updateGoalDTO.getDescription());
         goal.setType(updateGoalDTO.getType());
+        goal.setStatus(updateGoalDTO.getStatus());
         goal.setStartDate(updateGoalDTO.getEndDay());
         goal.setEndDate(updateGoalDTO.getEndDay());
 
