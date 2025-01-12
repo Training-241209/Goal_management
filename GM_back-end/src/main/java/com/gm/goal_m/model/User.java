@@ -47,22 +47,22 @@ public class User {
     }
 
     public User(String email, String password) {
-        this.email = email;
+        this.email = email.toLowerCase();
         this.password = password;
     }
     public User(String email, long user_id) {
-        this.email = email;
+        this.email = email.toLowerCase();
         this.userId = user_id;
     }
 
     public User(String email, String firstName, String lastName){
-        this.email = email;
+        this.email = email.toLowerCase();
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
     public User(String email, String password, String firstName, String lastName) {
-        this.email = email;
+        this.email = email.toLowerCase();
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -4,13 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Component
 public class JwtIntercept  implements HandlerInterceptor{
@@ -30,18 +27,10 @@ public class JwtIntercept  implements HandlerInterceptor{
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-        }
-
-        if (token == null) {
-            HttpSession session = request.getSession(false); 
-            if (session != null) {
-                token = (String) session.getAttribute("authToken");
+            if (token != null && jwtService.isTokenValid(token)) {
+                request.setAttribute("email", jwtService.decodeTokenEmail(token));
+                return true;
             }
-        }
-
-        if (token != null && jwtService.isTokenValid(token)) {
-            request.setAttribute("email", jwtService.decodeTokenEmail(token));
-            return true;
         }
 
         // If no valid token is found

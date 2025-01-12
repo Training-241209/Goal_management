@@ -17,7 +17,7 @@ export const signupFormSchema = z.object({
             /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[^\s]*$/,
             "Password must contain at least one uppercase letter, one lowercase letter, and one number."
         ),
-    firstname: z
+    firstName: z
         .string({
             message: "Required",
         })
@@ -27,7 +27,7 @@ export const signupFormSchema = z.object({
             /^[a-zA-Z]+$/,
             "Must contain only letters."
         ),
-    lastname: z
+    lastName: z
         .string({
             message: "Required.",
         })
