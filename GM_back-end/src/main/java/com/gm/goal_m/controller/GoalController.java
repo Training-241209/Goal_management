@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
 import com.gm.goal_m.dto.GoalDTOs.GoalIdDTO;
+import com.gm.goal_m.dto.GoalDTOs.UpdateGoalDTO;
 import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.TaskRequestDTO;
 import com.gm.goal_m.model.Goal;
@@ -54,6 +56,23 @@ public class GoalController {
             User user = userService.findUserById(userId);
 
             Goal retBody  = goalService.addGoalByUser(user, addGoalDTO);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Goal: " + e.getMessage());
+        }     
+    }
+
+    @PatchMapping("/goal")
+    public ResponseEntity<?> updateGoalByUser(@RequestBody UpdateGoalDTO addGoalDTO, HttpServletRequest request) {
+        try{
+
+            Long userId = (long) 1;
+            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
+
+            User user = userService.findUserById(userId);
+
+            Goal retBody  = goalService.updateGoalByUser(user, addGoalDTO);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
         }catch (Exception e){

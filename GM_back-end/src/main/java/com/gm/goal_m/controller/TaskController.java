@@ -1,5 +1,7 @@
 package com.gm.goal_m.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
-
+import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.TaskService;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -50,21 +55,5 @@ public class TaskController {
     }
 
         
-    // }
-    // @GetMapping("/tasks")
-    // public ResponseEntity<?> getAllTasks() {
-
-    //     try{
-
-    //         List <Task> retValue = taskService.getAllTasks();
-    //         return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
-
-
-    //     }catch (Exception e){
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get Task: " + e.getMessage());
-    //     }
-        
-    // }
-
     
 }

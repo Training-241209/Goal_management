@@ -12,6 +12,7 @@ import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameDTO;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
+import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.TaskRepository;
 
 @Service
@@ -44,15 +45,14 @@ public class TaskService {
             task.setType(addTaskDTO.getType());
             task.setGoal(goal);
 
-            Task retTask = persist(task);
-
-            goal.getTasks().add(retTask);
-
-            goalService.update(goal);
+            goal.getTasks().add(task);
   
-        return  retTask;
+        return taskRepository.save(task);
     }
 
+    public List<Goal> getTasksByGoal(Goal goal) {
+        return taskRepository.findByGoal(goal);
+    }
 
     public void update(Task task) {
         taskRepository.save(task);
