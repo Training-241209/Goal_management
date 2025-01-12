@@ -41,8 +41,9 @@ public class UserService {
     }
 
     public User findUserByEmail(String str) {
-        if(userRepository.findByEmail(str).isPresent()){
-            return userRepository.findByEmail(str).get();
+        Optional<User> optUser = userRepository.findByEmail(str);
+        if(optUser.isPresent()){
+            return optUser.get();
         } else {
             return null;
         }

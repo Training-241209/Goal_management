@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gm.goal_m.dto.UserDTOs.UserLoginRequest;
 import com.gm.goal_m.dto.UserDTOs.UserRequestRegDTO;
+import com.gm.goal_m.dto.UserDTOs.UserResponse;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -74,5 +76,12 @@ public class UserController {
         List<User> users = new ArrayList<>();
         users = userService.getAllUsers();
         return ResponseEntity.ok().body(users);
+    }
+
+    @GetMapping("/me")
+    public UserResponse getLoggedUserDetails(HttpServletRequest request) {
+        String email = (String)request.getAttribute("email");
+        return new UserResponse(userService.findUserByEmail(email));
+        
     }
 }
