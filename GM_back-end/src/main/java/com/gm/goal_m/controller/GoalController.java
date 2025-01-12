@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
 import com.gm.goal_m.dto.GoalDTOs.UpdateGoalDTO;
 import com.gm.goal_m.model.Goal;
+import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.GoalService;
 import com.gm.goal_m.service.UserService;
@@ -82,7 +84,7 @@ public class GoalController {
     }
 
     @GetMapping("/goals")
-    public ResponseEntity<?> getAllGoals(HttpServletRequest request) {
+    public ResponseEntity<?> getAllUserGoals(HttpServletRequest request) {
         try{
             
             String email = (String)request.getAttribute("email");
@@ -95,6 +97,20 @@ public class GoalController {
 
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get all goals: " + e.getMessage());
+        }
+     
+    }
+
+    @GetMapping("/goal/{goalId}")
+    public ResponseEntity<?> getGoalById(@PathVariable Long goalId, HttpServletRequest request) {
+        try{
+            
+            Goal retValue = goalService.getGoalById(goalId);
+            return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
+
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get goal: " + e.getMessage());
         }
      
     }
