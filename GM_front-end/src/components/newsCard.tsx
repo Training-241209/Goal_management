@@ -10,7 +10,7 @@ export function NewsCard() {
             <div className="p-5 border-b-2" >
                 <h1 className="text-lg font-bold">Recent News</h1>
             </div>
-            <ScrollArea className="h-[250px]">
+            <ScrollArea className="h-[200px]">
                 <div className="flex flex-col space-y-4 p-4">
                     {data?.news
                         ? data.news.map((newsItem: any) => (

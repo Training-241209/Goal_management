@@ -11,7 +11,7 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 export function SideBar(){
     const [isCollapsed, setIsCollapsed] = useState(false);
     return <>
-    <div className='h-screen'>
+    <div className='min-h-screen not-sr-only'>
         <ProSidebar collapsed={isCollapsed}>
             <SidebarHeader>
                 <div className="flex items-center justify-between p-5" >
