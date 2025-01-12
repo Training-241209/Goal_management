@@ -69,5 +69,9 @@ public class TimeFrameService {
 
 
         return timeFrameOpt.get();
+    }
+
+    public void deleteTimeFrameById(Long id) {
+        timeFrameRepository.deleteById(id);
     }    
 }

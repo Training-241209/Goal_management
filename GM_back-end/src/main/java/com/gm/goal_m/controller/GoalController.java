@@ -43,11 +43,10 @@ public class GoalController {
         try{
 
             String email = (String)request.getAttribute("email");
-
             User user = userService.findUserByEmail(email);
 
             Goal retBody  = goalService.addGoalByUser(user, addGoalDTO);
-
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Goal: " + e.getMessage());
@@ -60,9 +59,8 @@ public class GoalController {
 
            
             String email = (String)request.getAttribute("email");
-
             User user = userService.findUserByEmail(email);
-
+            
             Goal retBody  = goalService.updateGoalByUser(user, updateGoalDTO);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
