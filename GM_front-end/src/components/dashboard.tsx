@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 
 export function Dashboard(){
     return <>
-        <div className="bg-gray-100 min-h-screen m-0 p-5 overflow-hidden">
+        <div className="bg-gray-100 min-h-screen m-0 p-5 overflow-hidden content-center">
             <div className="bg-white p-5 rounded-lg shadow-md">
                 <h1 className="text-4xl font-bold text-purple-900 mb-4">Today Task</h1>
                 <p className="text-gray-600 mb-6">Check your daily tasks and schedules</p>
