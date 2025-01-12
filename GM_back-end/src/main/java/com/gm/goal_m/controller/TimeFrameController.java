@@ -2,12 +2,14 @@ package com.gm.goal_m.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.UpdateTaskDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.UpdateTimeFrameDTO;
@@ -65,6 +67,18 @@ public class TimeFrameController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update goal" + e.getMessage());
         }     
+    }
+
+    @DeleteMapping("/timeframe")
+    public ResponseEntity<?> deleteTaskById(@Valid @RequestBody GetIdDTO id){
+
+        try{
+            timeFrameService.deleteTimeFrameById(id.getId());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deleted timeframe Successfully");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Timeframe" + e.getMessage());
+        }
+        
     }
 
 }
