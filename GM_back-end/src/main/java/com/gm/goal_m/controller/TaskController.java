@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.UpdateTaskDTO;
 
@@ -17,6 +18,7 @@ import com.gm.goal_m.service.TaskService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,7 +57,7 @@ public class TaskController {
     @PatchMapping("/task")
     public ResponseEntity<?> updateGoalByUser(@Valid @RequestBody UpdateTaskDTO updateTask, HttpServletRequest request) {
         try{
-
+            
             Task retBody  = taskService.updateTask(updateTask);
             return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
             
@@ -63,6 +65,19 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update goal" + e.getMessage());
         }     
     }
+
+    @DeleteMapping("/task")
+    public ResponseEntity<?> deleteTaskById(@Valid @RequestBody GetIdDTO id){
+
+        try{
+            taskService.deleteTaskById(id.getId());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deleted Task Successfull");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Task " + e.getMessage());
+        }
+        
+    }
+
      
     
 }
