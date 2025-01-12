@@ -1,5 +1,4 @@
 package com.gm.goal_m.service;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,12 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.UpdateTaskDTO;
-import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
-import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameDTO;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
-import com.gm.goal_m.model.TimeFrame;
-import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.TaskRepository;
 
 @Service
@@ -68,7 +63,7 @@ public class TaskService {
         Optional <Task> taskOpt = taskRepository.findById(id);
         
         if(!taskOpt.isPresent()){
-            throw new UnsupportedOperationException("Task NotFound");
+            throw new UnsupportedOperationException("Timeframe NotFound");
         }
         return  taskOpt.get();
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.dto.TaskDTOs.GetTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.dto.TimeFrameDTOs.UpdateTimeFrameDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
@@ -48,5 +49,25 @@ public class TimeFrameService {
         
         taskService.update(task);
     }
+
+    public TimeFrame updateTimeFrame(UpdateTimeFrameDTO updateTimeFrameDTO) {
+        TimeFrame timeFrame = getTimeFrameById(updateTimeFrameDTO.getTimeFrameId());
+        timeFrame.setObjective(updateTimeFrameDTO.getObjective());
+        timeFrame.setStartTime(updateTimeFrameDTO.getStartTime());
+        timeFrame.setEndTime(updateTimeFrameDTO.getEndTime());
+
+        return timeFrameRepository.save(timeFrame);
     
+
+    }
+
+    public TimeFrame getTimeFrameById(Long timeFrameId) {
+        Optional <TimeFrame> timeFrameOpt = timeFrameRepository.findById(timeFrameId);
+        if(!timeFrameOpt.isPresent()){
+            throw new UnsupportedOperationException("Timeframe NotFound");
+        }
+
+
+        return timeFrameOpt.get();
+    }    
 }

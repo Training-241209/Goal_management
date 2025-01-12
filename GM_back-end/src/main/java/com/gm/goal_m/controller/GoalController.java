@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
 import com.gm.goal_m.dto.GoalDTOs.GoalIdDTO;
 import com.gm.goal_m.dto.GoalDTOs.UpdateGoalDTO;
@@ -47,7 +48,7 @@ public class GoalController {
     }
 
     @PostMapping("/goal")
-    public ResponseEntity<?> addGoalByUser(@RequestBody AddGoalDTO addGoalDTO, HttpServletRequest request) {
+    public ResponseEntity<?> addGoalByUser(@Valid @RequestBody AddGoalDTO addGoalDTO, HttpServletRequest request) {
         try{
 
             Long userId = (long) 1;
@@ -64,7 +65,7 @@ public class GoalController {
     }
 
     @PatchMapping("/goal")
-    public ResponseEntity<?> updateGoalByUser(@RequestBody UpdateGoalDTO updateGoalDTO, HttpServletRequest request) {
+    public ResponseEntity<?> updateGoalByUser(@Valid @RequestBody UpdateGoalDTO updateGoalDTO, HttpServletRequest request) {
         try{
 
             Long userId = (long) 1;
@@ -81,10 +82,10 @@ public class GoalController {
     }
 
     @DeleteMapping("/goal")
-    public ResponseEntity<?> deleteGoalById(@RequestBody GoalIdDTO goaIdDTO){
+    public ResponseEntity<?> deleteGoalById(@Valid @RequestBody GetIdDTO goaIdDTO){
 
         try{
-            goalService.deleteGoalById(goaIdDTO.getGoalId());
+            goalService.deleteGoalById(goaIdDTO.getId());
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deleted goal Successfull");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Goal " + e.getMessage());

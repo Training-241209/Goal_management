@@ -9,17 +9,17 @@ import lombok.Data;
 @Data
 public class AddTimeFrameByTaskIdDTO {
 
-    @NotBlank(message = "Missing Task id")
+    // @NotBlank(message = "Missing Task id")
     private Long taskId;
 
-    @NotBlank(message = "Missing Objective")
+    // @NotBlank(message = "Missing Objective")
     private String objective;
 
-    @NotBlank(message = "Missing start date")
+    // @NotBlank(message = "Missing start date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     private LocalTime startTime;
 
-    @NotBlank(message = "Missing end date")
+    // @NotBlank(message = "Missing end date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     private LocalTime endTime;
     
