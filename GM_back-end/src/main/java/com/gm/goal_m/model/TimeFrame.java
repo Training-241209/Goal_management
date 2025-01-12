@@ -28,7 +28,7 @@ public class TimeFrame {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    private boolean status = true;
+    private boolean status = false;
 
 
     @ManyToOne

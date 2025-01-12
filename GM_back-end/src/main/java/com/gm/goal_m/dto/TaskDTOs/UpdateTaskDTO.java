@@ -27,7 +27,4 @@ public class UpdateTaskDTO {
     private Boolean status;
 
     private TaskType type = TaskType.GOAL;
-
-    // private ArrayList <UpdateTimeFrameDTO> timeFrames;
-
 }

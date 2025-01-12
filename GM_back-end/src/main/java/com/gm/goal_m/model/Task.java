@@ -31,7 +31,8 @@ public class Task {
     private String description;
     private TaskType type;
     
-    private TaskStatus status = TaskStatus.PENDING;
+    // private TaskStatus status = TaskStatus.PENDING;
+    private boolean status = false;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List <TimeFrame> timeFrames = new ArrayList<> ();
