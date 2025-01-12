@@ -51,10 +51,9 @@ public class GoalController {
     public ResponseEntity<?> addGoalByUser(@Valid @RequestBody AddGoalDTO addGoalDTO, HttpServletRequest request) {
         try{
 
-            Long userId = (long) 1;
-            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
+            String email = (String)request.getAttribute("email");
 
-            User user = userService.findUserById(userId);
+            User user = userService.findUserByEmail(email);
 
             Goal retBody  = goalService.addGoalByUser(user, addGoalDTO);
 
