@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
-import com.gm.goal_m.dto.TaskDTOs.AddTimeFrameByTaskIdDTO;
+import com.gm.goal_m.dto.TaskDTOs.UpdateTaskDTO;
+import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameDTO;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
@@ -70,6 +71,16 @@ public class TaskService {
             throw new UnsupportedOperationException("Task NotFound");
         }
         return  taskOpt.get();
+    }
+
+    public Task updateTask(UpdateTaskDTO updateTask) {
+
+        Task task = getTaskById(updateTask.getTaskId());
+        task.setName(updateTask.getName());
+        task.setDescription(updateTask.getDescription());
+        task.setType(updateTask.getType());
+
+        return taskRepository.save(task);
     }
 
 }
