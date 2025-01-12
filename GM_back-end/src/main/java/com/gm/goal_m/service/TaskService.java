@@ -44,13 +44,9 @@ public class TaskService {
             task.setType(addTaskDTO.getType());
             task.setGoal(goal);
 
-            Task retTask = persist(task);
-
-            goal.getTasks().add(retTask);
-
-            goalService.update(goal);
+            goal.getTasks().add(task);
   
-        return  retTask;
+        return taskRepository.save(task);
     }
 
 

@@ -67,11 +67,7 @@ public class GoalService {
         goal.setEndDate(addGoalDTO.getEndDay());
         goal.setUser(user);
 
-        
-
         user.getGoals().add(goal);
-
-        userService.updateUser(user);
 
         return goalRepository.save(goal);
     }
@@ -86,6 +82,10 @@ public class GoalService {
 
     public void update(Goal goal) {
         goalRepository.save(goal);
+    }
+
+    public Goal persist(Goal goal) {
+        return goalRepository.save(goal);
     }
 
 }
