@@ -1,4 +1,5 @@
 package com.gm.goal_m.dto.TimeFrameDTOs;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,6 +18,10 @@ public class AddTimeFrameByTaskIdDTO {
 
     @NotBlank(message = "Missing Objective")
     private String objective;
+
+    @NotNull(message = "Missing date")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+    private LocalDate date;
 
     @NotNull(message = "Missing start time")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")

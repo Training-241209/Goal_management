@@ -39,6 +39,7 @@ public class TimeFrameService {
 
         TimeFrame timeFrame = new TimeFrame();
         timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
+        timeFrame.setDate(addTimeFrameByTaskIdDTO.getDate());
         timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
         timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
         timeFrame.setTask(task);
@@ -53,13 +54,12 @@ public class TimeFrameService {
     public TimeFrame updateTimeFrame(UpdateTimeFrameDTO updateTimeFrameDTO) {
         TimeFrame timeFrame = getTimeFrameById(updateTimeFrameDTO.getTimeFrameId());
         timeFrame.setObjective(updateTimeFrameDTO.getObjective());
+        timeFrame.setDate(updateTimeFrameDTO.getDate());
         timeFrame.setStartTime(updateTimeFrameDTO.getStartTime());
         timeFrame.setEndTime(updateTimeFrameDTO.getEndTime());
         timeFrame.setStatus(updateTimeFrameDTO.getStatus());
 
         return timeFrameRepository.save(timeFrame);
-    
-
     }
 
     public TimeFrame getTimeFrameById(Long timeFrameId) {

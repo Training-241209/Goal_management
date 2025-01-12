@@ -1,5 +1,6 @@
 package com.gm.goal_m.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -25,6 +26,7 @@ public class TimeFrame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String objective;
+    private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
 
