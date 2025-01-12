@@ -1,12 +1,10 @@
 package com.gm.goal_m.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,20 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
-import com.gm.goal_m.dto.GoalDTOs.GoalIdDTO;
 import com.gm.goal_m.dto.GoalDTOs.UpdateGoalDTO;
-import com.gm.goal_m.dto.TaskDTOs.AddTaskByGoalIdDTO;
-import com.gm.goal_m.dto.TaskDTOs.TaskRequestDTO;
 import com.gm.goal_m.model.Goal;
-import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.GoalService;
-import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -38,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoalController {
 
     private GoalService goalService;
-    private JwtService jwtService;
     private UserService userService;
 
      @Autowired
@@ -67,10 +58,10 @@ public class GoalController {
     public ResponseEntity<?> updateGoalByUser(@Valid @RequestBody UpdateGoalDTO updateGoalDTO, HttpServletRequest request) {
         try{
 
-            Long userId = (long) 1;
-            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
+           
+            String email = (String)request.getAttribute("email");
 
-            User user = userService.findUserById(userId);
+            User user = userService.findUserByEmail(email);
 
             Goal retBody  = goalService.updateGoalByUser(user, updateGoalDTO);
 
@@ -95,10 +86,10 @@ public class GoalController {
     @GetMapping("/goals")
     public ResponseEntity<?> getAllGoals(HttpServletRequest request) {
         try{
-            Long userId = (long) 1;
-            // Long userId = jwtService.getUserId(request.getHeader("Authorization"));
+            
+            String email = (String)request.getAttribute("email");
 
-            User user = userService.findUserById(userId);
+            User user = userService.findUserByEmail(email);
 
             List <Goal> retValue = goalService.getGoalsByUser(user);
             return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
