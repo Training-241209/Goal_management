@@ -15,8 +15,7 @@ export function useLogin() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      console.log("Logged in successfully.");
-      console.log(data)
+      localStorage.setItem('jwtToken', data.token); 
       router.navigate({ to: "/dashboard" });
     },
     onError: () => {
