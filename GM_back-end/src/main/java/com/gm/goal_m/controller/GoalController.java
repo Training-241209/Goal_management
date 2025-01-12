@@ -64,7 +64,7 @@ public class GoalController {
     }
 
     @PatchMapping("/goal")
-    public ResponseEntity<?> updateGoalByUser(@RequestBody UpdateGoalDTO addGoalDTO, HttpServletRequest request) {
+    public ResponseEntity<?> updateGoalByUser(@RequestBody UpdateGoalDTO updateGoalDTO, HttpServletRequest request) {
         try{
 
             Long userId = (long) 1;
@@ -72,11 +72,11 @@ public class GoalController {
 
             User user = userService.findUserById(userId);
 
-            Goal retBody  = goalService.updateGoalByUser(user, addGoalDTO);
+            Goal retBody  = goalService.updateGoalByUser(user, updateGoalDTO);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(retBody);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Goal: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update goal" + e.getMessage());
         }     
     }
 

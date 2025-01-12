@@ -1,4 +1,4 @@
-package com.gm.goal_m.dto.TaskDTOs;
+package com.gm.goal_m.dto.TimeFrameDTOs;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

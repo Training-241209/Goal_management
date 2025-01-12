@@ -9,9 +9,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AddTaskByGoalIdDTO {
+public class UpdateTaskDTO {
 
-    private Long goalId;
+    private Long taskId;
 
     @NotBlank(message = "Missing name")
     private String name;

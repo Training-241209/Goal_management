@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gm.goal_m.dto.TaskDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.GetTaskIdDTO;
+import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
