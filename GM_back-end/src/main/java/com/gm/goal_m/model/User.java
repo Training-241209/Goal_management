@@ -50,6 +50,10 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public User(String email, long user_id) {
+        this.email = email;
+        this.userId = user_id;
+    }
 
     public User(String email, String firstName, String lastName){
         this.email = email;

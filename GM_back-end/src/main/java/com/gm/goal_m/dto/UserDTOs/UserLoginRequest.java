@@ -16,8 +16,4 @@ public class UserLoginRequest {
     @Size(min = 8, max = 30)
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[^\\s]*$", message = "The password must include at least one uppercase letter, one lowercase letter and one digit. Not spaces allowed.")
     private String password;
-
-    private String firstName;
-
-    private String lastName;
 }

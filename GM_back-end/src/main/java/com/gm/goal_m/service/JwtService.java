@@ -23,51 +23,23 @@ public class JwtService {
 
     public String generateToken(User user) {
         return Jwts.builder()
-                .claim("userId", user.getUserId())
                 .claim("email", user.getEmail())
-                .claim("firstName", user.getFirstName())
-                .claim("lastName", user.getLastName())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(jwtConfiguration.getSecretKey())
                 .compact();
     }
 
-    public User decodeToken(String token) {
+    public String decodeTokenEmail(String token) {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        return new User(claims.get("email", String.class), claims.get("firstName", String.class),
-                claims.get("lastName", String.class));
-    }
-
-    public User decodeTokenById(String token) {
-        var claims = Jwts.parserBuilder()
-                .setSigningKey(jwtConfiguration.getSecretKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        return new User(claims.get("userId", Long.class));
-    }
-
-    /**
-     * @param token
-     * @return
-     */
-    public Long  getUserId(String token) {
-        var claims = Jwts.parserBuilder()
-                .setSigningKey(jwtConfiguration.getSecretKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.get("userId", Long.class);
-    }
-
+        return claims.get("email", String.class);
+    }    
+   
     public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()

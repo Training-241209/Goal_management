@@ -56,8 +56,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Object> userLogin(@Valid @RequestBody UserLoginRequest userLoginRequest) {
         String theToken = "";
-        User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword(), 
-        userLoginRequest.getFirstName(), userLoginRequest.getLastName());
+        User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword());
         if (userService.canLogIn(userLoginRequest)) {
             theToken = jwtService.generateToken(user);
             Map<String, String> responseWithToken = new HashMap<>();

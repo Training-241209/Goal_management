@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.gm.goal_m.model.User;
 import com.gm.goal_m.service.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,8 +40,7 @@ public class JwtIntercept  implements HandlerInterceptor{
         }
 
         if (token != null && jwtService.isTokenValid(token)) {
-            String email = jwtService.decodeTokenById(token).getEmail();
-            request.setAttribute("email", email);
+            request.setAttribute("email", jwtService.decodeTokenEmail(token));
             return true;
         }
 

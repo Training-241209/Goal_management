@@ -49,16 +49,15 @@ public class UserService {
         }
     }
 
-    public boolean canLogIn(UserLoginRequest userLoginRequest) {
-        boolean correctCredentials = false;
-        User myUser = new User();
-        if(findUserByEmail(userLoginRequest.getEmail()) != null){
-            myUser = findUserByEmail(userLoginRequest.getEmail());
+    public boolean canLogIn(UserLoginRequest userLoginRequest) { 
+        Optional<User> optUser = userRepository.findByEmail(userLoginRequest.getEmail());      
+        if(optUser.isPresent()){
+            User myUser = optUser.get();
             if(passwordEncoder.matches(userLoginRequest.getPassword(), myUser.getPassword())){
-                correctCredentials = true;
+                return true;
             }
         }
-        return correctCredentials;
+        return false;
     }
    
     public List<User> getAllUsers() {
