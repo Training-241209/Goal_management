@@ -84,7 +84,7 @@ public class TaskController {
     }
 
     @GetMapping("/task/{taskId}")
-    public ResponseEntity<?> getTasksId(@PathVariable Long taskId, HttpServletRequest request) {
+    public ResponseEntity<?> getTaskById(@PathVariable Long taskId, HttpServletRequest request) {
         try{
             
             Task retValue = taskService.getTaskById(taskId);
