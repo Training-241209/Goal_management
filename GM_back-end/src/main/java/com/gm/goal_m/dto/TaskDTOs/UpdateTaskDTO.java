@@ -23,6 +23,9 @@ public class UpdateTaskDTO {
     @NotBlank(message = "Missing description")
     private String description;
 
+    @NotNull(message = "Missing status")
+    private Boolean status;
+
     private TaskType type = TaskType.GOAL;
 
     // private ArrayList <UpdateTimeFrameDTO> timeFrames;

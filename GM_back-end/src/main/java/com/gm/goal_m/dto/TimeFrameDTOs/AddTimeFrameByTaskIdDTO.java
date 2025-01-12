@@ -3,23 +3,26 @@ import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class AddTimeFrameByTaskIdDTO {
 
-    // @NotBlank(message = "Missing Task id")
+    @NotNull(message = "Missing task id")
+    @Min(1)
     private Long taskId;
 
-    // @NotBlank(message = "Missing Objective")
+    @NotBlank(message = "Missing Objective")
     private String objective;
 
-    // @NotBlank(message = "Missing start date")
+    @NotNull(message = "Missing start time")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     private LocalTime startTime;
 
-    // @NotBlank(message = "Missing end date")
+    @NotNull(message = "Missing end time")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     private LocalTime endTime;
     

@@ -55,6 +55,7 @@ public class TimeFrameService {
         timeFrame.setObjective(updateTimeFrameDTO.getObjective());
         timeFrame.setStartTime(updateTimeFrameDTO.getStartTime());
         timeFrame.setEndTime(updateTimeFrameDTO.getEndTime());
+        timeFrame.setStatus(updateTimeFrameDTO.getStatus());
 
         return timeFrameRepository.save(timeFrame);
     
