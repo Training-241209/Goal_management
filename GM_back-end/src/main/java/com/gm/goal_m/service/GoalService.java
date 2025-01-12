@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gm.goal_m.dto.GoalDTOs.AddGoalDTO;
+import com.gm.goal_m.dto.GoalDTOs.UpdateGoalDTO;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.GoalRepository;
@@ -30,6 +31,7 @@ public class GoalService {
         goal.setDescription(addGoalDTO.getDescription());
         goal.setStartDate(addGoalDTO.getStartDay());
         goal.setEndDate(addGoalDTO.getEndDay());
+
         return goalRepository.save(goal);
     }  
 
@@ -68,6 +70,18 @@ public class GoalService {
         goal.setUser(user);
 
         user.getGoals().add(goal);
+
+        return goalRepository.save(goal);
+    }
+
+    public Goal updateGoalByUser(User user, UpdateGoalDTO updateGoalDTO) {
+
+        Goal goal = getGoalById(updateGoalDTO.getGoalId());
+        goal.setObjective(updateGoalDTO.getObjective());
+        goal.setDescription(updateGoalDTO.getDescription());
+        goal.setType(updateGoalDTO.getType());
+        goal.setStartDate(updateGoalDTO.getEndDay());
+        goal.setEndDate(updateGoalDTO.getEndDay());
 
         return goalRepository.save(goal);
     }
