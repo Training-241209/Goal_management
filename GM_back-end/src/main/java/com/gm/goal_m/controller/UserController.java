@@ -36,8 +36,6 @@ public class UserController {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
-    @Autowired
-    private HttpSession session;
 
     @Autowired
     public UserController(UserService userService, JwtService jwtService, UserRepository userRepository) {
