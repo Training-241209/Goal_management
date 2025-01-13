@@ -1,3 +1,5 @@
+package com.gm.goal_m.exception;
+
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 @ControllerAdvice
