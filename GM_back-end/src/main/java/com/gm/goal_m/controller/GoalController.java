@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -94,7 +95,7 @@ public class GoalController {
             User user = userService.findUserByEmail(email);
 
             List <Goal> retValue = goalService.getGoalsByUser(user);
-            return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
+            return ResponseEntity.status(HttpStatus.OK).body(retValue);
 
 
         }catch (Exception e){
@@ -108,7 +109,7 @@ public class GoalController {
         try{
             
             Goal retValue = goalService.getGoalById(goalId);
-            return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
+            return ResponseEntity.status(HttpStatus.OK).body(retValue);
 
 
         }catch (Exception e){
