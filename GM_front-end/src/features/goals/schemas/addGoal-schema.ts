@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { z } from "zod";
 
 export const addGoalSchema = z.object({
@@ -16,13 +15,9 @@ export const addGoalSchema = z.object({
         .union([z.literal('Routine'), z.literal('Target')])
     ,
     startDay: z
-        .date().min(new Date(), {
-            message: 'Date must be in the future',
-        }).transform((date) => format(date, 'yyyy-MM-dd')),
+        .date(),
     endDay: z
-        .date().min(new Date(), {
-            message: 'Date must be in the future',
-        }).transform((date) => format(date, 'yyyy-MM-dd')),
+        .date(),
 }).refine(data => data.endDay > data.startDay, {
     message: 'End date must be after start date',
     path: ['endDate'],  // You can specify the path to the error field
