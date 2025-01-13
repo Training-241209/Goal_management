@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axios-config';
 
 export function useCalendarEvents() {
-    const { data: goals} = useQuery({
+    const { data: goals } = useQuery({
         queryKey: ["goals"],
         queryFn: async () => {
             try {
@@ -28,7 +28,6 @@ export function useCalendarEvents() {
             status: goal.status
         });
 
-        // Process tasks and their timeframes
         if (goal.tasks) {
             goal.tasks.forEach(task => {
                 if (task.timeFrames) {
