@@ -27,7 +27,7 @@ export function SideBar(){
                         <MenuItem icon={<DashboardOutlinedIcon />} onClick={()=> router.navigate({ to: "/dashboard" })} >Dashboard</MenuItem>   
                     </div>
                     <div className="mt-3">
-                        <MenuItem icon={<AdsClickRoundedIcon />}>Goals</MenuItem>
+                        <MenuItem icon={<AdsClickRoundedIcon />} onClick={()=> router.navigate({ to: "/goals" })}>Goals</MenuItem>
                     </div>
                     <div className="mt-3">
                         <MenuItem icon={<CalendarMonthOutlinedIcon />} onClick={()=> router.navigate({ to: "/calendar" })}>Calendar</MenuItem>
