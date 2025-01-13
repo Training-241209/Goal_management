@@ -1,6 +1,4 @@
-import { axiosInstance } from "@/lib/axios-config";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { Aperture } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 export function useNews(){
     const api_key = import.meta.env.VITE_NEWS_API_KEY;

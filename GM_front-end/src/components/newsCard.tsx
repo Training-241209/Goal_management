@@ -1,4 +1,4 @@
-import { Card, CardContent, Skeleton } from "@mui/material";
+import { Card, Skeleton } from "@mui/material";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { useNews } from "@/features/auth/hooks/use_news";
 
