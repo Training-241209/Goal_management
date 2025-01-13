@@ -20,6 +20,7 @@ import { Route as AuthImport } from './routes/_auth'
 
 const IndexLazyImport = createFileRoute('/')()
 const ProtectedDashboardLazyImport = createFileRoute('/_protected/dashboard')()
+const ProtectedCalendarLazyImport = createFileRoute('/_protected/calendar')()
 const AuthHomeLazyImport = createFileRoute('/_auth/home')()
 
 // Create/Update Routes
@@ -46,6 +47,14 @@ const ProtectedDashboardLazyRoute = ProtectedDashboardLazyImport.update({
   getParentRoute: () => ProtectedRoute,
 } as any).lazy(() =>
   import('./routes/_protected/dashboard.lazy').then((d) => d.Route),
+)
+
+const ProtectedCalendarLazyRoute = ProtectedCalendarLazyImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => ProtectedRoute,
+} as any).lazy(() =>
+  import('./routes/_protected/calendar.lazy').then((d) => d.Route),
 )
 
 const AuthHomeLazyRoute = AuthHomeLazyImport.update({
@@ -86,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthHomeLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_protected/calendar': {
+      id: '/_protected/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof ProtectedCalendarLazyImport
+      parentRoute: typeof ProtectedImport
+    }
     '/_protected/dashboard': {
       id: '/_protected/dashboard'
       path: '/dashboard'
@@ -109,10 +125,12 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ProtectedRouteChildren {
+  ProtectedCalendarLazyRoute: typeof ProtectedCalendarLazyRoute
   ProtectedDashboardLazyRoute: typeof ProtectedDashboardLazyRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedCalendarLazyRoute: ProtectedCalendarLazyRoute,
   ProtectedDashboardLazyRoute: ProtectedDashboardLazyRoute,
 }
 
@@ -124,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '': typeof ProtectedRouteWithChildren
   '/home': typeof AuthHomeLazyRoute
+  '/calendar': typeof ProtectedCalendarLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
 }
 
@@ -131,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '': typeof ProtectedRouteWithChildren
   '/home': typeof AuthHomeLazyRoute
+  '/calendar': typeof ProtectedCalendarLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
 }
 
@@ -140,20 +160,22 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
   '/_auth/home': typeof AuthHomeLazyRoute
+  '/_protected/calendar': typeof ProtectedCalendarLazyRoute
   '/_protected/dashboard': typeof ProtectedDashboardLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/home' | '/dashboard'
+  fullPaths: '/' | '' | '/home' | '/calendar' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/home' | '/dashboard'
+  to: '/' | '' | '/home' | '/calendar' | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/_protected'
     | '/_auth/home'
+    | '/_protected/calendar'
     | '/_protected/dashboard'
   fileRoutesById: FileRoutesById
 }
@@ -197,12 +219,17 @@ export const routeTree = rootRoute
     "/_protected": {
       "filePath": "_protected.tsx",
       "children": [
+        "/_protected/calendar",
         "/_protected/dashboard"
       ]
     },
     "/_auth/home": {
       "filePath": "_auth/home.lazy.tsx",
       "parent": "/_auth"
+    },
+    "/_protected/calendar": {
+      "filePath": "_protected/calendar.lazy.tsx",
+      "parent": "/_protected"
     },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.lazy.tsx",

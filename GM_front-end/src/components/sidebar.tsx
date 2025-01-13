@@ -1,15 +1,17 @@
 import { ProSidebar, Menu, MenuItem, SidebarHeader, SidebarContent, SidebarFooter} from 'react-pro-sidebar';
-import "@/custom.scss"
+import "@/styles/custom.scss"
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import AdsClickIcon from '@mui/icons-material/AdsClick';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { IconButton, Typography } from '@mui/material';
 import AdsClickRoundedIcon from '@mui/icons-material/AdsClickRounded';
 import { useState } from 'react';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import {useRouter} from '@tanstack/react-router'
+
 export function SideBar(){
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const router = useRouter();
     return <>
     <div className='min-h-screen not-sr-only'>
         <ProSidebar collapsed={isCollapsed}>
@@ -22,13 +24,13 @@ export function SideBar(){
             <SidebarContent className='mt-5'>
                 <Menu iconShape="circle">
                     <div className='mt-3'>
-                        <MenuItem icon={<DashboardOutlinedIcon />}>Dashboard</MenuItem>   
+                        <MenuItem icon={<DashboardOutlinedIcon />} onClick={()=> router.navigate({ to: "/dashboard" })} >Dashboard</MenuItem>   
                     </div>
                     <div className="mt-3">
                         <MenuItem icon={<AdsClickRoundedIcon />}>Goals</MenuItem>
                     </div>
                     <div className="mt-3">
-                        <MenuItem icon={<CalendarMonthOutlinedIcon />}>Calendar</MenuItem>
+                        <MenuItem icon={<CalendarMonthOutlinedIcon />} onClick={()=> router.navigate({ to: "/calendar" })}>Calendar</MenuItem>
                     </div>
                 </Menu>
             </SidebarContent>

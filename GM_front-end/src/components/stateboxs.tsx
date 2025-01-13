@@ -1,16 +1,15 @@
-import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Box, Card, CardContent} from "@mui/material";
 
-export function StatBox(){
+export function StatBox({title, value, description, icon:Icon}){
     return <>
         <Card className="flex-1 p-6 rounded-xl shadow-sm">
             <CardContent className="space-y-2">
                 <Box className="flex flex-row items-center justify-between">
-                    <h1 className="text-lg font-bold">Upcoming</h1>
-                    <AccessTimeIcon color="secondary" />
+                    <h1 className="text-lg font-bold">{title}</h1>
+                    <Icon color="secondary" />
                 </Box>
-                <h3 className="text-2xl font-bold">10</h3>
-                <p className="text-gray-600 text-sm">Task pending</p>
+                <h3 className="text-2xl font-bold">{value}</h3>
+                <p className="text-gray-600 text-sm">{description}</p>
             </CardContent>
         </Card>
 

@@ -17,7 +17,7 @@ $breakpoint-xl: 1200px !default;
 $breakpoint-xxl: 1600px !default;
 
 
-@import '../node_modules/react-pro-sidebar/dist/scss/styles.scss';
+@import '../../node_modules/react-pro-sidebar/dist/scss/styles.scss';
 
 .pro-icon-wrapper {
     background-color: $icon-bg-color;

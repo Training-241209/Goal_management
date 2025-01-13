@@ -2,7 +2,7 @@ import { Avatar, Box } from "@mui/material";
 import { ProSidebar } from "react-pro-sidebar";
 import { Calendar } from "@/components/ui/calendar"
 import React from "react";
-import "@/rightsidebar.scss"
+import "@/styles/rightsidebar.scss"
 
 function stringToColor(string: string) {
     let hash = 0;
