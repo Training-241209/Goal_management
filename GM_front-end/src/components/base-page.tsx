@@ -7,7 +7,7 @@ export function BasePage({ children }: { children: React.ReactNode }) {
         <>
             {/* <Navbar /> */}
             <div className=" relative flex items-center justify-center h-screen px-10 ">
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% opacity-60 blur-lg filter-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% opacity-60 blur-lg filter-none"></div>
                 <div className="absolute bottom-0 left-0 w-full">
                     <img src={wave} alt="Wave" className="w-full" />
                 </div>
