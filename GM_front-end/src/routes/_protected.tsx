@@ -22,7 +22,7 @@ function RouteComponent() {
   return (
       <div className="app flex">
         <SideBar />
-        <main className="content flex-1 bg-gray-100 overflow-auto">
+        <main className="content flex-1  overflow-auto">
           <Outlet />
         </main>
         <RightSideBar />
