@@ -38,7 +38,7 @@ export function Dashboard() {
             <div className="mx-auto mt-5 overflow-hidden">
                 <div className="flex gap-12 flex-wrap ">
                     <NewsCard />
-                    <TaskTable />
+               
                 </div>
             </div>
         </div>
