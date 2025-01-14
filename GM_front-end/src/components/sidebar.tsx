@@ -8,10 +8,17 @@ import { useState } from 'react';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {useRouter} from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query';
 
 export function SideBar(){
     const [isCollapsed, setIsCollapsed] = useState(false);
     const router = useRouter();
+    const queryClient = useQueryClient();
+    const handleLogout = () => {
+        localStorage.removeItem("jwtToken"); 
+        queryClient.invalidateQueries();
+        router.navigate({ to: "/home" }); 
+      };
     return <>
     <div className='min-h-screen not-sr-only'>
         <ProSidebar collapsed={isCollapsed}>
@@ -36,7 +43,7 @@ export function SideBar(){
             </SidebarContent>
             <SidebarFooter>
                 <Menu iconShape='circle'>
-                    <MenuItem icon={<LogoutOutlinedIcon />}>LogOut</MenuItem>
+                    <MenuItem icon={<LogoutOutlinedIcon />} onClick={handleLogout}>LogOut</MenuItem>
                 </Menu>
             </SidebarFooter>
         </ProSidebar>
