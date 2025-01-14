@@ -3,6 +3,7 @@ import { ProSidebar } from "react-pro-sidebar";
 import { Calendar } from "@/components/ui/calendar"
 import React from "react";
 import "@/styles/rightsidebar.scss"
+import { useQuote } from "@/hooks/use-quote";
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -36,6 +37,7 @@ function stringAvatar(name: string) {
 
 export function RightSideBar(){
     const [date, setDate] = React.useState<Date | undefined>(new Date())
+    const { quote, author } = useQuote();
     return <>
         <ProSidebar>
                 <div className="mx-5 flex flex-col items-center gap-5 justify-center bg-purple-100 rounded-lg">
@@ -47,7 +49,10 @@ export function RightSideBar(){
                         </Box>
                     </Box>
                     <Box className="p-5 justify-center">
-                        <p className="text-center">The secret of getting ahead is getting started.</p>
+                        <blockquote className="text-center font-light">
+                            {quote}
+                        </blockquote>
+                        <cite className="text-xs font-extralight justify-end flex mt-3">— {author}</cite>
                     </Box>
                 </div>
                 <div className="mx-5 mb-10 border-purple-500">

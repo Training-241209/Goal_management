@@ -13,11 +13,13 @@ const MyCalendar = () => {
   const eventStyleGetter = (event) => {
     let style = {
       backgroundColor: '#4f46e5', 
-      borderRadius: '4px',
+    
+      borderRadius: '0px',
       opacity: 0.8,
       color: 'white',
       border: 'none',
       display: 'block',
+      padding: '10px'
     };
 
     // Color coding based on event type
