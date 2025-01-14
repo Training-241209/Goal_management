@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/carousel"
 import { useGoals } from "../hooks/use-goals"
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 
 export function GoalsCarousel() {
@@ -29,7 +30,7 @@ export function GoalsCarousel() {
                 {data?.map(goal => (
                     <CarouselItem key={goal.id} className="pt-1 md:basis-1/5">
 
-                        <Card className="border-none p-0 m-0" onClick={() => setSelectedId(goal.id)}>
+                        <Card className={cn('p-0 m-0',selectedId==goal.id? 'border-purple-500 border-4' :'border-none')}onClick={() => setSelectedId(goal.id)}>
                             <CardContent className="flex items-center justify-center p-6  " >
                                 <span className="text-xl font-semibold text-center focus:text-purple-500">{goal.objective}</span>
                             </CardContent>

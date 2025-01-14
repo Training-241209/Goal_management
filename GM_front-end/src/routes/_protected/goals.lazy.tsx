@@ -13,15 +13,17 @@ function RouteComponent() {
 
     return <div className='min-h-screen flex flex-col'>
         <h1>Goals</h1>
+        <Button variant="outline" onClick={() => setOpen(true)}>
+            Add
+        </Button>
+        <AddGoalForm open={open} setOpen={setOpen} />
         <div className='flex flex-row flex-grow'>
-            <div className='  bg-gradient-to-r from-[#0f172a] to-[#334155] min-w-[40%] flex justify-center items-center'>
+            <div className=' bg-gray-200 min-w-fit flex justify-center items-center shadow-[inset_0_-2px_20px_rgba(0,0,0,0.6)]'>
                 <GoalsCarousel />
             </div>
-            <div className='bg-green-700 min-w-[60%]'>
-                <Button variant="outline" onClick={() => setOpen(true)}>
-                    Add
-                </Button>
-                <AddGoalForm open={open} setOpen={setOpen} />
+            <div className='bg-white min-w-fit border-purple-500 border-4  rounded-sm'>
+
+
             </div>
         </div>
 
