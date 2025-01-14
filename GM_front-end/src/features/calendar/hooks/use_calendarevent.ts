@@ -20,8 +20,8 @@ export function useCalendarEvents() {
         events.push({
             id: `goal-${goal.id}`,
             title: `Goal: ${goal.objective}`,
-            start: new Date(goal.startDate),
-            end: new Date(goal.endDate),
+            // start: new Date(goal.startDate),
+            // end: new Date(goal.endDate),
             isGoal: true,
             description: goal.description,
             type: goal.type,
