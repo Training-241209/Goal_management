@@ -20,7 +20,6 @@ public class AddTaskByGoalIdDTO {
     @NotBlank(message = "Missing description")
     private String description;
 
-    @NotNull(message = "Missing goal type GOAL or ROUTINE")
     private TaskType type = TaskType.GOAL;
 
 }

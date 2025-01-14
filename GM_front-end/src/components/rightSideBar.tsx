@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import "@/styles/rightsidebar.scss"
 import { useQuote } from "@/hooks/use-quote";
 import { useUser } from "@/features/auth/hooks/use-decode";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -39,14 +40,15 @@ function stringAvatar(name: string) {
 export function RightSideBar(){
     const [date, setDate] = React.useState<Date | undefined>(new Date())
     const { quote, author } = useQuote();
-    const { data: user} = useUser();
+    const { data: user } = useAuth();
+
     return <>
         <ProSidebar>
                 <div className="mx-5 flex flex-col items-center gap-5 justify-center bg-purple-100 rounded-lg">
                     <Box className="flex items-center gap-3 p-5 border-b-2 border-gray-400">
-                        <Avatar {...stringAvatar(`${user?.firstname} ${user?.lastname}`)} />
+                        <Avatar {...stringAvatar(`${user?.firstName} ${user?.lastName}`)} />
                         <Box >
-                            <h1 className="font-semibold"> {user?.firstname} {user?.lastname}</h1>
+                            <h1 className="font-semibold"> {user?.firstName} {user?.lastName}</h1>
                             <p className="text-xs font-thin">User</p>
                         </Box>
                     </Box>

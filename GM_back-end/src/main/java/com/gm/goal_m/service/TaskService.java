@@ -38,7 +38,7 @@ public class TaskService {
             Task task = new Task();
             task.setName(addTaskDTO.getName());
             task.setDescription(addTaskDTO.getDescription());
-            task.setType(addTaskDTO.getType());
+            //task.setType(addTaskDTO.getType());
             task.setGoal(goal);
 
             goal.getTasks().add(task);
@@ -70,11 +70,20 @@ public class TaskService {
 
     public Task updateTask(UpdateTaskDTO updateTask) {
 
-        Task task = getTaskById(updateTask.getTaskId());
-        task.setName(updateTask.getName());
-        task.setDescription(updateTask.getDescription());
-        task.setType(updateTask.getType());
-        task.setStatus(updateTask.getStatus());
+        Task task = getTaskById(updateTask.getId());
+        
+        if (updateTask.getName() != null && !updateTask.getName().isEmpty()) {
+            task.setName(updateTask.getName());
+        }        
+        if (updateTask.getDescription() != null && !updateTask.getDescription().isEmpty()) {
+            task.setDescription(updateTask.getDescription());
+        }        
+        if (updateTask.getType() != null) {
+            task.setType(updateTask.getType());
+        }        
+        if (updateTask.getStatus() != null ) {
+            task.setStatus(updateTask.getStatus());
+        }
 
         return taskRepository.save(task);
     }

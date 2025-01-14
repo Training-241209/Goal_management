@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export const addGoalSchema = z.object({
+export const goalSchema = z.object({
+    id: z.number().optional(),
     objective: z
         .string({
             message: "Required",
@@ -12,15 +13,15 @@ export const addGoalSchema = z.object({
         })
         .min(1, "Password is required"),
     type: z
-        .union([z.literal('Routine'), z.literal('Target')])
+        .union([z.literal('Routine'), z.literal('Target')]).optional()
     ,
     startDay: z
         .date(),
     endDay: z
         .date(),
-}).refine(data => data.endDay > data.startDay, {
+}).refine(data => data.endDay >= data.startDay, {
     message: 'End date must be after start date',
     path: ['endDate'],  // You can specify the path to the error field
 });
 
-export type AddGoalSchema = z.infer<typeof addGoalSchema>;
+export type GoalSchema = z.infer<typeof goalSchema>;

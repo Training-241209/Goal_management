@@ -1,15 +1,13 @@
 import { useForm } from "react-hook-form";
-import { addGoalSchema, AddGoalSchema } from "../schemas/addGoal-schema";
+import { goalSchema, GoalSchema } from "../schemas/Goal-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAddGoal } from "../hooks/use-addGoal";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { format, parse } from "date-fns";
+import { format} from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Goal } from "../schemas/goalModels";
@@ -22,9 +20,10 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
     const { mutate: update, isPending } = useUptGoal();
 
     // 1. Define your form.
-    const form = useForm<AddGoalSchema>({
-        resolver: zodResolver(addGoalSchema),
+    const form = useForm<GoalSchema>({
+        resolver: zodResolver(goalSchema),
         defaultValues: {
+            id: goal.id,
             objective: goal.objective,
             description: goal.description,
             type: goal.type,
@@ -36,6 +35,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
     useEffect(() => {
         if(goal){
         form.reset({
+        id: goal.id,
           objective: goal.objective,
           description: goal.description,
           type: goal.type,
@@ -46,9 +46,13 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
         
       }, [goal]);
 
+      useEffect(()=>{
+        console.log(form);
+      },[form])
 
 
-    function onSubmit(values: AddGoalSchema) {
+
+    function onSubmit(values: GoalSchema) {
         update(values);
     }
 
@@ -56,6 +60,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
 
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 ">
+           
                 <FormField
                     control={form.control}
                     name="objective"
@@ -63,7 +68,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         <FormItem>
                             <FormLabel>Objective</FormLabel>
                             <FormControl>
-                                <Input {...field} min="1" />
+                                <Input {...field} min="1"  />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -83,7 +88,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         </FormItem>
                     )}
                 />
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="type"
                     render={({ field }) => (
@@ -95,7 +100,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <div className="flex justify-between gap-2">
                     <FormField
                         control={form.control}
@@ -181,7 +186,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                     />
                 </div>
                 <div className="flex justify-end">
-                    <Button type="submit" disabled={isPending}>
+                    <Button type="submit" disabled={!form.formState.isDirty||isPending}>
                         Save
                     </Button>
                 </div>

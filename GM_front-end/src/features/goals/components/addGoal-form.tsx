@@ -15,7 +15,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { addGoalSchema, AddGoalSchema } from "../schemas/addGoal-schema";
+import { goalSchema, GoalSchema } from "../schemas/Goal-schema";
 import { useAddGoal } from "../hooks/use-addGoal";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "@tanstack/react-router";
@@ -26,18 +26,18 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { ZodDate } from "zod";
 
-interface addFormProps {
+interface addFormGoalProps {
     open: boolean
     setOpen: (value: boolean) => void
 }
 
-export function AddGoalForm({ open, setOpen }: addFormProps) {
+export function AddGoalForm({ open, setOpen }: addFormGoalProps) {
 
     const { mutate: add, isPending, isSuccess } = useAddGoal();
 
     // 1. Define your form.
-    const form = useForm<AddGoalSchema>({
-        resolver: zodResolver(addGoalSchema)
+    const form = useForm<GoalSchema>({
+        resolver: zodResolver(goalSchema)
     });
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export function AddGoalForm({ open, setOpen }: addFormProps) {
         }
     }, [isSuccess]);
 
-    function onSubmit(values: AddGoalSchema) {
+    function onSubmit(values: GoalSchema) {
         add(values);
     }
 

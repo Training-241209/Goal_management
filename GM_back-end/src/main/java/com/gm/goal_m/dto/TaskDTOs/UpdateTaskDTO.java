@@ -13,9 +13,8 @@ import lombok.Data;
 @Data
 public class UpdateTaskDTO {
 
-    @NotNull(message = "Missing task id")
     @Min(1)
-    private Long taskId;
+    private Long id;
 
     @NotBlank(message = "Missing name")
     private String name;
@@ -23,7 +22,6 @@ public class UpdateTaskDTO {
     @NotBlank(message = "Missing description")
     private String description;
 
-    @NotNull(message = "Missing status")
     private Boolean status;
 
     private TaskType type = TaskType.GOAL;

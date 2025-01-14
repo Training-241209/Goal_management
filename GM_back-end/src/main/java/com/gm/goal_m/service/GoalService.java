@@ -74,15 +74,28 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    public Goal updateGoalByUser(User user, UpdateGoalDTO updateGoalDTO) {
+    public Goal updateGoalByUser(User user, UpdateGoalDTO dto) {
 
-        Goal goal = getGoalById(updateGoalDTO.getGoalId());
-        goal.setObjective(updateGoalDTO.getObjective());
-        goal.setDescription(updateGoalDTO.getDescription());
-        goal.setType(updateGoalDTO.getType());
-        goal.setStatus(updateGoalDTO.getStatus());
-        goal.setStartDate(updateGoalDTO.getEndDay());
-        goal.setEndDate(updateGoalDTO.getEndDay());
+        Goal goal = getGoalById(dto.getId());
+        
+        if (dto.getObjective() != null && !dto.getObjective().isBlank()) {
+            goal.setObjective(dto.getObjective());
+        }
+        if (dto.getDescription() != null && !dto.getDescription().isBlank()) {
+            goal.setDescription(dto.getDescription());
+        }
+        if (dto.getType() != null && !dto.getType().isBlank()) {
+            goal.setType(dto.getType());
+        }
+        if (dto.getStatus() != null) {
+            goal.setStatus(dto.getStatus());
+        }
+        if (dto.getStartDay() != null) {
+            goal.setStartDate(dto.getStartDay());
+        }
+        if (dto.getEndDay() != null) {
+            goal.setEndDate(dto.getEndDay());
+        }
 
         return goalRepository.save(goal);
     }
