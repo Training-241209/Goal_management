@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios-config";
-import { AddGoalSchema } from "../schemas/addGoal-schema";
+import { GoalSchema } from "../schemas/Goal-schema";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -8,7 +8,7 @@ export function useUptGoal() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (values: AddGoalSchema) => {
+    mutationFn: async (values: GoalSchema) => {
         const formattedValues = {
             ...values,
             startDay: format(new Date(values.startDay), 'yyyy-MM-dd'),
@@ -18,12 +18,14 @@ export function useUptGoal() {
         return resp.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries();
-      toast.success("Goal added.")
+      queryClient.invalidateQueries({
+        queryKey:["goal"]
+      });
+      toast.success("Goal updated.")
     },
     onError: () => {
       
-      console.error("Failed to add Goal.");
+      console.error("Failed to update Goal.");
     },
   });
 }

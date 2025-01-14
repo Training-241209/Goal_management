@@ -14,25 +14,19 @@ public class UpdateGoalDTO {
 
     @NotNull
     @Min(1)
-    private Long goalId;
+    private Long id;
 
-    @NotBlank(message = "Missing objective")
     private String objective;
 
-    @NotBlank(message = "Missing description")
     private String description;
 
-    @NotBlank(message = "Missing type")
     private String type;
 
-    @NotNull(message = "Missing status")
     private Boolean status;
 
-    @NotNull(message = "Missing start date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate startDay;
 
-    @NotNull(message = "Missing end date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate endDay;   
 }

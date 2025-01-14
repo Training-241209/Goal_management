@@ -12,7 +12,7 @@ export type Task = {
     id: number,
     name: string,
     description: string
-    timeFrames: TimeFrame[]
+    timeFrames: TimeFrame[] | null
 }
 
 export type TimeFrame = {
