@@ -65,7 +65,7 @@ public class GoalService {
         goal.setObjective(addGoalDTO.getObjective());
         goal.setDescription(addGoalDTO.getDescription());
         goal.setType(addGoalDTO.getType());
-        goal.setStartDate(addGoalDTO.getEndDay());
+        goal.setStartDate(addGoalDTO.getStartDay());
         goal.setEndDate(addGoalDTO.getEndDay());
         goal.setUser(user);
 

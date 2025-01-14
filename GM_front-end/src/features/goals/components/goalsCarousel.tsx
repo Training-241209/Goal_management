@@ -7,14 +7,20 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import { useGoals } from "../hooks/use-goals"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-
-export function GoalsCarousel() {
+interface GoalsCarouselProps{
+    onSelect: (SelectedId: number) => void;
+}
+export function GoalsCarousel({onSelect}:GoalsCarouselProps) {
 
     const { data, isLoading } = useGoals();
     const [selectedId, setSelectedId]= useState(0);
+
+    useEffect(()=>{
+        onSelect(selectedId);
+    },[selectedId])
 
     if (isLoading) return <p>Loading...</p>;
 

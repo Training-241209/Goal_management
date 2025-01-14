@@ -1,17 +1,17 @@
 export type Goal = {
     id: number,
-    objective: String,
-    description: String,
+    objective: string,
+    description: string,
     type: "Routine"| "Target",
-    startDay: String,
-    endDay: String
+    startDate: string,
+    endDate: string
     tasks: Task[]
 }
 
 export type Task = {
     id: number,
-    name: String,
-    description: String
+    name: string,
+    description: string
     timeFrames: TimeFrame[]
 }
 
