@@ -39,16 +39,29 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
 
+        String email = claims.get("email", String.class);
+        String firstname = claims.get("firstname", String.class);
+        String lastname = claims.get("lastname", String.class);
+        return email + ", " + firstname + ", " + lastname;
+    }
+
+    public String decodeToken(String token) {
+        var claims = Jwts.parserBuilder()
+                .setSigningKey(jwtConfiguration.getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
         return claims.get("email", String.class);
-    }    
-   
+    }
+
     public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
-                .setSigningKey(jwtConfiguration.getSecretKey())
-                .build()
-                .parseClaimsJws(token);
-    
+                    .setSigningKey(jwtConfiguration.getSecretKey())
+                    .build()
+                    .parseClaimsJws(token);
+
             return true;
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             System.out.println("Token has expired: " + e.getMessage());
