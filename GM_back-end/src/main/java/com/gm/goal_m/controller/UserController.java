@@ -36,7 +36,6 @@ public class UserController {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
-
     @Autowired
     public UserController(UserService userService, JwtService jwtService, UserRepository userRepository) {
         this.userService = userService;
@@ -45,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@ Valid @RequestBody UserRequestRegDTO userRequestRegDTO) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRequestRegDTO userRequestRegDTO) {
         try {
             if (userRepository.findByEmail(userRequestRegDTO.getEmail()).isPresent()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
@@ -63,6 +62,7 @@ public class UserController {
         String theToken = "";
         User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword());
         if (userService.canLogIn(userLoginRequest)) {
+            user = userRepository.findByEmail(userLoginRequest.getEmail()).get();
             theToken = jwtService.generateToken(user);
             Map<String, String> responseWithToken = new HashMap<>();
             responseWithToken.put("token", theToken);
@@ -83,8 +83,8 @@ public class UserController {
 
     @GetMapping("/me")
     public UserResponse getLoggedUserDetails(HttpServletRequest request) {
-        String email = (String)request.getAttribute("email");
+        String email = (String) request.getAttribute("email");
         return new UserResponse(userService.findUserByEmail(email));
-        
+
     }
 }
