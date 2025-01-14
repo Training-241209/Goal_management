@@ -4,7 +4,6 @@ import { Calendar } from "@/components/ui/calendar"
 import React, { useState } from "react";
 import "@/styles/rightsidebar.scss"
 import { useQuote } from "@/hooks/use-quote";
-import { useUser } from "@/features/auth/hooks/use-decode";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 
 function stringToColor(string: string) {
