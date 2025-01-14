@@ -1,9 +1,10 @@
 import { Avatar, Box } from "@mui/material";
 import { ProSidebar } from "react-pro-sidebar";
 import { Calendar } from "@/components/ui/calendar"
-import React from "react";
+import React, { useState } from "react";
 import "@/styles/rightsidebar.scss"
 import { useQuote } from "@/hooks/use-quote";
+import { useUser } from "@/features/auth/hooks/use-decode";
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -38,14 +39,15 @@ function stringAvatar(name: string) {
 export function RightSideBar(){
     const [date, setDate] = React.useState<Date | undefined>(new Date())
     const { quote, author } = useQuote();
+    const { data: user} = useUser();
     return <>
         <ProSidebar>
                 <div className="mx-5 flex flex-col items-center gap-5 justify-center bg-purple-100 rounded-lg">
                     <Box className="flex items-center gap-3 p-5 border-b-2 border-gray-400">
-                        <Avatar {...stringAvatar('Nick Butani')} />
+                        <Avatar {...stringAvatar(`${user?.firstname} ${user?.lastname}`)} />
                         <Box >
-                            <h1 className="font-semibold"> First last</h1>
-                            <p className="text-xs font-thin">Role</p>
+                            <h1 className="font-semibold"> {user?.firstname} {user?.lastname}</h1>
+                            <p className="text-xs font-thin">User</p>
                         </Box>
                     </Box>
                     <Box className="p-5 justify-center">
