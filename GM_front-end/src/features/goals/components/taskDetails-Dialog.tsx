@@ -62,7 +62,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
     function handleDelete(id: number) {
         deleteTask(id, {
             onSuccess: () => {
-            setOpen(false);
+                setOpen(false);
             }
         });
     }
@@ -138,24 +138,26 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
             }}
 
         >
-            <DialogContent className="flex min-w-fit">
-                <div>
-                    <DialogHeader>
-                        <DialogTitle>Task</DialogTitle>
+            <DialogContent className="flex flex-col md:flex-row gap-6 p-6 max-w-4xl">
+                {/* Left Section - Task Details */}
+                <div className="flex-1 min-w-[320px]">
+                    <DialogHeader className="mb-4">
+                        <DialogTitle className="text-xl font-semibold">Task</DialogTitle>
+                        <DialogDescription className="text-sm text-muted-foreground">
+                            Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
                     </DialogHeader>
-                    <DialogDescription>
-                        Make changes to your profile here. Click save when you're done.
-                    </DialogDescription>
+
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 ">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                             <FormField
                                 control={form.control}
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Name</FormLabel>
+                                        <FormLabel className="font-medium">Name</FormLabel>
                                         <FormControl>
-                                            <Input {...field} min="1" />
+                                            <Input {...field} min="1" className="w-full" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -167,44 +169,57 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Description</FormLabel>
+                                        <FormLabel className="font-medium">Description</FormLabel>
                                         <FormControl>
-                                            <Textarea placeholder="Description" {...field} maxLength={255} className="max-h-52" />
+                                            <Textarea
+                                                placeholder="Description"
+                                                {...field}
+                                                maxLength={255}
+                                                className="w-full min-h-[100px] max-h-52 resize-y"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
 
-                            <div className="flex justify-between">
-                                <Button type="button" variant="destructive"
-                                    onClick={() => { handleDelete(task.id) }}
-                                    disabled={form.formState.isDirty || isPending || deleteIsPending}>
+                            <div className="flex justify-between items-center pt-4">
+                                <Button
+                                    type="button"
+                                    variant="destructive"
+                                    onClick={() => handleDelete(task.id)}
+                                    disabled={form.formState.isDirty || isPending || deleteIsPending}
+                                    className="flex items-center gap-2"
+                                >
                                     Delete Task
                                 </Button>
-                                <Button type="submit" disabled={!form.formState.isDirty || isPending}>
-                                    update
+                                <Button
+                                    type="submit"
+                                    disabled={!form.formState.isDirty || isPending}
+                                    className="flex items-center gap-2"
+                                >
+                                    Update
                                 </Button>
-
                             </div>
                         </form>
                     </Form>
                 </div>
 
-                <div>
-                    <h1 className="text-sm font-medium leading-none">TimeFrames</h1>
-                    <div className="flex-col justify-between items-center">
+                <div className="flex-1 min-w-[320px] space-y-4">
+                    <h1 className="text-lg font-semibold">TimeFrames</h1>
+
+                    <div className="space-y-4">
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
                                     id="date"
-                                    variant={"outline"}
+                                    variant="outline"
                                     className={cn(
-                                        "w-[300px] justify-start text-left font-normal",
+                                        "w-full justify-start text-left font-normal",
                                         !date && "text-muted-foreground"
                                     )}
                                 >
-                                    <CalendarIcon />
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
                                     {date?.from ? (
                                         date.to ? (
                                             <>
@@ -230,43 +245,71 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                 />
                             </PopoverContent>
                         </Popover>
-                        <div className="flex justify-between">
+
+                        <div className="flex items-center gap-4">
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                <div>
-                                    <SingleInputTimeRangeField label="From - To"
-                                        value={value}
-                                        onChange={(newValue) => setValue(newValue)} />
-                                </div>
+                                <SingleInputTimeRangeField
+                                    label="From - To"
+                                    value={value}
+                                    onChange={(newValue) => setValue(newValue)}
+                                    className="w-full"
+                                />
                             </LocalizationProvider>
 
-                            <Button type="button" variant="secondary" onClick={handleTimeFrameCreation} disabled={addTFPending}>
-                                <DiamondPlus />
-                                new
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={handleTimeFrameCreation}
+                                disabled={addTFPending}
+                                className="flex items-center gap-2"
+                            >
+                                <DiamondPlus className="h-4 w-4" />
+                                New
                             </Button>
                         </div>
-
                     </div>
 
-                    <ScrollArea className="h-72  rounded-md border">
-                        <div className="p-4">
+                    <ScrollArea className="h-72 rounded-md border">
+                        <div className="p-4 space-y-2">
                             {task.timeFrames?.map((tf) => (
-                                <figure key={tf.id} className="flex space-x-4 hover:bg-muted/50 p-2 rounded-lg transition-colors cursor-pointer">
-                                    <div className="text-sm" >
-                                        {tf.date}|{tf.startTime}|{tf.endTime}
+                                <figure
+                                    key={tf.id}
+                                    className="flex justify-between items-center p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                                >
+                                    <div className="text-sm font-medium">
+                                        <span className="text-muted-foreground">{tf.date}</span>
+                                        <span className="mx-2">|</span>
+                                        <span>{tf.startTime}</span>
+                                        <span className="mx-2">-</span>
+                                        <span>{tf.endTime}</span>
                                     </div>
-                                    <Button type="button" onClick={() => { handleTimeFrameDelete(tf.id) }} disabled={deleteTFPending}>
-                                        <DeleteIcon />
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleTimeFrameDelete(tf.id)}
+                                        disabled={deleteTFPending}
+                                        className="hover:bg-destructive/10 hover:text-destructive"
+                                    >
+                                        <DeleteIcon className="h-4 w-4" />
                                     </Button>
                                 </figure>
                             ))}
                         </div>
                         <ScrollBar orientation="vertical" />
                     </ScrollArea>
-                    <div className="flex justify-end">
-                        <Button type="button" onClick={() => { setOpen(false) }} >Close</Button>
+
+                    <div className="flex justify-end pt-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setOpen(false)}
+                            className="w-24"
+                        >
+                            Close
+                        </Button>
                     </div>
                 </div>
-
             </DialogContent>
         </Dialog>
     );
