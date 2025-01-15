@@ -15,11 +15,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { taskSchema, TaskSchema } from "../schemas/Task-schema";
-import { Task } from "../schemas/goalModels";
+import { Task, TimeFrameRequest } from "../schemas/goalModels";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { CalendarIcon, DeleteIcon, DiamondPlus } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -29,6 +29,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useUptTask } from "../hooks/use-uptTask";
 import dayjs, { Dayjs } from 'dayjs';
 import { DateRange as muiDateRange } from '@mui/x-date-pickers-pro/models';
+import { useAddTimeFrame } from "../hooks/use-addTimeFrame";
+import { toast } from "sonner";
+import { useDeleteTimeFrame } from "../hooks/use-deleteTimeFrame";
+import { useDeleteTask } from "../hooks/use-deleteTask";
 interface TaskDetailsDialogProps {
     task: Task,
     open: boolean
@@ -38,6 +42,9 @@ interface TaskDetailsDialogProps {
 export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProps) {
 
     const { mutate: update, isPending, isSuccess } = useUptTask();
+    const { mutate: addTimeFrame, isPending: addTFPending } = useAddTimeFrame();
+    const { mutate: deleteTimeFrame, isPending: deleteTFPending } = useDeleteTimeFrame();
+    const { mutate: deleteTask, isPending: deleteIsPending } = useDeleteTask()
     //const {data: goals} = useGoals();
     const [date, setDate] = useState<DateRange | undefined>({
         from: new Date(),
@@ -47,6 +54,45 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
         dayjs(),
         dayjs().add(3, 'hour'),
     ]);
+
+    function handleTimeFrameDelete(id: number) {
+        deleteTimeFrame(id);
+    }
+
+    function handleDelete(id: number) {
+        deleteTask(id, {
+            onSuccess: () => {
+            setOpen(false);
+            }
+        });
+    }
+
+    function handleTimeFrameCreation() {
+        if (date?.from && value[0] && value[1]) {
+            if (date.from.getDate() < new Date().getDate()) {
+                toast.error("The selected date range must be in the future.");
+                return;
+            }
+            if (value[0] && value[0].isBefore(dayjs(), 'hour')) {
+                toast.error("The selected time range must be in the future.");
+                return;
+            }
+            const newtf: TimeFrameRequest = {
+                taskId: task.id,
+                startDate: format(date.from, "yyyy-MM-dd"),
+                endDate: format(date.to ? date.to : date.from, "yyyy-MM-dd"),
+                startTime: value[0].format("HH:mm:ss"),
+                endTime: value[1].format("HH:mm:ss"),
+            };
+            addTimeFrame(newtf);
+        }
+        else if (!date?.from) {
+            toast.warning("Date is required.")
+        }
+        else {
+            toast.warning("Time range is required.")
+        }
+    }
 
     // 1. Define your form.
     const form = useForm<TaskSchema>({
@@ -131,8 +177,13 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                             />
 
                             <div className="flex justify-between">
+                                <Button type="button" variant="destructive"
+                                    onClick={() => { handleDelete(task.id) }}
+                                    disabled={form.formState.isDirty || isPending || deleteIsPending}>
+                                    Delete Task
+                                </Button>
                                 <Button type="submit" disabled={!form.formState.isDirty || isPending}>
-                                    update Task
+                                    update
                                 </Button>
 
                             </div>
@@ -188,7 +239,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                 </div>
                             </LocalizationProvider>
 
-                            <Button type="button" variant="secondary">
+                            <Button type="button" variant="secondary" onClick={handleTimeFrameCreation} disabled={addTFPending}>
                                 <DiamondPlus />
                                 new
                             </Button>
@@ -203,7 +254,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                     <div className="text-sm" >
                                         {tf.date}|{tf.startTime}|{tf.endTime}
                                     </div>
-                                    <Button type="button">
+                                    <Button type="button" onClick={() => { handleTimeFrameDelete(tf.id) }} disabled={deleteTFPending}>
                                         <DeleteIcon />
                                     </Button>
                                 </figure>
