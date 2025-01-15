@@ -50,21 +50,7 @@ export function GoalsAccordion({ onSelect }: GoalsAccordionProps) {
                             <span className="text-lg">{goal.objective}</span>
                         </AccordionSummary>
 
-                        <AccordionDetails className="bg-gray-50 p-4">
-                            {goal.tasks?.map((task) => (
-                                <div key={task.id} className="border-b border-gray-200 py-2">
-                                    <div className="font-medium text-gray-800">{task.name}</div>
-                                    {task.timeFrames?.map((timeFrame) => (
-                                        <div key={timeFrame.id} className="text-sm text-gray-600">
-                                            <span>{timeFrame.date}</span> |{" "}
-                                            <span>
-                                                {timeFrame.startTime} - {timeFrame.endTime}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
-                        </AccordionDetails>
+                    
                     </Accordion>
                 );
             })}

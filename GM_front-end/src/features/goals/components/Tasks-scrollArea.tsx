@@ -1,52 +1,76 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Task } from "../schemas/goalModels"
-import { TaskDetailsDialog } from "./taskDetails-Dialog"
+import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { Task, TimeFrame } from "../schemas/goalModels";
+import { TaskDetailsDialog } from "./taskDetails-Dialog";
 import { useEffect, useState } from "react";
- 
 
-
-interface TasksScrollAreaProps{
-    tasks: Task[]
+interface TasksDataGridProps {
+  tasks: Task[];
 }
- 
-export function TasksScrollArea({tasks}:TasksScrollAreaProps) {
-  const [open, setopen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<Task>({ id:0,
+
+export function TasksScrollArea({ tasks }: TasksDataGridProps) {
+  const [open, setOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task>({
+    id: 0,
     name: "",
     description: "",
     timeFrames: null
   });
 
-  function handleOnClick(task: Task){
-    console.log(task);
+  const handleOnClick = (task: Task) => {
     setSelectedTask(task);
-    setopen(true);
-  }
+    setOpen(true);
+  };
 
-  useEffect(()=>{
-    if(selectedTask.id != 0){
-      const task = tasks.find(t => t.id === selectedTask.id);
+  const formatTimeFrames = (timeFrames: TimeFrame[] | null): string => {
+    if (!timeFrames || timeFrames.length === 0) {
+      return 'No Time Frame';
+    }
+
+    return timeFrames.map(tf => {
+      const date = new Date(tf.date).toLocaleDateString();
+      return `${date}: ${tf.startTime} - ${tf.endTime}`;
+    }).join(', ');
+  };
+
+  const columns: GridColDef[] = [
+    { field: 'name', headerName: 'Task Name', width: 200 },
+    { field: 'description', headerName: 'Description', width: 200 },
+    {
+      field: 'timeFrames', 
+      headerName: 'Time Frames', 
+      width: 230,
+      renderCell: (params) => formatTimeFrames(params.value as TimeFrame[] | null)
+    },
+  ];
+
+  const rows: GridRowsProp = tasks.map((task) => ({
+    id: task.id,
+    name: task.name,
+    description: task.description,
+    timeFrames: task.timeFrames,
+  }));
+
+  useEffect(() => {
+    if (selectedTask.id !== 0) {
+      const task = tasks.find((t) => t.id === selectedTask.id);
       if (task) {
         setSelectedTask(task);
       }
     }
-  },[tasks])
+  }, [tasks, selectedTask.id]);
 
   return (
-    <ScrollArea className="h-72  rounded-md border">
-      <div className="p-4">
-        <h1 className="mb-4 text-sm leading-none font-bold">Tasks</h1>
-        {tasks.map((task) => (
-          <figure  key={task.id} onClick={()=>{handleOnClick(task)}} className="flex space-x-4 hover:bg-muted/50 p-2 rounded-lg transition-colors cursor-pointer">
-            <div className="text-sm" >
-              {task.name}:{task.description}
-            </div>
-          </figure>
-        ))}
+    <div className="h-72">
+      <h1 className="mb-4 text-sm leading-none font-bold">Tasks</h1>
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          onRowClick={(params) => handleOnClick(params.row as Task)}
+        />
       </div>
-      <ScrollBar orientation="vertical"/>
-      <TaskDetailsDialog open={open} setOpen={setopen} task={selectedTask}/>
-    </ScrollArea>
-    
-  )
+
+      <TaskDetailsDialog open={open} setOpen={setOpen} task={selectedTask} />
+    </div>
+  );
 }
