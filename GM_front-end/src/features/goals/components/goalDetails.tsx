@@ -13,11 +13,13 @@ import { Calendar } from "@/components/ui/calendar";
 import { Goal } from "../schemas/goalModels";
 import { useUptGoal } from "../hooks/use-uptGoal";
 import { useEffect } from "react";
+import { useDeleteGoal } from "../hooks/use-deleteGoal";
 interface GoalDetailsProps {
     goal: Goal
 }
 export function GoalDetails({ goal }: GoalDetailsProps) {
     const { mutate: update, isPending } = useUptGoal();
+    const {mutate: deleteGoal, isPending: deleteIsPending} = useDeleteGoal();
 
     // 1. Define your form.
     const form = useForm<GoalSchema>({
@@ -32,6 +34,10 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
         }
 
     });
+
+    function handleDelete(){
+        deleteGoal(goal.id);
+    }
     useEffect(() => {
         if (goal) {
             form.reset({
@@ -88,19 +94,6 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         </FormItem>
                     )}
                 />
-                {/* <FormField
-                    control={form.control}
-                    name="type"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Type</FormLabel>
-                            <FormControl>
-                                <Input {...field} disabled={true}/>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
                 <div className="flex justify-between gap-2">
                     <FormField
                         control={form.control}
@@ -185,7 +178,13 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         )}
                     />
                 </div>
-                <div className="flex justify-end">
+                <div className="flex justify-between">
+                    <Button type="button"
+                        variant="destructive"
+                        onClick={handleDelete}
+                        disabled={form.formState.isDirty || isPending}>
+                        Delete goal
+                    </Button>
                     <Button type="submit" disabled={!form.formState.isDirty || isPending}>
                         Save
                     </Button>
