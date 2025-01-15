@@ -9,11 +9,16 @@ import org.springframework.stereotype.Service;
 import com.gm.goal_m.dto.TaskDTOs.GetTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.UpdateTimeFrameDTO;
+import com.gm.goal_m.exception.custom.DuplicateException;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 @Service
 public class TimeFrameService {
@@ -21,11 +26,11 @@ public class TimeFrameService {
     private TaskService taskService;
 
     @Autowired
-    public TimeFrameService(TimeFrameRepository timeFrameRepository, TaskService taskService){
+    public TimeFrameService(TimeFrameRepository timeFrameRepository, TaskService taskService) {
         this.timeFrameRepository = timeFrameRepository;
         this.taskService = taskService;
     }
-    
+
     public TimeFrame update(TimeFrame timeFrame) {
         return timeFrameRepository.save(timeFrame);
     }
@@ -34,21 +39,44 @@ public class TimeFrameService {
         return timeFrameRepository.save(timeFrame);
     }
 
-
-    public void addTimeFrameToTask(Task task, AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
+    @Transactional
+    public void addTimeFrameRangeToTask(Task task, AddTimeFrameByTaskIdDTO dto) {
 
         TimeFrame timeFrame = new TimeFrame();
-        timeFrame.setObjective(addTimeFrameByTaskIdDTO.getObjective());
-        timeFrame.setDate(addTimeFrameByTaskIdDTO.getDate());
-        timeFrame.setStartTime(addTimeFrameByTaskIdDTO.getStartTime());
-        timeFrame.setEndTime(addTimeFrameByTaskIdDTO.getEndTime());
-        timeFrame.setTask(task);
 
-        persist(timeFrame);
+        List<LocalDate> dates = new ArrayList<>();
+        LocalDate currentDate = dto.getStartDate();
 
-        task.getTimeFrames().add(timeFrame);
-        
-        taskService.update(task);
+        while (!currentDate.isAfter(dto.getEndDate())) {
+            dates.add(currentDate);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        for (LocalDate Date : dates) {
+            if (exists(Date, dto.getStartTime(), dto.getEndTime())) {
+                throw new DuplicateException("TimeFrames can't be added because they overlap with other timeframes");
+            }
+        }
+
+        for (LocalDate Date : dates) {
+            timeFrame.setObjective(dto.getObjective());
+            timeFrame.setDate(Date);
+            timeFrame.setStartTime(dto.getStartTime());
+            timeFrame.setEndTime(dto.getEndTime());
+            timeFrame.setTask(task);
+
+            persist(timeFrame);
+        }
+
+        // task.getTimeFrames().add(timeFrame);
+
+        // taskService.update(task);
+    }
+
+    public boolean exists(LocalDate day, LocalTime startTime, LocalTime endTime) {
+
+        List<TimeFrame> Tf = timeFrameRepository.findOverlappingTimeFrames(day, startTime, endTime);
+        return !Tf.isEmpty();
     }
 
     public TimeFrame updateTimeFrame(UpdateTimeFrameDTO updateTimeFrameDTO) {
@@ -63,16 +91,15 @@ public class TimeFrameService {
     }
 
     public TimeFrame getTimeFrameById(Long timeFrameId) {
-        Optional <TimeFrame> timeFrameOpt = timeFrameRepository.findById(timeFrameId);
-        if(!timeFrameOpt.isPresent()){
+        Optional<TimeFrame> timeFrameOpt = timeFrameRepository.findById(timeFrameId);
+        if (!timeFrameOpt.isPresent()) {
             throw new UnsupportedOperationException("Timeframe NotFound");
         }
-
 
         return timeFrameOpt.get();
     }
 
     public void deleteTimeFrameById(Long id) {
         timeFrameRepository.deleteById(id);
-    }    
+    }
 }

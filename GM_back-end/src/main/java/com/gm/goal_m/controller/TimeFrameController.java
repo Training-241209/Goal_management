@@ -50,7 +50,7 @@ public class TimeFrameController {
 
             Task task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());  
             
-            timeFrameService.addTimeFrameToTask(task, addTimeFrameByTaskIdDTO);
+            timeFrameService.addTimeFrameRangeToTask(task, addTimeFrameByTaskIdDTO);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Successfull");
 

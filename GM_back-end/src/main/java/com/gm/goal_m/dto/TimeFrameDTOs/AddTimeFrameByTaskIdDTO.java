@@ -21,7 +21,11 @@ public class AddTimeFrameByTaskIdDTO {
 
     @NotNull(message = "Missing date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDate startDate;
+
+    @NotNull(message = "Missing date")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+    private LocalDate endDate;
 
     @NotNull(message = "Missing start time")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
