@@ -22,6 +22,14 @@ export type TimeFrame = {
     endTime: string
 }
 
+export type TimeFrameRequest = {
+    taskId: number,
+    startDate: string,
+    endDate: string,
+    startTime: string,
+    endTime: string,
+}
+
 export type CalendarEvent = {
     id: string;
     title: string;

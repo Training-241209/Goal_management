@@ -10,6 +10,8 @@ import com.gm.goal_m.dto.TaskDTOs.GetTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.UpdateTimeFrameDTO;
 import com.gm.goal_m.exception.custom.DuplicateException;
+import com.gm.goal_m.exception.custom.OutOfBoundariesException;
+import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
@@ -39,12 +41,20 @@ public class TimeFrameService {
         return timeFrameRepository.save(timeFrame);
     }
 
+    public List<TimeFrame> persistAll(List<TimeFrame> timeFrame) {
+        return timeFrameRepository.saveAll(timeFrame);
+    }
+
     @Transactional
     public void addTimeFrameRangeToTask(Task task, AddTimeFrameByTaskIdDTO dto) {
+        Goal goal = task.getGoal();
 
-
+        if(goal.getStartDate().isAfter(dto.getStartDate())|| goal.getEndDate().isBefore(dto.getEndDate())){
+            throw new OutOfBoundariesException("The time slots must be within the goal boundaries");
+        }
         List<LocalDate> dates = new ArrayList<>();
         LocalDate currentDate = dto.getStartDate();
+        
 
         while (!currentDate.isAfter(dto.getEndDate())) {
             dates.add(currentDate);
@@ -56,18 +66,23 @@ public class TimeFrameService {
                 throw new DuplicateException("TimeFrames can't be added because they overlap with other timeframes");
             }
         }
-
+        List<TimeFrame> timeFrames = new ArrayList<TimeFrame>();
         for (LocalDate Date : dates) {
             TimeFrame timeFrame = new TimeFrame();
-            timeFrame.setObjective(dto.getObjective());
             timeFrame.setDate(Date);
             timeFrame.setStartTime(dto.getStartTime());
             timeFrame.setEndTime(dto.getEndTime());
             timeFrame.setTask(task);
 
-            persist(timeFrame);
+            timeFrames.add(timeFrame);
         }
-
+        try {
+            persistAll(timeFrames);
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw new DuplicateException(e.getMessage());
+        }
+       
         // task.getTimeFrames().add(timeFrame);
 
         // taskService.update(task);
@@ -81,7 +96,6 @@ public class TimeFrameService {
 
     public TimeFrame updateTimeFrame(UpdateTimeFrameDTO updateTimeFrameDTO) {
         TimeFrame timeFrame = getTimeFrameById(updateTimeFrameDTO.getTimeFrameId());
-        timeFrame.setObjective(updateTimeFrameDTO.getObjective());
         timeFrame.setDate(updateTimeFrameDTO.getDate());
         timeFrame.setStartTime(updateTimeFrameDTO.getStartTime());
         timeFrame.setEndTime(updateTimeFrameDTO.getEndTime());

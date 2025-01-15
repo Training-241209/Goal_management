@@ -23,7 +23,6 @@ import com.gm.goal_m.service.TimeFrameService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-
 @RestController
 @RequestMapping("/api/user/goal/task")
 public class TimeFrameController {
@@ -31,70 +30,63 @@ public class TimeFrameController {
     private TimeFrameService timeFrameService;
     private TaskService taskService;
 
-    public TimeFrameController (TimeFrameService timeFrameService,TaskService taskService ){
+    public TimeFrameController(TimeFrameService timeFrameService, TaskService taskService) {
         this.timeFrameService = timeFrameService;
         this.taskService = taskService;
     }
 
     @PostMapping("timeframe")
-    public ResponseEntity<?> addTimeFrameByTaskId(@Valid @RequestBody AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO ) {
+    public ResponseEntity<?> addTimeFrameByTaskId(@Valid @RequestBody AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
 
-        try{
-            if(addTimeFrameByTaskIdDTO == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing request body");
+        
 
+        Task task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
 
-            }
+        timeFrameService.addTimeFrameRangeToTask(task, addTimeFrameByTaskIdDTO);
 
-            System.out.println(addTimeFrameByTaskIdDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Successfull");
 
-            Task task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());  
-            
-            timeFrameService.addTimeFrameRangeToTask(task, addTimeFrameByTaskIdDTO);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body("Successfull");
-
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create TimeFrame " + e.getMessage());
-        }   
     }
 
     @PatchMapping("/timeframe")
-    public ResponseEntity<?> updateTimeFrameById (@Valid @RequestBody UpdateTimeFrameDTO updateTimeFrameDTO, HttpServletRequest request) {
-        try{
+    public ResponseEntity<?> updateTimeFrameById(@Valid @RequestBody UpdateTimeFrameDTO updateTimeFrameDTO,
+            HttpServletRequest request) {
+        try {
 
-            TimeFrame retBody  = timeFrameService.updateTimeFrame(updateTimeFrameDTO);
+            TimeFrame retBody = timeFrameService.updateTimeFrame(updateTimeFrameDTO);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(retBody);
-            
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update goal" + e.getMessage());
-        }     
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update goal" + e.getMessage());
+        }
     }
 
     @DeleteMapping("/timeframe")
-    public ResponseEntity<?> deleteTaskById(@Valid @RequestBody GetIdDTO id){
+    public ResponseEntity<?> deleteTaskById(@Valid @RequestBody GetIdDTO id) {
 
-        try{
+        try {
             timeFrameService.deleteTimeFrameById(id.getId());
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deleted timeframe Successfully");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete Timeframe" + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to Delete Timeframe" + e.getMessage());
         }
-        
+
     }
 
     @GetMapping("/timeframe/{timeFrameId}")
     public ResponseEntity<?> getTimeFrameById(@PathVariable Long timeFrameId, HttpServletRequest request) {
-        try{
-            
+        try {
+
             TimeFrame retValue = timeFrameService.getTimeFrameById(timeFrameId);
             return ResponseEntity.status(HttpStatus.FOUND).body(retValue);
 
-
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to timeframe " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to timeframe " + e.getMessage());
         }
-     
+
     }
 
 }

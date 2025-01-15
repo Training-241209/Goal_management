@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Accordion, AccordionSummary } from "@mui/material";
 import { useGoals } from "../hooks/use-goals";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
