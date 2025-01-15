@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent,  DialogDescription,  DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { taskSchema, TaskSchema } from "../schemas/Task-schema";
 import { Task } from "../schemas/goalModels";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -27,6 +27,8 @@ import { SingleInputTimeRangeField } from '@mui/x-date-pickers-pro/SingleInputTi
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useUptTask } from "../hooks/use-uptTask";
+import dayjs, { Dayjs } from 'dayjs';
+import { DateRange as muiDateRange } from '@mui/x-date-pickers-pro/models';
 interface TaskDetailsDialogProps {
     task: Task,
     open: boolean
@@ -38,9 +40,13 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
     const { mutate: update, isPending, isSuccess } = useUptTask();
     //const {data: goals} = useGoals();
     const [date, setDate] = useState<DateRange | undefined>({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
+        from: new Date(),
+        to: new Date(),
     })
+    const [value, setValue] = useState<muiDateRange<Dayjs>>(() => [
+        dayjs(),
+        dayjs().add(3, 'hour'),
+    ]);
 
     // 1. Define your form.
     const form = useForm<TaskSchema>({
@@ -92,8 +98,8 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                         <DialogTitle>Task</DialogTitle>
                     </DialogHeader>
                     <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
+                        Make changes to your profile here. Click save when you're done.
+                    </DialogDescription>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 ">
                             <FormField
@@ -176,7 +182,9 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                         <div className="flex justify-between">
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <div>
-                                    <SingleInputTimeRangeField label="From - To" />
+                                    <SingleInputTimeRangeField label="From - To"
+                                        value={value}
+                                        onChange={(newValue) => setValue(newValue)} />
                                 </div>
                             </LocalizationProvider>
 
