@@ -40,9 +40,7 @@ public class JwtService {
                 .getBody();
 
         String email = claims.get("email", String.class);
-        String firstname = claims.get("firstname", String.class);
-        String lastname = claims.get("lastname", String.class);
-        return email + ", " + firstname + ", " + lastname;
+        return email;
     }
 
     public String decodeToken(String token) {
