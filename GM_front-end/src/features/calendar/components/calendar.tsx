@@ -1,49 +1,30 @@
-import React from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import { useCalendarEvents } from '../hooks/use_calendarevent';
+import React from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import { useCalendarEvents } from "../hooks/use_calendarevent";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Card } from "@/components/ui/card";
+import { CalendarEvent } from "@/features/goals/schemas/goalModels";
 
 const localizer = momentLocalizer(moment);
 
-const MyCalendar = () => {
+const MyCalendar: React.FC = () => {
   const { calendarEvents } = useCalendarEvents();
-
-  const eventStyleGetter = (event) => {
-    let style = {
-      backgroundColor: '#4f46e5', 
-    
-      borderRadius: '0px',
-      opacity: 0.8,
-      color: 'white',
-      border: 'none',
-      display: 'block',
-      padding: '10px'
+  const eventStyleGetter = (event: CalendarEvent) => {
+    const style = {
+      backgroundColor: event.color,
+      borderRadius: "5px",
+      opacity: 0.9,
+      color: "white",
+      border: "none",
+      display: "block",
+      padding: "10px",
     };
-
-    // Color coding based on event type
-    if (event.isGoal) {
-      style.backgroundColor = '#2563eb'; 
-    } else if (event.isTimeFrame) {
-      if (event.type === 'ROUTINE') {
-        style.backgroundColor = event.status ? '#059669' : '#dc2626';
-      } else {
-        style.backgroundColor = '#d97706';
-      }
-    }
-
-    return {
-      style,
-    };
+    return { style };
   };
-  const tooltipAccessor = (event) => {
-    if (event.isGoal) {
-      return `Goal: ${event.title}\nType: ${event.type}\nDescription: ${event.description}`;
-    } else if (event.isTimeFrame) {
-      return `Task: ${event.title}\nType: ${event.type}\nDescription: ${event.description}`;
-    }
-    return event.title;
+
+  const tooltipAccessor = (event: CalendarEvent) => {
+    return `${event.title}\nType: ${event.type}\nDescription: ${event.description}`;
   };
 
   return (
@@ -55,7 +36,7 @@ const MyCalendar = () => {
         endAccessor="end"
         eventPropGetter={eventStyleGetter}
         className="min-h-screen"
-        views={['month', 'week', 'day']}
+        views={["month", "week", "day"]}
         defaultView="month"
         tooltipAccessor={tooltipAccessor}
         step={15}

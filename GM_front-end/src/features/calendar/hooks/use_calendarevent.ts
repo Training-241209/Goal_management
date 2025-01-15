@@ -1,62 +1,46 @@
-import { useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '@/lib/axios-config';
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "@/lib/axios-config";
+import { Goal, CalendarEvent } from "@/features/goals/schemas/goalModels";
 
-export function useCalendarEvents() {
-    const { data: goals } = useQuery({
+function generateColorFromId(goalId: number): string {
+    const hue = (goalId * 137.508) % 360;
+    const saturation = 65;
+    const lightness = 45;
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+export function useCalendarEvents(): { calendarEvents: CalendarEvent[] } {
+    const { data: goals } = useQuery<Goal[]>({
         queryKey: ["goals"],
-        queryFn: async () => {
-            try {
-                const token = localStorage.getItem('jwtToken');
-                const response = await axiosInstance.get("user/goals");
-                return response.data;
-            } catch (err) {
-                console.error("Failed to fetch goals:", err);
-                throw err;
-            }
-        },
+        queryFn: () => axiosInstance.get("user/goals").then((res) => res.data),
     });
 
-    const calendarEvents = goals?.reduce((events, goal) => {
-        events.push({
-            id: `goal-${goal.id}`,
-            title: `Goal: ${goal.objective}`,
-            // start: new Date(goal.startDate),
-            // end: new Date(goal.endDate),
-            isGoal: true,
-            description: goal.description,
-            type: goal.type,
-            status: goal.status
-        });
+    const goalColors: { [key: number]: string } = {};
 
-        if (goal.tasks) {
-            goal.tasks.forEach(task => {
-                if (task.timeFrames) {
-                    const timeFrameEvents = task.timeFrames.map(timeFrame => {
-                        const startDateTime = new Date(`${timeFrame.date}T${timeFrame.startTime}`);
-                        const endDateTime = new Date(`${timeFrame.date}T${timeFrame.endTime}`);
-
-                        return {
-                            id: `timeframe-${timeFrame.id}`,
-                            title: `${task.name}: ${timeFrame.objective}`,
-                            start: startDateTime,
-                            end: endDateTime,
-                            isTimeFrame: true,
-                            taskId: task.id,
-                            goalId: goal.id,
-                            status: timeFrame.status,
-                            description: task.description,
-                            type: task.type
-                        };
-                    });
-                    events.push(...timeFrameEvents);
-                }
-            });
+    function getGoalColor(goalId: number): string {
+        if (!goalColors[goalId]) {
+            goalColors[goalId] = generateColorFromId(goalId);
         }
+        return goalColors[goalId];
+    }
 
-        return events;
-    }, []) || [];
+    const calendarEvents: CalendarEvent[] =
+        goals?.flatMap((goal) =>
+            goal.tasks.flatMap((task) =>
+                (task.timeFrames || []).map((timeFrame) => ({
+                    id: `timeframe-${timeFrame.id}`,
+                    title: task.name,
+                    start: new Date(`${timeFrame.date}T${timeFrame.startTime}`),
+                    end: new Date(`${timeFrame.date}T${timeFrame.endTime}`),
+                    isTimeFrame: true,
+                    taskId: task.id,
+                    goalId: goal.id,
+                    description: task.description,
+                    type: goal.type,
+                    color: getGoalColor(goal.id),
+                }))
+            )
+        ) || [];
 
-    return {
-        calendarEvents
-    };
+    return { calendarEvents };
 }

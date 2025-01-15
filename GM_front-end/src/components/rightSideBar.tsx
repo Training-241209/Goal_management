@@ -1,7 +1,7 @@
 import { Avatar, Box } from "@mui/material";
 import { ProSidebar } from "react-pro-sidebar";
 import { Calendar } from "@/components/ui/calendar"
-import React, { useState } from "react";
+import React from "react";
 import "@/styles/rightsidebar.scss"
 import { useQuote } from "@/hooks/use-quote";
 import { useAuth } from "@/features/auth/hooks/use-auth";
