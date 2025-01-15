@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { format} from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Goal } from "../schemas/goalModels";
@@ -33,22 +33,22 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
 
     });
     useEffect(() => {
-        if(goal){
-        form.reset({
-        id: goal.id,
-          objective: goal.objective,
-          description: goal.description,
-          type: goal.type,
-          startDay: goal.startDate ? new Date(goal.startDate) : undefined,
-          endDay: goal.endDate ? new Date(goal.endDate) : undefined,
-        });
+        if (goal) {
+            form.reset({
+                id: goal.id,
+                objective: goal.objective,
+                description: goal.description,
+                type: goal.type,
+                startDay: goal.startDate ? new Date(goal.startDate) : undefined,
+                endDay: goal.endDate ? new Date(goal.endDate) : undefined,
+            });
         }
-        
-      }, [goal]);
 
-      useEffect(()=>{
+    }, [goal]);
+
+    useEffect(() => {
         console.log(form);
-      },[form])
+    }, [form])
 
 
 
@@ -60,7 +60,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
 
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 ">
-           
+
                 <FormField
                     control={form.control}
                     name="objective"
@@ -68,7 +68,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         <FormItem>
                             <FormLabel>Objective</FormLabel>
                             <FormControl>
-                                <Input {...field} min="1"  />
+                                <Input {...field} min="1" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -186,7 +186,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                     />
                 </div>
                 <div className="flex justify-end">
-                    <Button type="submit" disabled={!form.formState.isDirty||isPending}>
+                    <Button type="submit" disabled={!form.formState.isDirty || isPending}>
                         Save
                     </Button>
                 </div>

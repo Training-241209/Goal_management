@@ -1,52 +1,75 @@
-import { Card, CardContent } from "@/components/ui/card"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
-import { useGoals } from "../hooks/use-goals"
+import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { useGoals } from "../hooks/use-goals";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-interface GoalsCarouselProps{
-    onSelect: (SelectedId: number) => void;
+interface GoalsAccordionProps {
+    onSelect: (selectedId: number) => void;
 }
-export function GoalsCarousel({onSelect}:GoalsCarouselProps) {
 
+export function GoalsAccordion({ onSelect }: GoalsAccordionProps) {
     const { data, isLoading } = useGoals();
-    const [selectedId, setSelectedId]= useState(0);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
 
-    useEffect(()=>{
-        onSelect(selectedId);
-    },[selectedId])
+    useEffect(() => {
+        if (selectedId !== null) {
+            onSelect(selectedId);
+        }
+    }, [selectedId, onSelect]);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-[500px]">
+                <div className="text-lg text-gray-500 animate-pulse">Loading goals...</div>
+            </div>
+        );
+    }
 
     return (
-        <Carousel
-            opts={{
-                align: "start",
-            }}
-            orientation="vertical"
-            className="w-full max-w-xs"
-        >
-            <CarouselContent className="-mt-1 h-[500px]">
-                {data?.map(goal => (
-                    <CarouselItem key={goal.id} className="pt-1 md:basis-1/5">
+        <div className="space-y-4">
+            {data?.map((goal) => {
+                let goalClass = "cursor-pointer p-4 transition-colors duration-200 bg-white text-gray-700 hover:bg-gray-50";
+                if (selectedId === goal.id) {
+                    goalClass = "cursor-pointer p-4 transition-colors duration-200 bg-purple-50 text-purple-700 font-semibold";
+                }
 
-                        <Card className={cn('p-0 m-0',selectedId==goal.id? 'border-purple-500 border-4' :'border-none')}onClick={() => setSelectedId(goal.id)}>
-                            <CardContent className="flex items-center justify-center p-6  " >
-                                <span className="text-xl font-semibold text-center focus:text-purple-500">{goal.objective}</span>
-                            </CardContent>
-                        </Card>
+                return (
+                    <Accordion
+                        key={goal.id}
+                        expanded={selectedId === goal.id}
+                        onChange={() => setSelectedId(selectedId === goal.id ? null : goal.id)}
+                        className="border border-gray-200 shadow-sm"
+                    >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls={`panel-${goal.id}-content`}
+                            id={`panel-${goal.id}-header`}
+                            className={cn(goalClass)}
+                        >
+                            <span className="text-lg">{goal.objective}</span>
+                        </AccordionSummary>
 
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-        </Carousel>
-    )
+                        <AccordionDetails className="bg-gray-50 p-4">
+                            {goal.tasks?.map((task) => (
+                                <div key={task.id} className="border-b border-gray-200 py-2">
+                                    <div className="font-medium text-gray-800">{task.name}</div>
+                                    {task.timeFrames?.map((timeFrame) => (
+                                        <div key={timeFrame.id} className="text-sm text-gray-600">
+                                            <span>{timeFrame.date}</span> |{" "}
+                                            <span>
+                                                {timeFrame.startTime} - {timeFrame.endTime}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </AccordionDetails>
+                    </Accordion>
+                );
+            })}
+        </div>
+    );
 }
+
+export default GoalsAccordion;
