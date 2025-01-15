@@ -3,7 +3,7 @@ import { AddGoalForm } from '@/features/goals/components/addGoal-form';
 import { AddTaskForm } from '@/features/goals/components/addTask-form';
 import { GoalDetails } from '@/features/goals/components/goalDetails';
 import GoalsAccordion from '@/features/goals/components/goalsCarousel';
-import { TasksScrollArea } from '@/features/goals/components/Tasks-scrollArea';
+import { TasksTable } from '@/features/goals/components/Tasks-table';
 import { useGoals } from '@/features/goals/hooks/use-goals';
 import { Goal } from '@/features/goals/schemas/goalModels';
 import { createLazyFileRoute } from '@tanstack/react-router'
@@ -15,7 +15,7 @@ export const Route = createLazyFileRoute('/_protected/goals')({
 
 function RouteComponent() {
     const [openAG, setOpenAG] = useState(false);
-    const [openAT, setOpenAT] = useState(false);
+   
     const { data } = useGoals();
     const [selectedGoalId, SetselectedGoalId] = useState(0);
     const [selectedGoal, setSelectedGoal] = useState<Goal | undefined>(undefined);
@@ -52,15 +52,7 @@ function RouteComponent() {
                     <div className="flex-1 bg-white rounded-lg shadow-lg border-l-4 border-purple-500 p-6">
                         <GoalDetails goal={selectedGoal} />
                         <div className="mt-6">
-                            <Button
-                                variant="outline"
-                                onClick={() => setOpenAT(true)}
-                                className="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-md"
-                            >Add Task</Button>
-                            <AddTaskForm goalId={selectedGoal.id} open={openAT} setOpen={setOpenAT} />
-                        </div>
-                        <div className="mt-6">
-                            <TasksScrollArea tasks={selectedGoal.tasks} />
+                            <TasksTable tasks={selectedGoal.tasks} selectedGoalId={selectedGoal.id} />
                         </div>
                     </div>
                 )}

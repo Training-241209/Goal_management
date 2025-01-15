@@ -2,7 +2,8 @@ import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import { useCalendarEvents } from "../hooks/use_calendarevent";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+// import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../styles/calendar.scss"
 import { Card } from "@/components/ui/card";
 import { CalendarEvent } from "@/features/goals/schemas/goalModels";
 
@@ -21,6 +22,7 @@ const MyCalendar: React.FC = () => {
       padding: "10px",
       gap:"15px",
       fontWeight:500,
+      
     };
     return { style };
   };

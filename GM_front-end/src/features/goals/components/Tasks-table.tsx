@@ -2,13 +2,17 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { Task, TimeFrame } from "../schemas/goalModels";
 import { TaskDetailsDialog } from "./taskDetails-Dialog";
 import { useEffect, useState } from "react";
+import { Button } from '@/components/ui/button';
+import { AddTaskForm } from './addTask-form';
 
 interface TasksDataGridProps {
   tasks: Task[];
+  selectedGoalId: number;
 }
 
-export function TasksScrollArea({ tasks }: TasksDataGridProps) {
+export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
   const [open, setOpen] = useState(false);
+  const [openAT, setOpenAT] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>({
     id: 0,
     name: "",
@@ -36,8 +40,8 @@ export function TasksScrollArea({ tasks }: TasksDataGridProps) {
     { field: 'name', headerName: 'Task Name', width: 200 },
     { field: 'description', headerName: 'Description', width: 200 },
     {
-      field: 'timeFrames', 
-      headerName: 'Time Frames', 
+      field: 'timeFrames',
+      headerName: 'Time Frames',
       width: 230,
       renderCell: (params) => formatTimeFrames(params.value as TimeFrame[] | null)
     },
@@ -60,13 +64,30 @@ export function TasksScrollArea({ tasks }: TasksDataGridProps) {
   }, [tasks, selectedTask.id]);
 
   return (
-    <div className="h-72">
-      <h1 className="mb-4 text-sm leading-none font-bold">Tasks</h1>
-      <div style={{ height: 400, width: '100%' }}>
+    <div className="max-h-72">
+      <div className="flex justify-between items-center mb-3">
+        <h1 className="text-sm leading-none font-bold">Tasks</h1>
+        <Button
+          variant="outline"
+          onClick={() => setOpenAT(true)}
+          className="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-md"
+        >Add Task</Button>
+        <AddTaskForm goalId={selectedGoalId} open={openAT} setOpen={setOpenAT} />
+      </div>
+      <div style={{ height:"auto", width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
           onRowClick={(params) => handleOnClick(params.row as Task)}
+          // style={{ height: 350 }}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          pageSizeOptions={[5]}
         />
       </div>
 
