@@ -42,7 +42,6 @@ public class TimeFrameService {
     @Transactional
     public void addTimeFrameRangeToTask(Task task, AddTimeFrameByTaskIdDTO dto) {
 
-        TimeFrame timeFrame = new TimeFrame();
 
         List<LocalDate> dates = new ArrayList<>();
         LocalDate currentDate = dto.getStartDate();
@@ -59,6 +58,7 @@ public class TimeFrameService {
         }
 
         for (LocalDate Date : dates) {
+            TimeFrame timeFrame = new TimeFrame();
             timeFrame.setObjective(dto.getObjective());
             timeFrame.setDate(Date);
             timeFrame.setStartTime(dto.getStartTime());
