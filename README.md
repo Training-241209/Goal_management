@@ -1,6 +1,6 @@
 # Goal Management System
 
-This application allows users to manage their time efficiently, along with setting goals and steps to achieving them.
+The Goal Management System is a web application designed to help users define, organize, and track their goals by breaking them into actionable tasks. Users can allocate specific time slots to each task, and the app features an interactive calendar view to display past and upcoming tasks with their respective time commitments. This system enables users to monitor progress, optimize their schedules, and stay organized, offering an intuitive interface for goal prioritization and time management.
 
 ## Features:
 ### Set a base routine
