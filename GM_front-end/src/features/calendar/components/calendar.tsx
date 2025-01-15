@@ -17,8 +17,10 @@ const MyCalendar: React.FC = () => {
       opacity: 0.9,
       color: "white",
       border: "none",
-      display: "block",
+      display: "flex",
       padding: "10px",
+      gap:"15px",
+      fontWeight:500,
     };
     return { style };
   };
