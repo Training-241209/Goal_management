@@ -18,11 +18,13 @@ public class GoalService {
 
     private  GoalRepository goalRepository;
     private UserService userService;
+    private MailSenderService mailService;
 
    
-    public GoalService (GoalRepository goalRepository, UserService userService){
+    public GoalService (GoalRepository goalRepository, UserService userService, MailSenderService mailService){
         this.goalRepository = goalRepository;
         this.userService = userService;
+        this.mailService = mailService;
     }
         
     public Goal createGoal(AddGoalDTO addGoalDTO) {
@@ -58,7 +60,14 @@ public class GoalService {
         return goalRepository.findAll();
     }
 
-
+    public void newGoalNotification(User user, Goal goal){
+        StringBuilder body = new StringBuilder();
+        body.append("Hello " + user.getFirstName()).append("\n");
+        body.append("Congrats on your first step in self improvement: " + goal.getObjective()).append("\n");
+        body.append("Duration" + goal.getStartDate().toString() + " - " + goal.getEndDate().toString()).append("\n");
+        body.append(goal.getDescription()).append("\n");
+        mailService.sendNewMail(user.getEmail(), "New Goal Adventure!!!", body.toString());
+    }
     public Goal addGoalByUser(User user, AddGoalDTO addGoalDTO) {
 
         Goal goal = new Goal();
@@ -68,6 +77,8 @@ public class GoalService {
         goal.setStartDate(addGoalDTO.getStartDay());
         goal.setEndDate(addGoalDTO.getEndDay());
         goal.setUser(user);
+
+        newGoalNotification(user, goal);
 
         user.getGoals().add(goal);
 
