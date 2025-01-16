@@ -5,11 +5,11 @@ pipeline {
         DOCKER_IMAGE = 'goal-app'
         DOCKER_TAG = "${BUILD_NUMBER}"
         DB_URL = "${DB_HOST}:${DB_PORT}/${DB_NAME}"
-        DB_USER = "${DATABASE_USER}"
-        DB_PASSWORD = "${DATABASE_PASSWORD}"
-        JWT_SECRET = "${JWT_SECRET}"
-        MAIL_SENDING_EMAIL="${MAIL_SENDING_EMAIL}"
-        MAIL_APP_PASSWORD = "${MAIL_APP_PASSWORD}"
+        DB_USER = credentials('DATABASE_USER')
+        DB_PASSWORD = credentials('DATABASE_PASSWORD')
+        JWT_SECRET = credentials('JWT_SECRET')
+        MAIL_SENDING_EMAIL = credentials('MAIL_SENDING_EMAIL')
+        MAIL_APP_PASSWORD = credentials('MAIL_APP_PASSWORD')
 
     }
 
