@@ -24,7 +24,7 @@ pipeline {
                 script {
                     // Build the React app Docker image locally (on Jenkins server) using the Dockerfile
                     dir("${FRONTEND_FOLDER}") {
-                        sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
+                        sh 'docker build --no-cache -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
                     }
                 }
             }
