@@ -139,7 +139,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
 
         >
             <DialogContent className="flex flex-col md:flex-row gap-6 p-6 max-w-4xl">
-                {/* Left Section - Task Details */}
+         
                 <div className="flex-1 min-w-[320px]">
                     <DialogHeader className="mb-4">
                         <DialogTitle className="text-xl font-semibold">Task</DialogTitle>
