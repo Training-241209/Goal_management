@@ -39,7 +39,7 @@ const MyCalendar: React.FC = () => {
         startAccessor="start"
         endAccessor="end"
         eventPropGetter={eventStyleGetter}
-        className="min-h-screen"
+        className="min-h-[800px]"
         views={["month", "week", "day"]}
         defaultView="month"
         tooltipAccessor={tooltipAccessor}
