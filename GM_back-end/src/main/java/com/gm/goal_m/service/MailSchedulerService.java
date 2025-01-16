@@ -33,40 +33,42 @@ public class MailSchedulerService {
         System.out.println("schedular is working");
 
 
-        LocalTime now = LocalTime.now();
 
         List<User> users = userService.getAllUsers();
 
         for (User user: users){
-            List <Task> tasks = taskService.getAllTasks();
+            LocalTime now = LocalTime.now();
 
-            for(Task task: tasks){
-                List <TimeFrame> timeframes = timeFrameService.getAllTimeFrames();
+            System.out.println(user.getEmail());
+            // List <Task> tasks = taskService.getAllTasks();
 
-                for(TimeFrame timeFrame : timeframes){
+            // for(Task task: tasks){
+            //     List <TimeFrame> timeframes = timeFrameService.getAllTimeFrames();
 
-                    Duration duration = Duration.between(timeFrame.getStartTime(), now);
+            //     for(TimeFrame timeFrame : timeframes){
 
-                    if (!duration.isNegative() && duration.toMinutes() <= 10 && !timeFrame.getStatus()) {
+            //         Duration duration = Duration.between(timeFrame.getStartTime(), now);
 
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Hi " + user.getFirstName()).append(",").append("\n");
-                        sb.append("Your Scheduled Time is about to begin").append("\n");
-                        sb.append("Task name: " + task.getName()).append("\n");
-                        sb.append("Start time: " + timeFrame.getStartTime()).append("\n");
-                        sb.append("End time: " + timeFrame.getEndTime()).append("\n");    
+            //         if (!duration.isNegative() && duration.toMinutes() <= 10 && !timeFrame.getStatus()) {
+
+            //             StringBuilder sb = new StringBuilder();
+            //             sb.append("Hi " + user.getFirstName()).append(",").append("\n");
+            //             sb.append("Your Scheduled Time is about to begin").append("\n");
+            //             sb.append("Task name: " + task.getName()).append("\n");
+            //             sb.append("Start time: " + timeFrame.getStartTime()).append("\n");
+            //             sb.append("End time: " + timeFrame.getEndTime()).append("\n");    
                         
-                        // mailSenderService.sendNewMail(user.getEmail(), task.getName(), sb.toString());
+            //             // mailSenderService.sendNewMail(user.getEmail(), task.getName(), sb.toString());
 
-                        System.out.println(sb.toString());
-                    }
+            //             System.out.println(sb.toString());
+            //         }
 
 
-                    timeFrame.getStartTime();
+            //         timeFrame.getStartTime();
 
-                }
+            //     }
 
-            }
+            // }
 
 
         
