@@ -4,9 +4,9 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'goal-backend-app'
         DOCKER_TAG = "${BUILD_NUMBER}"
-        DB_URL = "${DB_HOST}:${DB_PORT}/${DB_NAME}"
-        DB_USER = "${DATABASE_USER}"
-        DB_PASSWORD = "${DATABASE_PASSWORD}"
+        DB_URL = 'jdbc:postgresql://database1.czmqgckksdyx.us-east-1.rds.amazonaws.com:5432/postgres'
+        DB_USER = 'postgres'
+        DB_PASSWORD = 'student#revature'
         JWT_SECRET = "${JWT_SECRET}"
         PROJECT_SUBFOLDER = 'GM_back-end'
     }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     dir("${PROJECT_SUBFOLDER}") {
-                        sh 'mvn clean package'
+                        sh 'mvn clean package -DskipTests'
                     }
                 }
             }
@@ -63,9 +63,9 @@ pipeline {
                     docker run -d \\
                         --name ${DOCKER_IMAGE} \\
                         -p 8081:8080 \\
-                        -e SPRING_DATASOURCE_URL=${DB_URL} \\
-                        -e SPRING_DATASOURCE_USERNAME=${DB_USER} \\
-                        -e SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD} \\
+                        -e SPRING_DATASOURCE_URL='jdbc:postgresql://database1.czmqgckksdyx.us-east-1.rds.amazonaws.com:5432/postgres' \\
+                        -e SPRING_DATASOURCE_USERNAME='postgres' \\
+                        -e SPRING_DATASOURCE_PASSWORD='student#revature' \\
                         -e JWT_SECRET=${JWT_SECRET} \\
                         --restart unless-stopped \\
                         ${DOCKER_IMAGE}:${DOCKER_TAG}

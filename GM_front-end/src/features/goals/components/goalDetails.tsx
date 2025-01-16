@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Goal } from "../schemas/goalModels";
@@ -126,7 +126,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             disabled={(date) =>
-                                                date < new Date() || date > form.getValues("endDay")
+                                                date < addDays(new Date(),-1) || date > form.getValues("endDay")
                                             }
                                             initialFocus
                                         />
@@ -182,7 +182,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                     <Button type="button"
                         variant="destructive"
                         onClick={handleDelete}
-                        disabled={form.formState.isDirty || isPending}>
+                        disabled={form.formState.isDirty || isPending||deleteIsPending}>
                         Delete goal
                     </Button>
                     <Button type="submit" disabled={!form.formState.isDirty || isPending}>

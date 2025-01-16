@@ -33,6 +33,9 @@ import { useAddTimeFrame } from "../hooks/use-addTimeFrame";
 import { toast } from "sonner";
 import { useDeleteTimeFrame } from "../hooks/use-deleteTimeFrame";
 import { useDeleteTask } from "../hooks/use-deleteTask";
+import { Switch } from "@/components/ui/switch";
+import { number } from "zod";
+import { useUptTimeFrameStatus } from "../hooks/use-uptTimeFrameStatus";
 interface TaskDetailsDialogProps {
     task: Task,
     open: boolean
@@ -44,7 +47,8 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
     const { mutate: update, isPending, isSuccess } = useUptTask();
     const { mutate: addTimeFrame, isPending: addTFPending } = useAddTimeFrame();
     const { mutate: deleteTimeFrame, isPending: deleteTFPending } = useDeleteTimeFrame();
-    const { mutate: deleteTask, isPending: deleteIsPending } = useDeleteTask()
+    const { mutate: deleteTask, isPending: deleteIsPending } = useDeleteTask();
+    const {mutate: updateTFStatus} =useUptTimeFrameStatus();
     //const {data: goals} = useGoals();
     const [date, setDate] = useState<DateRange | undefined>({
         from: new Date(),
@@ -57,6 +61,10 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
 
     function handleTimeFrameDelete(id: number) {
         deleteTimeFrame(id);
+    }
+
+    function handleTimeFrameStatusChange(id:number){
+        updateTFStatus(id);
     }
 
     function handleDelete(id: number) {
@@ -144,7 +152,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                     <DialogHeader className="mb-4">
                         <DialogTitle className="text-xl font-semibold">Task</DialogTitle>
                         <DialogDescription className="text-sm text-muted-foreground">
-                            Make changes to your profile here. Click save when you're done.
+                            {/* <Progress value={66} className="w-[60%]" /> */}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -283,6 +291,11 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                         <span className="mx-2">-</span>
                                         <span>{tf.endTime}</span>
                                     </div>
+                                    
+                                    {(new Date(`${tf.date}T${tf.startTime}`) < new Date()) && (
+                                        <Switch checked={tf.status} onCheckedChange={()=>{handleTimeFrameStatusChange(tf.id)}}/>
+                                    )}
+
                                     <Button
                                         type="button"
                                         variant="ghost"

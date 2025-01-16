@@ -15,24 +15,19 @@ public class UpdateTimeFrameDTO {
 
     @NotNull(message = "Missing timeframe id")
     @Min(1)
-    private Long timeFrameId;
-
-    @NotBlank(message = "Missing Objective")
+    private Long id;
+    
     private String objective;
 
-    @NotNull(message = "Missing date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate date;
 
-    @NotNull(message = "Missing start time")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     private LocalTime startTime;
 
-    @NotNull(message = "Missing end time")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     private LocalTime endTime;
 
-    @NotNull(message = "Missing status")
     private Boolean status;
     
 }

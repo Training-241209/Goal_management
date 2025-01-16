@@ -27,7 +27,6 @@ public class TimeFrame {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-
     private boolean status = false;
 
 
@@ -40,6 +39,10 @@ public class TimeFrame {
     @JsonProperty("taskId")
     public Long getTaskId() {
         return task != null ? task.getId() : null;
+    }
+
+    public boolean getStatus(){
+        return this.status;
     }
 
 }
