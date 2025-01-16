@@ -75,10 +75,8 @@ public class UserController {
     }
 
     @GetMapping("/allusers")
-    public ResponseEntity<List<User>> findAllUsers() {
-        List<User> users = new ArrayList<>();
-        users = userService.getAllUsers();
-        return ResponseEntity.ok().body(users);
+    public ResponseEntity<List<User>> findAllUsers() {        
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
     @GetMapping("/me")

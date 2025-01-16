@@ -34,12 +34,12 @@ public class MailSchedulerService {
 
 
 
-        List<User> users = userService.getAllUsers();
+        // List<User> users = userService.getAllUsers();
 
-        for (User user: users){
-            LocalTime now = LocalTime.now();
+        // for (User user: users){
+        //     LocalTime now = LocalTime.now();
 
-            System.out.println(user.getEmail());
+        //     System.out.println(user.getEmail());
             // List <Task> tasks = taskService.getAllTasks();
 
             // for(Task task: tasks){
@@ -74,7 +74,7 @@ public class MailSchedulerService {
         
    
 
-         }
+        //  }
 
     
    

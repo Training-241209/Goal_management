@@ -64,13 +64,7 @@ public class UserService {
     }
    
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        if (userRepository.findAll() != null) {
-            users = userRepository.findAll();
-            System.out.println(users);
-        }
-
-        return users;
+        return userRepository.findAll();
     }
 
     public void updateUser(User user) {
