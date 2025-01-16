@@ -56,7 +56,7 @@ public class MailSchedulerService {
                         sb.append("Start time: " + timeFrame.getStartTime()).append("\n");
                         sb.append("End time: " + timeFrame.getEndTime()).append("\n");    
                         
-                        mailSenderService.sendNewMail(user.getEmail(), task.getName(), sb.toString());
+                        // mailSenderService.sendNewMail(user.getEmail(), task.getName(), sb.toString());
 
                         System.out.println(sb.toString());
                     }
