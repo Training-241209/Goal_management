@@ -8,9 +8,11 @@ import { AddTaskForm } from './addTask-form';
 interface TasksDataGridProps {
   tasks: Task[];
   selectedGoalId: number;
+  goalEndDate: string,
+  goalStartDate: string
 }
 
-export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
+export function TasksTable({ tasks, selectedGoalId, goalEndDate, goalStartDate }: TasksDataGridProps) {
   const [open, setOpen] = useState(false);
   const [openAT, setOpenAT] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>({
@@ -91,7 +93,7 @@ export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
         />
       </div>
 
-      <TaskDetailsDialog open={open} setOpen={setOpen} task={selectedTask} />
+      <TaskDetailsDialog open={open} setOpen={setOpen} task={selectedTask} goalEndDate={goalEndDate} goalStartDate={goalStartDate}/>
     </div>
   );
 }

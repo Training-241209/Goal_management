@@ -8,7 +8,9 @@ export function useUptTimeFrameStatus() {
 
   return useMutation({
     mutationFn: async (id: number) => {
-        const resp = await axiosInstance.patch("/user/goal/task/timeframe/status", { data: { id } });
+      console.log("ID:"+id);
+        const resp = await axiosInstance.patch("/user/goal/task/timeframe/status", { id });
+        
         return resp.data;
     },
     onSuccess: () => {

@@ -19,7 +19,7 @@ import { Task, TimeFrameRequest } from "../schemas/goalModels";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { CalendarIcon, DeleteIcon, DiamondPlus } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -34,21 +34,24 @@ import { toast } from "sonner";
 import { useDeleteTimeFrame } from "../hooks/use-deleteTimeFrame";
 import { useDeleteTask } from "../hooks/use-deleteTask";
 import { Switch } from "@/components/ui/switch";
-import { number } from "zod";
 import { useUptTimeFrameStatus } from "../hooks/use-uptTimeFrameStatus";
+import { Progress } from "@/components/ui/progress";
 interface TaskDetailsDialogProps {
     task: Task,
     open: boolean
-    setOpen: (value: boolean) => void
+    setOpen: (value: boolean) => void,
+    goalEndDate: string,
+    goalStartDate: string
 }
 
-export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProps) {
+export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartDate }: TaskDetailsDialogProps) {
 
     const { mutate: update, isPending, isSuccess } = useUptTask();
     const { mutate: addTimeFrame, isPending: addTFPending } = useAddTimeFrame();
     const { mutate: deleteTimeFrame, isPending: deleteTFPending } = useDeleteTimeFrame();
     const { mutate: deleteTask, isPending: deleteIsPending } = useDeleteTask();
-    const {mutate: updateTFStatus} =useUptTimeFrameStatus();
+    const { mutate: updateTFStatus } = useUptTimeFrameStatus();
+    const [progress, setProgress]= useState(0);
     //const {data: goals} = useGoals();
     const [date, setDate] = useState<DateRange | undefined>({
         from: new Date(),
@@ -63,7 +66,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
         deleteTimeFrame(id);
     }
 
-    function handleTimeFrameStatusChange(id:number){
+    function handleTimeFrameStatusChange(id: number) {
         updateTFStatus(id);
     }
 
@@ -111,16 +114,7 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
             description: task.description
         }
     });
-
-    useEffect(() => {
-        if (isSuccess === true) {
-            form.reset({
-                id: task.id,
-                name: task.name,
-                description: task.description
-            });
-        }
-    }, [isSuccess]);
+    
 
     useEffect(() => {
         if (task) {
@@ -130,6 +124,10 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                 name: task.name,
                 description: task.description
             });
+            const completedTimeFrames = task.timeFrames?.filter(tf => tf.status).length || 0;
+            const totalTimeFrames = task.timeFrames?.length || 0;
+            const progressPercentage = totalTimeFrames > 0 ? (completedTimeFrames / totalTimeFrames) * 100 : 1;
+            setProgress(progressPercentage>0? progressPercentage:1);
         }
     }, [task]);
 
@@ -147,12 +145,12 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
 
         >
             <DialogContent className="flex flex-col md:flex-row gap-6 p-6 max-w-4xl">
-         
+
                 <div className="flex-1 min-w-[320px]">
                     <DialogHeader className="mb-4">
                         <DialogTitle className="text-xl font-semibold">Task</DialogTitle>
                         <DialogDescription className="text-sm text-muted-foreground">
-                            {/* <Progress value={66} className="w-[60%]" /> */}
+                            <Progress value={progress} className="w-[60%]" indicatorClassName={cn(progress>30?"bg-green-500":(progress>60?"bg-purple-500":"bg-yellow-500"))}/>
                         </DialogDescription>
                     </DialogHeader>
 
@@ -250,6 +248,11 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                     selected={date}
                                     onSelect={setDate}
                                     numberOfMonths={2}
+                                    disabled=
+                                    {(date) =>
+                                        date < addDays(new Date(goalStartDate), -1) || date > new Date(goalEndDate) || date < addDays(new Date(),-1)
+                                    }
+
                                 />
                             </PopoverContent>
                         </Popover>
@@ -285,15 +288,15 @@ export function TaskDetailsDialog({ task, open, setOpen }: TaskDetailsDialogProp
                                     className="flex justify-between items-center p-3 rounded-lg hover:bg-muted/50 transition-colors"
                                 >
                                     <div className="text-sm font-medium">
-                                        <span className="text-muted-foreground">{tf.date}</span>
+                                        <span className="text-muted-foreground"> {format(new Date(tf.date), "LLL dd, y")}</span>
                                         <span className="mx-2">|</span>
-                                        <span>{tf.startTime}</span>
+                                        <span>{format(new Date(`${tf.date}T${tf.startTime}`), "hh:mm a")}</span>
                                         <span className="mx-2">-</span>
-                                        <span>{tf.endTime}</span>
+                                        <span>{format(new Date(`${tf.date}T${tf.endTime}`), "hh:mm a")}</span>
                                     </div>
-                                    
+
                                     {(new Date(`${tf.date}T${tf.startTime}`) < new Date()) && (
-                                        <Switch checked={tf.status} onCheckedChange={()=>{handleTimeFrameStatusChange(tf.id)}}/>
+                                        <Switch checked={tf.status} onCheckedChange={() => { handleTimeFrameStatusChange(tf.id) }} />
                                     )}
 
                                     <Button
