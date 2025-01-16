@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // SSH into EC2 and stop/remove any old container
-                    sh """
+                  sshagent(['ec2-private']) { sh """
                     ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_EC2_HOST 'docker stop ${DOCKER_IMAGE} || true'
                     ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_EC2_HOST 'docker rm ${DOCKER_IMAGE} || true'
 
@@ -59,7 +59,7 @@ pipeline {
                         docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .  # Build Docker image
                         docker run -d -p 80:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}  # Run container
                     EOF
-                    """
+                    """}
                 }
             }
         }
