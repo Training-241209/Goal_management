@@ -37,9 +37,7 @@ public class TimeFrameController {
     }
 
     @PostMapping("timeframe")
-    public ResponseEntity<?> addTimeFrameByTaskId(@Valid @RequestBody AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
-
-        
+    public ResponseEntity<?> addTimeFrameByTaskId(@Valid @RequestBody AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {        
 
         Task task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
 

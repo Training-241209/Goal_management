@@ -80,7 +80,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
 
     function handleTimeFrameCreation() {
         if (date?.from && value[0] && value[1]) {
-            if (date.from.getDate() < new Date().getDate()) {
+            if (isBeforeStripingTime(date.from, new Date())) {
                 toast.error("The selected date range must be in the future.");
                 return;
             }
@@ -103,6 +103,15 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
         else {
             toast.warning("Time range is required.")
         }
+    }
+
+    function isBeforeStripingTime(date1: Date, date2: Date){
+        const stripTime = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        const strippedDate1 = stripTime(date1);
+        const strippedDate2 = stripTime(date2);
+
+        return strippedDate1 < strippedDate2;
     }
 
     // 1. Define your form.
