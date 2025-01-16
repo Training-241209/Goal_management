@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { AddGoalForm } from '@/features/goals/components/addGoal-form';
-import { AddTaskForm } from '@/features/goals/components/addTask-form';
 import { GoalDetails } from '@/features/goals/components/goalDetails';
 import GoalsAccordion from '@/features/goals/components/goalsCarousel';
 import { TasksTable } from '@/features/goals/components/Tasks-table';

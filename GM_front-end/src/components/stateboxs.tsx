@@ -1,6 +1,14 @@
-import { Box, Card, CardContent, colors} from "@mui/material";
+import { Box, Card, CardContent} from "@mui/material";
 
-export function StatBox({title, value, description, icon:Icon, iconClassName}){
+interface StatBoxProps {
+    title: string;
+    value: string | number;
+    description: string;
+    icon: React.ComponentType<{ className?: string }>;
+    iconClassName?: string;
+}
+
+export function StatBox({title, value, description, icon:Icon, iconClassName}:StatBoxProps){
     return <>
         <Card className="flex-1 p-6 rounded-xl shadow-sm">
             <CardContent className="space-y-2">

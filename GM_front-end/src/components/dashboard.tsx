@@ -1,7 +1,6 @@
 import { useUserStats } from "@/features/auth/hooks/use_userstat";
 import { NewsCard } from "./newsCard";
 import { StatBox } from "./stateboxs";
-import { TaskTable } from "./taskTable";
 import Goalsvg from "@/assets/GM.svg"
 import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -26,7 +25,6 @@ export function Dashboard() {
                 </div>
             </div>
 
-            {/* stateboxes */}
             <div className="mx-auto mt-5 overflow-hidden">
                 <div className="flex gap-12 flex-wrap">
                     <StatBox title="Total Goals" value={totalGoals} description="Goals set" icon={ModeStandbyIcon} iconClassName="text-orange-500"/>
