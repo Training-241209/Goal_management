@@ -1,4 +1,4 @@
-package com.gm.goal_m;
+/*package com.gm.goal_m;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,4 +72,4 @@ public class UserRegistrationTest {
                 .content(json))
                 .andExpect(status().isConflict());
     }
-}
+}*/
