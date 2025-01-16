@@ -8,7 +8,7 @@ type Quote = {
 };
 
 export function useQuote() {
-  const { data, isLoading, error } = useQuery({
+  const { data} = useQuery({
     queryKey: ["quote"],
     queryFn: async () => {
       try {
@@ -30,8 +30,6 @@ export function useQuote() {
   return {
     quote: data?.quote,
     author: data?.author,
-    category: data?.category,
-    isLoading,
-    error,
+    category: data?.category
   };
 }
