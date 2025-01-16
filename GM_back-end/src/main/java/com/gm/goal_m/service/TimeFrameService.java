@@ -93,12 +93,26 @@ public class TimeFrameService {
     }
 
     public TimeFrame updateTimeFrame(UpdateTimeFrameDTO updateTimeFrameDTO) {
-        TimeFrame timeFrame = getTimeFrameById(updateTimeFrameDTO.getTimeFrameId());
-        timeFrame.setDate(updateTimeFrameDTO.getDate());
-        timeFrame.setStartTime(updateTimeFrameDTO.getStartTime());
-        timeFrame.setEndTime(updateTimeFrameDTO.getEndTime());
-        timeFrame.setStatus(updateTimeFrameDTO.getStatus());
+        TimeFrame timeFrame = getTimeFrameById(updateTimeFrameDTO.getId());
+        if (updateTimeFrameDTO.getDate() != null) {
+            timeFrame.setDate(updateTimeFrameDTO.getDate());
+        }
+        if (updateTimeFrameDTO.getStartTime() != null) {
+            timeFrame.setStartTime(updateTimeFrameDTO.getStartTime());
+        }
+        if (updateTimeFrameDTO.getEndTime() != null) {
+            timeFrame.setEndTime(updateTimeFrameDTO.getEndTime());
+        }
+        if (updateTimeFrameDTO.getStatus() != null) {
+            timeFrame.setStatus(updateTimeFrameDTO.getStatus());
+        }
 
+        return timeFrameRepository.save(timeFrame);
+    }
+
+    public TimeFrame updateTimeFrameStatus(long id) {
+        TimeFrame timeFrame = getTimeFrameById(id);
+        timeFrame.setStatus(!timeFrame.getStatus());
         return timeFrameRepository.save(timeFrame);
     }
 

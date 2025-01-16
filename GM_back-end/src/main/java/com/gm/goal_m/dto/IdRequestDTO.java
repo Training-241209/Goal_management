@@ -1,11 +1,11 @@
-package com.gm.goal_m.dto.TaskDTOs;
+package com.gm.goal_m.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class TaskRequestDTO {
+public class IdRequestDTO {
 
     @NotNull(message = "Missing id")
     @Min(1)

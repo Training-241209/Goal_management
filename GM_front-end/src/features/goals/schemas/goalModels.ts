@@ -19,7 +19,8 @@ export type TimeFrame = {
     id: number,
     date: string,
     startTime: string,
-    endTime: string
+    endTime: string,
+    status: boolean
 }
 
 export type TimeFrameRequest = {
