@@ -294,7 +294,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                                         <span className="mx-2">-</span>
                                         <span>{format(new Date(`${tf.date}T${tf.endTime}`), "hh:mm a")}</span>
                                     </div>
-
+                                    <div>
                                     {(new Date(`${tf.date}T${tf.startTime}`) < new Date()) && (
                                         <Switch checked={tf.status} onCheckedChange={() => { handleTimeFrameStatusChange(tf.id) }} />
                                     )}
@@ -309,6 +309,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                                     >
                                         <DeleteIcon className="h-4 w-4" />
                                     </Button>
+                                    </div>
                                 </figure>
                             ))}
                         </div>
