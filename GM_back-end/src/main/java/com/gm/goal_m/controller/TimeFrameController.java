@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gm.goal_m.dto.IdRequestDTO;
 import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.UpdateTaskDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
@@ -58,7 +59,21 @@ public class TimeFrameController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to update goal" + e.getMessage());
+                    .body("Failed to update timeframe" + e.getMessage());
+        }
+    }
+
+    @PatchMapping("/timeframe/status")
+    public ResponseEntity<?> updateTimeFrameStatusById(@Valid @RequestBody IdRequestDTO idDto,
+            HttpServletRequest request) {
+        try {
+
+            TimeFrame retBody = timeFrameService.updateTimeFrameStatus(idDto.getId());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(retBody);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update timeframe" + e.getMessage());
         }
     }
 
