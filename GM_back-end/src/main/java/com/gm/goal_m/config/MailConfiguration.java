@@ -14,7 +14,7 @@ public class MailConfiguration {
     private String senderEmail;
     private String senderAppPassword;
     @Bean
-    public JavaMailSender getJavaMailSender(@Value("${mail.username}") String senderEmail, @Value("${mail.password}") String senderAppPassword) {
+    public JavaMailSender getJavaMailSender(@Value("${spring.mail.username}") String senderEmail, @Value("${spring.mail.password}") String senderAppPassword) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);

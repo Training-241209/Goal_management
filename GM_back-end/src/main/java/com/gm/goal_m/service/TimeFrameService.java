@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gm.goal_m.dto.TaskDTOs.GetTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.UpdateTimeFrameDTO;
 import com.gm.goal_m.exception.custom.DuplicateException;
@@ -17,7 +16,6 @@ import com.gm.goal_m.model.TimeFrame;
 import com.gm.goal_m.repository.TimeFrameRepository;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
