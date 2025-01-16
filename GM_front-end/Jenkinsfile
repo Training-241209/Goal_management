@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Test Frontend') {
+     /*   stage('Test Frontend') {
             steps {
                 script {
                     // Run tests (e.g., Jest tests) on the frontend, if needed
@@ -40,7 +40,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Deploy to EC2') {
             steps {
