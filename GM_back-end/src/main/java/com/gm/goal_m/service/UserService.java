@@ -12,7 +12,10 @@ import com.gm.goal_m.dto.UserDTOs.UserRequestRegDTO;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
