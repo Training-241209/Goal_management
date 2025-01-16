@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'goal-backend-app'
         DOCKER_TAG = "${BUILD_NUMBER}"
-        DB_URL = "${DB_HOST}:${DB_PORT}/${DB_NAME}"
+        DB_URL = "jdbc:postgresql://${DB_HOST2}:${DB_PORT}/${DB_NAME}"
         DB_USER = "${DATABASE_USER}"
         DB_PASSWORD = "${DATABASE_PASSWORD}"
         JWT_SECRET = "${JWT_SECRET}"
