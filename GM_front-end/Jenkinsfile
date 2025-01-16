@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'goal-frontend-app'
         DOCKER_TAG = "${BUILD_NUMBER}"
-        AWS_EC2_HOST = '18.119.159.233'  // Public IP of your EC2 instance
+        AWS_EC2_HOST = '18.217.187.244'  // Public IP of your EC2 instance
         AWS_USER = 'ec2-user'  // Username for EC2 (Amazon Linux or Ubuntu)
         FRONTEND_FOLDER = 'GM_front-end' // Folder containing the frontend code
     }
