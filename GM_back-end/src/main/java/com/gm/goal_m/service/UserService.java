@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.gm.goal_m.dto.GenericDTOs.UserDTO;
 import com.gm.goal_m.dto.UserDTOs.UserLoginRequest;
 import com.gm.goal_m.dto.UserDTOs.UserRequestRegDTO;
 import com.gm.goal_m.model.User;
@@ -65,6 +66,15 @@ public class UserService {
    
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public List<UserDTO> getAllUsersDTO(){
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : getAllUsers()) {
+            UserDTO userDTO = new UserDTO(user);
+            userDTOs.add(userDTO);
+        }
+        return userDTOs;
     }
 
     public void updateUser(User user) {

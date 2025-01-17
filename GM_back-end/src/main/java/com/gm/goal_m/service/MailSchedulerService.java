@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.gm.goal_m.dto.GenericDTOs.GoalDTO;
+import com.gm.goal_m.dto.GenericDTOs.UserDTO;
 import com.gm.goal_m.model.Goal;
 import com.gm.goal_m.model.Task;
 import com.gm.goal_m.model.TimeFrame;
@@ -37,49 +39,66 @@ public class MailSchedulerService {
         System.out.println("schedular is working/n/n");
 
 
-        List<User> users = userService.getAllUsers();
+        List<UserDTO> users = userService.getAllUsersDTO();
 
-        for (User user: users){
-            LocalTime now = LocalTime.now();
+        for (UserDTO user: users){
 
-            if(user.getGoals().isEmpty())  continue;
+            System.out.println("user:" + user.getEmail());
+            for(GoalDTO goal: user.getGoals()){
+                System.out.println(">"+goal.getObjective());
+            }
 
-            for(Goal goal : user.getGoals()){
+        }
+        
 
-                if(goal.getTasks().isEmpty())  continue;
+        // for (User user: users){
+        //     LocalTime now = LocalTime.now();
 
-                for(Task task : goal.getTasks()){     
+        //     // List<Goal> goals = user.getGoals();
 
-                    if(task.getTimeFrames().isEmpty()) continue;
+        //     // for(Goal goal:goals){
+        //     //     System.out.println(goal.getObjective());
+        //     // }
+            
+            
+        //     if(user.getGoals().isEmpty())  continue;
+
+        //     for(Goal goal : user.getGoals()){
+
+        //         if(goal.getTasks().isEmpty())  continue;
+
+        //         for(Task task : goal.getTasks()){     
+
+        //             if(task.getTimeFrames().isEmpty()) continue;
          
 
-                    for(TimeFrame timeFrame : task.getTimeFrames()){
+        //             for(TimeFrame timeFrame : task.getTimeFrames()){
     
-                        Duration duration = Duration.between(timeFrame.getStartTime(), now);
+        //                 Duration duration = Duration.between(timeFrame.getStartTime(), now);
     
-                        if (!duration.isNegative() && duration.toMinutes() <= 1 && !timeFrame.getStatus()) {
+        //                 if (!duration.isNegative() && duration.toMinutes() <= 1 && !timeFrame.getStatus()) {
 
     
-                            StringBuilder sb = new StringBuilder();
-                            sb.append("Hi " + user.getFirstName()).append(",").append("\n");
-                            sb.append("Goal: " + goal);
-                            sb.append("Task name: " + task.getName()).append("\n");
-                            sb.append("Start time: " + timeFrame.getStartTime()).append("\n");
-                            sb.append("End time: " + timeFrame.getEndTime()).append("\n");    
+        //                     StringBuilder sb = new StringBuilder();
+        //                     sb.append("Hi " + user.getFirstName()).append(",").append("\n");
+        //                     sb.append("Goal: " + goal);
+        //                     sb.append("Task name: " + task.getName()).append("\n");
+        //                     sb.append("Start time: " + timeFrame.getStartTime()).append("\n");
+        //                     sb.append("End time: " + timeFrame.getEndTime()).append("\n");    
                             
-                            mailSenderService.sendNewMail(user.getEmail(), task.getName(), sb.toString());
+        //                     mailSenderService.sendNewMail(user.getEmail(), task.getName(), sb.toString());
     
-                            System.out.println("timeframe present");
-                        }
-                    }
+        //                     System.out.println("timeframe present");
+        //                 }
+        //             }
     
-                }
+        //         }
 
 
-            }   
+        //     }   
    
 
-         }
+        //  }
 
     
    
