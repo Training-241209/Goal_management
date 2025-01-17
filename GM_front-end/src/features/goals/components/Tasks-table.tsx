@@ -4,7 +4,7 @@ import { TaskDetailsDialog } from "./taskDetails-Dialog";
 import { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
 import { AddTaskForm } from './addTask-form';
-
+import "../styles/style.css"
 interface TasksDataGridProps {
   tasks: Task[],
   selectedGoalId: number,
@@ -12,7 +12,7 @@ interface TasksDataGridProps {
   goalStartDate: string
 }
 
-export function TasksTable({ tasks, selectedGoalId, goalEndDate , goalStartDate}: TasksDataGridProps) {
+export function TasksTable({ tasks, selectedGoalId, goalEndDate, goalStartDate }: TasksDataGridProps) {
   const [open, setOpen] = useState(false);
   const [openAT, setOpenAT] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>({
@@ -43,7 +43,7 @@ export function TasksTable({ tasks, selectedGoalId, goalEndDate , goalStartDate}
   };
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Task Name', flex:1 },
+    { field: 'name', headerName: 'Task Name', flex: 1 },
     { field: 'description', headerName: 'Description', width: 200 },
     {
       field: 'timeFrameCount',
@@ -71,7 +71,7 @@ export function TasksTable({ tasks, selectedGoalId, goalEndDate , goalStartDate}
   }, [tasks, selectedTask.id]);
 
   return (
-    <div className="max-h-72">
+    <div className=" bg-gray-300 p-2 rounded-lg ">
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-sm leading-none font-bold">Tasks</h1>
         <Button
