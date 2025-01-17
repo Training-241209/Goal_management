@@ -46,7 +46,7 @@ interface TaskDetailsDialogProps {
 
 export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartDate }: TaskDetailsDialogProps) {
 
-    const { mutate: update, isPending, isSuccess } = useUptTask();
+    const { mutate: update, isPending} = useUptTask();
     const { mutate: addTimeFrame, isPending: addTFPending } = useAddTimeFrame();
     const { mutate: deleteTimeFrame, isPending: deleteTFPending } = useDeleteTimeFrame();
     const { mutate: deleteTask, isPending: deleteIsPending } = useDeleteTask();
