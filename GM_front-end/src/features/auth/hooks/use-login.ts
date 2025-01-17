@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { LoginSchema } from "../schemas/login-schema";
 import { axiosInstance } from "@/lib/axios-config";
+import { toast } from "sonner";
 
 export function useLogin() {
   const queryClient = useQueryClient();
@@ -20,7 +21,7 @@ export function useLogin() {
     },
     onError: () => {
       
-      console.error("Failed to login.");
+      toast.error("Failed to login.");
     },
   });
 }
