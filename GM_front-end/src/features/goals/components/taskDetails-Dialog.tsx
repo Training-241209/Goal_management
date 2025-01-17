@@ -46,12 +46,12 @@ interface TaskDetailsDialogProps {
 
 export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartDate }: TaskDetailsDialogProps) {
 
-    const { mutate: update, isPending} = useUptTask();
+    const { mutate: update, isPending } = useUptTask();
     const { mutate: addTimeFrame, isPending: addTFPending } = useAddTimeFrame();
     const { mutate: deleteTimeFrame, isPending: deleteTFPending } = useDeleteTimeFrame();
     const { mutate: deleteTask, isPending: deleteIsPending } = useDeleteTask();
     const { mutate: updateTFStatus } = useUptTimeFrameStatus();
-    const [progress, setProgress]= useState(0);
+    const [progress, setProgress] = useState(0);
     //const {data: goals} = useGoals();
     const [date, setDate] = useState<DateRange | undefined>({
         from: new Date(),
@@ -105,7 +105,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
         }
     }
 
-    function isBeforeStripingTime(date1: Date, date2: Date){
+    function isBeforeStripingTime(date1: Date, date2: Date) {
         const stripTime = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
         const strippedDate1 = stripTime(date1);
@@ -123,7 +123,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
             description: task.description
         }
     });
-    
+
 
     useEffect(() => {
         if (task) {
@@ -136,7 +136,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
             const completedTimeFrames = task.timeFrames?.filter(tf => tf.status).length || 0;
             const totalTimeFrames = task.timeFrames?.length || 0;
             const progressPercentage = totalTimeFrames > 0 ? (completedTimeFrames / totalTimeFrames) * 100 : 1;
-            setProgress(progressPercentage>0? progressPercentage:1);
+            setProgress(progressPercentage > 0 ? progressPercentage : 1);
         }
     }, [task]);
 
@@ -153,13 +153,26 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
             }}
 
         >
+
+
+
             <DialogContent className="flex flex-col md:flex-row gap-6 p-6 max-w-4xl">
 
                 <div className="flex-1 min-w-[320px]">
+                    <div className="flex justify-between items-center w-full text-sm font-medium text-muted-foreground mb-4">
+                        <div>
+                            <span className="font-semibold text-black">Goal Start Date: </span>
+                            {format(new Date(goalStartDate), "LLL dd, yyyy")}
+                        </div>
+                        <div>
+                            <span className="font-semibold text-black">Goal End Date: </span>
+                            {format(new Date(goalEndDate), "LLL dd, yyyy")}
+                        </div>
+                    </div>
                     <DialogHeader className="mb-4">
                         <DialogTitle className="text-xl font-semibold">Task</DialogTitle>
                         <DialogDescription className="text-sm text-muted-foreground">
-                            <Progress value={progress} className="w-[60%]" indicatorClassName={cn(progress>30?"bg-green-500":(progress>60?"bg-purple-500":"bg-yellow-500"))}/>
+                            <Progress value={progress} className="w-[60%]" indicatorClassName={cn(progress > 30 ? "bg-green-500" : (progress > 60 ? "bg-purple-500" : "bg-yellow-500"))} />
                         </DialogDescription>
                     </DialogHeader>
 
@@ -220,8 +233,8 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                     </Form>
                 </div>
 
-                <div className="flex-1 min-w-[320px] space-y-4">
-                    <h1 className="text-lg font-semibold">TimeFrames</h1>
+                <div className="flex-1 min-w-[320px] space-y-4  bg-purple-50">
+                    <h1 className="text-lg font-semibold">TimeFramessssssss</h1>
 
                     <div className="space-y-4">
                         <Popover>
@@ -259,7 +272,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                                     numberOfMonths={2}
                                     disabled=
                                     {(date) =>
-                                        date < addDays(new Date(goalStartDate), -1) || date > new Date(goalEndDate) || date < addDays(new Date(),-1)
+                                        date < addDays(new Date(goalStartDate), -1) || date > new Date(goalEndDate) || date < addDays(new Date(), -1)
                                     }
 
                                 />
@@ -304,20 +317,20 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                                         <span>{format(new Date(`${tf.date}T${tf.endTime}`), "hh:mm a")}</span>
                                     </div>
                                     <div>
-                                    {(new Date(`${tf.date}T${tf.startTime}`) < new Date()) && (
-                                        <Switch checked={tf.status} onCheckedChange={() => { handleTimeFrameStatusChange(tf.id) }} />
-                                    )}
+                                        {(new Date(`${tf.date}T${tf.startTime}`) < new Date()) && (
+                                            <Switch checked={tf.status} onCheckedChange={() => { handleTimeFrameStatusChange(tf.id) }} />
+                                        )}
 
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleTimeFrameDelete(tf.id)}
-                                        disabled={deleteTFPending}
-                                        className="hover:bg-destructive/10 hover:text-destructive"
-                                    >
-                                        <DeleteIcon className="h-4 w-4" />
-                                    </Button>
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => handleTimeFrameDelete(tf.id)}
+                                            disabled={deleteTFPending}
+                                            className="hover:bg-destructive/10 hover:text-destructive"
+                                        >
+                                            <DeleteIcon className="h-4 w-4" />
+                                        </Button>
                                     </div>
                                 </figure>
                             ))}
