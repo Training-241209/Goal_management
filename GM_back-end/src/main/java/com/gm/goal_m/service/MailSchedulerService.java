@@ -37,7 +37,6 @@ public class MailSchedulerService {
         System.out.println("schedular is working/n/n");
 
 
-
         List<User> users = userService.getAllUsers();
 
         for (User user: users){
@@ -52,12 +51,14 @@ public class MailSchedulerService {
                 for(Task task : goal.getTasks()){     
 
                     if(task.getTimeFrames().isEmpty()) continue;
+         
 
                     for(TimeFrame timeFrame : task.getTimeFrames()){
     
                         Duration duration = Duration.between(timeFrame.getStartTime(), now);
     
-                        if (!duration.isNegative() && duration.toMinutes() <= 5 && !timeFrame.getStatus()) {
+                        if (!duration.isNegative() && duration.toMinutes() <= 1 && !timeFrame.getStatus()) {
+
     
                             StringBuilder sb = new StringBuilder();
                             sb.append("Hi " + user.getFirstName()).append(",").append("\n");
