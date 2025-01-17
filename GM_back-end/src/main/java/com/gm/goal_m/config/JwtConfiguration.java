@@ -7,18 +7,22 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Arrays;
 
+import javax.crypto.SecretKey;
+
 @Configuration
 public class JwtConfiguration {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
+    //@Value("${jwt.secret}")
+    private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256) ;
 
     public Key getSecretKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
+        // return Keys.hmacShaKeyFor(secretKey.getBytes());
+        return secretKey;
     }
 
     @Bean
