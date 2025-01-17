@@ -71,7 +71,7 @@ export function TasksTable({ tasks, selectedGoalId, goalEndDate, goalStartDate }
   }, [tasks, selectedTask.id]);
 
   return (
-    <div className=" bg-gray-300 p-2 rounded-lg ">
+    <div className=" bg-gray-300 p-5 rounded-lg ">
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-sm leading-none font-bold">Tasks</h1>
         <Button
