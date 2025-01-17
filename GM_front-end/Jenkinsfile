@@ -63,7 +63,7 @@ pipeline {
                                 cd /home/$AWS_USER/${FRONTEND_FOLDER}  # Change to the frontend folder
                                 docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .  # Build Docker image
                                 docker run -d -p 80:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}  # Run container
-                            EOF
+                            
                         """
                     }
                 }
