@@ -81,7 +81,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                     name="objective"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="flex justify-between">
+                            <FormLabel className="flex justify-between font-bold">
                                 Objective 
                                 {areAllTimeframesCompleted() ? ( isTimeFramesEmpty() ? <Badge variant="secondary">Not started</Badge> : <Badge variant="completed">Achieved</Badge>) : <Badge variant="pending">In Progress</Badge>}
                             </FormLabel>
@@ -98,7 +98,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                     name="description"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Description</FormLabel>
+                            <FormLabel className="font-bold">Description</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="Description" {...field} maxLength={255} className="max-h-52" />
                             </FormControl>
@@ -112,7 +112,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         name="startDay"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
-                                <FormLabel>Start day</FormLabel>
+                                <FormLabel className="font-bold">Start day</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <FormControl>
@@ -153,7 +153,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         name="endDay"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
-                                <FormLabel>End day</FormLabel>
+                                <FormLabel className="font-bold">End day</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <FormControl>
