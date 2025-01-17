@@ -151,6 +151,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                 form.reset();
                 setOpen(false);
             }}
+            
 
         >
 
@@ -234,7 +235,17 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                 </div>
 
                 <div className="flex-1 min-w-[320px] space-y-4  bg-purple-50">
-                    <h1 className="text-lg font-semibold">TimeFramessssssss</h1>
+                <div className="flex justify-between items-center w-full text-sm font-medium text-muted-foreground mb-4">
+                        <div>
+                            <span className="font-semibold text-black">Goal Start Date: </span>
+                            {format(new Date(goalStartDate), "LLL dd, yyyy")}
+                        </div>
+                        <div>
+                            <span className="font-semibold text-black">Goal End Date: </span>
+                            {format(new Date(goalEndDate), "LLL dd, yyyy")}
+                        </div>
+                    </div>
+                    <h1 className="text-lg font-semibold">TimeFrames</h1>
 
                     <div className="space-y-4">
                         <Popover>
