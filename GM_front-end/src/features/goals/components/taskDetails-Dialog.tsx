@@ -233,7 +233,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                     </Form>
                 </div>
 
-                <div className="flex-1 min-w-[320px] space-y-4">
+                <div className="flex-1 min-w-[320px] space-y-4  bg-purple-50">
                     <h1 className="text-lg font-semibold">TimeFrames</h1>
 
                     <div className="space-y-4">
