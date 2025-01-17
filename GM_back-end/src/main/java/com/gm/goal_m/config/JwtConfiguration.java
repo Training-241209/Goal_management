@@ -8,11 +8,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
+import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 public class JwtConfiguration {
@@ -21,7 +27,10 @@ public class JwtConfiguration {
     private String secretKey  ;
 
     public Key getSecretKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
+        
+        // Optionally encode to Base64 (useful for JWT libraries)
+        String base64Key = Base64.getEncoder().encodeToString(secretKey.getBytes());        
+        return new SecretKeySpec(base64Key.getBytes(), "HmacSHA256");
     }
 
     @Bean
