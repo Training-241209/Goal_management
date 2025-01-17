@@ -3,7 +3,15 @@ package com.gm.goal_m.service;
 import org.springframework.stereotype.Service;
 import com.gm.goal_m.config.JwtConfiguration;
 import com.gm.goal_m.model.User;
+
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.InvalidKeyException;
+import io.jsonwebtoken.security.SignatureException;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +29,7 @@ public class JwtService {
         this.jwtConfiguration = jwtConfiguration;
     }
 
-    public String generateToken(User user) {
+    public String generateToken(User user) throws InvalidKeyException, NoSuchAlgorithmException {
         return Jwts.builder()
                 .claim("email", user.getEmail())
                 .claim("firstname", user.getFirstName())
@@ -32,7 +40,7 @@ public class JwtService {
                 .compact();
     }
 
-    public String decodeTokenEmail(String token) {
+    public String decodeTokenEmail(String token) throws SignatureException, ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, IllegalArgumentException, NoSuchAlgorithmException {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
                 .build()
@@ -43,7 +51,7 @@ public class JwtService {
         return email;
     }
 
-    public String decodeToken(String token) {
+    public String decodeToken(String token) throws SignatureException, ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, IllegalArgumentException, NoSuchAlgorithmException {
         var claims = Jwts.parserBuilder()
                 .setSigningKey(jwtConfiguration.getSecretKey())
                 .build()
@@ -53,7 +61,7 @@ public class JwtService {
         return claims.get("email", String.class);
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isTokenValid(String token) throws IllegalArgumentException, NoSuchAlgorithmException {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(jwtConfiguration.getSecretKey())

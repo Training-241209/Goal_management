@@ -10,7 +10,11 @@ import org.springframework.web.filter.CorsFilter;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Base64;
@@ -24,26 +28,28 @@ import javax.crypto.spec.SecretKeySpec;
 public class JwtConfiguration {
 
     @Value("${jwt.secret}")
-    private String secretKey  ;
+    private String secretKey;
 
-    public Key getSecretKey() {
+    public Key getSecretKey() throws NoSuchAlgorithmException {
+
         
-        // Optionally encode to Base64 (useful for JWT libraries)
-        String base64Key = Base64.getEncoder().encodeToString(secretKey.getBytes());        
-        return new SecretKeySpec(base64Key.getBytes(), "HmacSHA256");
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedhash = digest.digest(
+                secretKey.getBytes(StandardCharsets.UTF_8));
+        return new SecretKeySpec(encodedhash, "HmacSHA256");
     }
 
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","http://18.217.187.244")); // Allow your frontend's origin
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // Allow the HTTP methods you need
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://18.217.187.244"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); 
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
-        configuration.setAllowCredentials(true); 
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Apply CORS to all endpoints
+        source.registerCorsConfiguration("/**", configuration); 
         return new CorsFilter(source);
     }
 }

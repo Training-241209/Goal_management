@@ -1,5 +1,6 @@
 package com.gm.goal_m.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.gm.goal_m.repository.UserRepository;
 import com.gm.goal_m.service.JwtService;
 import com.gm.goal_m.service.UserService;
 
+import io.jsonwebtoken.security.InvalidKeyException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -58,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> userLogin(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+    public ResponseEntity<Object> userLogin(@Valid @RequestBody UserLoginRequest userLoginRequest) throws InvalidKeyException, NoSuchAlgorithmException {
         String theToken = "";
         User user = new User(userLoginRequest.getEmail(), userLoginRequest.getPassword());
         if (userService.canLogIn(userLoginRequest)) {
