@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gm.goal_m.dto.IdRequestDTO;
+
 import com.gm.goal_m.dto.GenericDTOs.GetIdDTO;
 import com.gm.goal_m.dto.TaskDTOs.UpdateTaskDTO;
 import com.gm.goal_m.dto.TimeFrameDTOs.AddTimeFrameByTaskIdDTO;
@@ -37,9 +37,7 @@ public class TimeFrameController {
     }
 
     @PostMapping("timeframe")
-    public ResponseEntity<?> addTimeFrameByTaskId(@Valid @RequestBody AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {
-
-        
+    public ResponseEntity<?> addTimeFrameByTaskId(@Valid @RequestBody AddTimeFrameByTaskIdDTO addTimeFrameByTaskIdDTO) {        
 
         Task task = taskService.getTaskById(addTimeFrameByTaskIdDTO.getTaskId());
 
@@ -64,11 +62,11 @@ public class TimeFrameController {
     }
 
     @PatchMapping("/timeframe/status")
-    public ResponseEntity<?> updateTimeFrameStatusById(@Valid @RequestBody IdRequestDTO idDto,
+    public ResponseEntity<?> updateTimeFrameStatusById(@Valid @RequestBody GetIdDTO id,
             HttpServletRequest request) {
         try {
 
-            TimeFrame retBody = timeFrameService.updateTimeFrameStatus(idDto.getId());
+            TimeFrame retBody = timeFrameService.updateTimeFrameStatus(id.getId());
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(retBody);
 
         } catch (Exception e) {

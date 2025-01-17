@@ -13,7 +13,7 @@ public class MailScheduler {
         this.mainSchedulerService = mainSchedulerService;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 60000)
     public void scheduleMail (){
         mainSchedulerService.sendEmails();
     }

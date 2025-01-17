@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button';
 import { AddTaskForm } from './addTask-form';
 
 interface TasksDataGridProps {
-  tasks: Task[];
-  selectedGoalId: number;
+  tasks: Task[],
+  selectedGoalId: number,
+  goalEndDate: string,
+  goalStartDate: string
 }
 
-export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
+export function TasksTable({ tasks, selectedGoalId, goalEndDate , goalStartDate}: TasksDataGridProps) {
   const [open, setOpen] = useState(false);
   const [openAT, setOpenAT] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>({
@@ -36,15 +38,19 @@ export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
     }).join(', ');
   };
 
+  const getTimeFrameCount = (timeFrames: TimeFrame[] | null): number => {
+    return timeFrames?.length || 0;
+  };
+
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Task Name', width: 200 },
+    { field: 'name', headerName: 'Task Name', flex:1 },
     { field: 'description', headerName: 'Description', width: 200 },
     {
-      field: 'timeFrames',
-      headerName: 'Time Frames',
-      width: 230,
-      renderCell: (params) => formatTimeFrames(params.value as TimeFrame[] | null)
-    },
+      field: 'timeFrameCount',
+      headerName: 'Total Timeframes',
+      width: 150,
+      renderCell: (params) => getTimeFrameCount(params.row.timeFrames)
+    }
   ];
 
   const rows: GridRowsProp = tasks.map((task) => ({
@@ -52,6 +58,7 @@ export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
     name: task.name,
     description: task.description,
     timeFrames: task.timeFrames,
+    timeFrameCount: getTimeFrameCount(task.timeFrames)
   }));
 
   useEffect(() => {
@@ -74,12 +81,11 @@ export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
         >Add Task</Button>
         <AddTaskForm goalId={selectedGoalId} open={openAT} setOpen={setOpenAT} />
       </div>
-      <div style={{ height:"auto", width: '100%' }}>
+      <div style={{ height: "auto", width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
           onRowClick={(params) => handleOnClick(params.row as Task)}
-          // style={{ height: 350 }}
           initialState={{
             pagination: {
               paginationModel: {
@@ -91,7 +97,7 @@ export function TasksTable({ tasks, selectedGoalId }: TasksDataGridProps) {
         />
       </div>
 
-      <TaskDetailsDialog open={open} setOpen={setOpen} task={selectedTask} />
+      <TaskDetailsDialog open={open} setOpen={setOpen} task={selectedTask} goalEndDate={goalEndDate} goalStartDate={goalStartDate} />
     </div>
   );
 }

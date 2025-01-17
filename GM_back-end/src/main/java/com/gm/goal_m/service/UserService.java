@@ -12,7 +12,10 @@ import com.gm.goal_m.dto.UserDTOs.UserRequestRegDTO;
 import com.gm.goal_m.model.User;
 import com.gm.goal_m.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -61,13 +64,7 @@ public class UserService {
     }
    
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        if (userRepository.findAll() != null) {
-            users = userRepository.findAll();
-            System.out.println(users);
-        }
-
-        return users;
+        return userRepository.findAll();
     }
 
     public void updateUser(User user) {

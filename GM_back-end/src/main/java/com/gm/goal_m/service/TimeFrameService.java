@@ -128,4 +128,8 @@ public class TimeFrameService {
     public void deleteTimeFrameById(Long id) {
         timeFrameRepository.deleteById(id);
     }
+
+    public List <TimeFrame> getAllTimeFrames(){
+        return timeFrameRepository.findAll();
+    }
 }
