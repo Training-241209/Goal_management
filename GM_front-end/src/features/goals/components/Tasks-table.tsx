@@ -27,16 +27,16 @@ export function TasksTable({ tasks, selectedGoalId, goalEndDate , goalStartDate}
     setOpen(true);
   };
 
-  const formatTimeFrames = (timeFrames: TimeFrame[] | null): string => {
-    if (!timeFrames || timeFrames.length === 0) {
-      return 'No Time Frame';
-    }
+  // const formatTimeFrames = (timeFrames: TimeFrame[] | null): string => {
+  //   if (!timeFrames || timeFrames.length === 0) {
+  //     return 'No Time Frame';
+  //   }
 
-    return timeFrames.map(tf => {
-      const date = new Date(tf.date).toLocaleDateString();
-      return `${date}: ${tf.startTime} - ${tf.endTime}`;
-    }).join(', ');
-  };
+  //   return timeFrames.map(tf => {
+  //     const date = new Date(tf.date).toLocaleDateString();
+  //     return `${date}: ${tf.startTime} - ${tf.endTime}`;
+  //   }).join(', ');
+  // };
 
   const getTimeFrameCount = (timeFrames: TimeFrame[] | null): number => {
     return timeFrames?.length || 0;
