@@ -14,13 +14,17 @@ import { Goal } from "../schemas/goalModels";
 import { useUptGoal } from "../hooks/use-uptGoal";
 import { useEffect } from "react";
 import { useDeleteGoal } from "../hooks/use-deleteGoal";
+import { Badge } from "@/components/ui/badge";
 interface GoalDetailsProps {
     goal: Goal
 }
 export function GoalDetails({ goal }: GoalDetailsProps) {
     const { mutate: update, isPending } = useUptGoal();
     const {mutate: deleteGoal, isPending: deleteIsPending} = useDeleteGoal();
-
+    
+    function areAllTimeframesCompleted() {
+        return goal.tasks.every(task => task.timeFrames ? task.timeFrames.every(timeframe => timeframe.status == true): false);
+    }
     // 1. Define your form.
     const form = useForm<GoalSchema>({
         resolver: zodResolver(goalSchema),
@@ -72,7 +76,10 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                     name="objective"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Objective</FormLabel>
+                            <FormLabel className="flex justify-between">
+                                Objective 
+                                {areAllTimeframesCompleted() ? <Badge variant="completed">Achieved</Badge> : <Badge variant="pending">In Progress</Badge>}
+                            </FormLabel>
                             <FormControl>
                                 <Input {...field} min="1" />
                             </FormControl>

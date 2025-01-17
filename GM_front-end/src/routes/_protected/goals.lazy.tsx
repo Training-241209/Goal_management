@@ -51,7 +51,10 @@ function RouteComponent() {
                     <div className="flex-1 bg-white rounded-lg shadow-lg border-l-4 border-purple-500 p-6">
                         <GoalDetails goal={selectedGoal} />
                         <div className="mt-6">
-                            <TasksTable tasks={selectedGoal.tasks} selectedGoalId={selectedGoal.id} />
+                            <TasksTable tasks={selectedGoal.tasks}
+                             selectedGoalId={selectedGoal.id}
+                             goalStartDate={selectedGoal.startDate}
+                             goalEndDate={selectedGoal.endDate}/>
                         </div>
                     </div>
                 )}
