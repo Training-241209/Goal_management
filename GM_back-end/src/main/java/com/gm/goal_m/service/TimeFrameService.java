@@ -47,7 +47,10 @@ public class TimeFrameService {
     public void addTimeFrameRangeToTask(Task task, AddTimeFrameByTaskIdDTO dto) {
         Goal goal = task.getGoal();
 
-        if(goal.getStartDate().isAfter(dto.getStartDate())|| goal.getEndDate().isBefore(dto.getEndDate())){
+        boolean one = goal.getStartDate().isAfter(dto.getStartDate());
+        boolean two = goal.getEndDate().isBefore(dto.getEndDate());
+
+        if( one|| two){
             throw new OutOfBoundariesException("The time slots must be within the goal boundaries");
         }
         List<LocalDate> dates = new ArrayList<>();
@@ -60,7 +63,7 @@ public class TimeFrameService {
         }
 
         for (LocalDate Date : dates) {
-            if (exists(Date, dto.getStartTime(), dto.getEndTime())) {
+            if (exists(goal.getUser().getUserId(),Date, dto.getStartTime(), dto.getEndTime())) {
                 throw new DuplicateException("TimeFrames can't be added because they overlap with other timeframes");
             }
         }
@@ -86,9 +89,9 @@ public class TimeFrameService {
         // taskService.update(task);
     }
 
-    public boolean exists(LocalDate day, LocalTime startTime, LocalTime endTime) {
+    public boolean exists(long userId,LocalDate day, LocalTime startTime, LocalTime endTime) {
 
-        List<TimeFrame> Tf = timeFrameRepository.findOverlappingTimeFrames(day, startTime, endTime);
+        List<TimeFrame> Tf = timeFrameRepository.findOverlappingTimeFrames(userId,day, startTime, endTime);
         return !Tf.isEmpty();
     }
 

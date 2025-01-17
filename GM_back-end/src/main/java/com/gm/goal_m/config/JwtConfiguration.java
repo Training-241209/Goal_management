@@ -17,12 +17,11 @@ import javax.crypto.SecretKey;
 @Configuration
 public class JwtConfiguration {
 
-    //@Value("${jwt.secret}")
-    private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256) ;
+    @Value("${jwt.secret}")
+    private String secretKey  ;
 
     public Key getSecretKey() {
-        // return Keys.hmacShaKeyFor(secretKey.getBytes());
-        return secretKey;
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     @Bean

@@ -22,6 +22,7 @@ function RouteComponent() {
     useEffect(() => {
         if (selectedGoalId != 0) {
             setSelectedGoal(data?.find((goal) => goal.id === selectedGoalId));
+            console.log(selectedGoal);
         }
     }, [selectedGoalId, data]);
 

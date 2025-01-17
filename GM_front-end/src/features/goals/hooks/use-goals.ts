@@ -1,9 +1,10 @@
 import { axiosInstance } from "@/lib/axios-config";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { Goal } from "../schemas/goalModels";
 
 export function useGoals(): UseQueryResult<Goal[]> {
+
+  const queryClient = useQueryClient();
   
 
   return useQuery({
@@ -14,7 +15,8 @@ export function useGoals(): UseQueryResult<Goal[]> {
         return resp.data;
       } catch (e) {
         console.error(e);
-        toast.error("Failed to fetch ticket data.");
+        console.error("Failed to fetch ticket data.");
+        queryClient.invalidateQueries();
         return null;
       }
     },

@@ -12,9 +12,6 @@ export const goalSchema = z.object({
             message: "Password is required"
         })
         .min(1, "Password is required"),
-    type: z
-        .union([z.literal('Routine'), z.literal('Target')]).optional()
-    ,
     startDay: z
         .date(),
     endDay: z

@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { addDays, format } from "date-fns";
+import { addDays, format, parseISO, startOfToday } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Goal } from "../schemas/goalModels";
@@ -25,6 +25,10 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
     function areAllTimeframesCompleted() {
         return goal.tasks.every(task => task.timeFrames ? task.timeFrames.every(timeframe => timeframe.status == true): false);
     }
+
+    function isTimeFramesEmpty(){
+        return goal.tasks.every(task=> task.timeFrames?.length == 0);
+    }
     // 1. Define your form.
     const form = useForm<GoalSchema>({
         resolver: zodResolver(goalSchema),
@@ -32,9 +36,8 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
             id: goal.id,
             objective: goal.objective,
             description: goal.description,
-            type: goal.type,
-            startDay: goal.startDate ? new Date(goal.startDate) : undefined,
-            endDay: goal.endDate ? new Date(goal.endDate) : undefined,
+            startDay: goal.startDate ? parseISO(goal.startDate) : undefined,
+            endDay: goal.endDate ? parseISO(goal.endDate) : undefined,
         }
 
     });
@@ -48,10 +51,12 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                 id: goal.id,
                 objective: goal.objective,
                 description: goal.description,
-                type: goal.type,
-                startDay: goal.startDate ? new Date(goal.startDate) : undefined,
-                endDay: goal.endDate ? new Date(goal.endDate) : undefined,
+                startDay: goal.startDate ? parseISO(goal.startDate) : undefined,
+                endDay: goal.endDate ?  parseISO(goal.endDate) : undefined,
             });
+            console.log(goal.startDate);
+            console.log(new Date(goal.startDate));
+            console.log(goal);
         }
 
     }, [goal]);
@@ -78,7 +83,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         <FormItem>
                             <FormLabel className="flex justify-between">
                                 Objective 
-                                {areAllTimeframesCompleted() ? <Badge variant="completed">Achieved</Badge> : <Badge variant="pending">In Progress</Badge>}
+                                {areAllTimeframesCompleted() ? ( isTimeFramesEmpty() ? <Badge variant="secondary">Not started</Badge> : <Badge variant="completed">Achieved</Badge>) : <Badge variant="pending">In Progress</Badge>}
                             </FormLabel>
                             <FormControl>
                                 <Input {...field} min="1" />
@@ -133,7 +138,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             disabled={(date) =>
-                                                date < addDays(new Date(),-1) || date > form.getValues("endDay")
+                                                date < startOfToday() || date > form.getValues("endDay")
                                             }
                                             initialFocus
                                         />
@@ -174,7 +179,7 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             disabled={(date) =>
-                                                date < new Date() || date < form.getValues("startDay")
+                                                date < startOfToday() || date < form.getValues("startDay")
                                             }
                                             initialFocus
                                         />
@@ -185,17 +190,20 @@ export function GoalDetails({ goal }: GoalDetailsProps) {
                         )}
                     />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-10 border-b-2">
                     <Button type="button"
                         variant="destructive"
                         onClick={handleDelete}
-                        disabled={form.formState.isDirty || isPending||deleteIsPending}>
+                        disabled={form.formState.isDirty || isPending||deleteIsPending}
+                        className="w-[50%]">
                         Delete goal
                     </Button>
-                    <Button type="submit" disabled={!form.formState.isDirty || isPending}>
-                        Save
+                    <Button type="submit" className="w-[50%] mb-5" disabled={!form.formState.isDirty || isPending}>
+                        Update goal
                     </Button>
                 </div>
+                
+
             </form>
         </Form>
 

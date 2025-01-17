@@ -19,7 +19,7 @@ public interface TimeFrameRepository extends JpaRepository <TimeFrame, Long>{
 
     List<TimeFrame> findByDateAndStartTimeAndEndTime(LocalDate date, LocalTime startTime, LocalTime endTime);
 
-    @Query("SELECT e FROM TimeFrame e WHERE (e.startTime < :endTime AND e.endTime > :startTime AND e.date = :day)")
-    List<TimeFrame> findOverlappingTimeFrames(@Param("day") LocalDate day, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
+    @Query("SELECT e FROM TimeFrame e WHERE (e.task.goal.user.userId = :userId AND e.startTime < :endTime AND e.endTime > :startTime AND e.date = :day)")
+    List<TimeFrame> findOverlappingTimeFrames(@Param("userId") Long userId,@Param("day") LocalDate day, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
     
 }

@@ -17,11 +17,9 @@ import { useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { goalSchema, GoalSchema } from "../schemas/Goal-schema";
 import { useAddGoal } from "../hooks/use-addGoal";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link } from "@tanstack/react-router";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format} from "date-fns";
+import { format, startOfDay, startOfToday} from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
@@ -94,31 +92,6 @@ export function AddGoalForm({ open, setOpen }: addFormGoalProps) {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="type"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Type</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a type" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="Routine">Routine</SelectItem>
-                                            <SelectItem value="Target">Target</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormDescription>
-                                        You can manage email addresses in your{" "}
-                                        <Link to="/dashboard">email settings</Link>.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                         <div className="flex justify-between gap-2">
                             <FormField
                                 control={form.control}
@@ -151,7 +124,7 @@ export function AddGoalForm({ open, setOpen }: addFormGoalProps) {
                                                     selected={field.value}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < new Date() || date > form.getValues("endDay")
+                                                        date < startOfToday() || date > form.getValues("endDay")
                                                     }
                                                     initialFocus
                                                 />
@@ -192,7 +165,7 @@ export function AddGoalForm({ open, setOpen }: addFormGoalProps) {
                                                     selected={field.value}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < new Date() || date < form.getValues("startDay")
+                                                        date < startOfToday() || date < form.getValues("startDay")
                                                     }
                                                     initialFocus
                                                 />

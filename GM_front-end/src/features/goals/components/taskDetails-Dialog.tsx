@@ -13,13 +13,12 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { taskSchema, TaskSchema } from "../schemas/Task-schema";
 import { Task, TimeFrameRequest } from "../schemas/goalModels";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { CalendarIcon, DeleteIcon, DiamondPlus } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { addDays, format } from "date-fns";
+import { addDays, format, parseISO, startOfToday } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -36,6 +35,7 @@ import { useDeleteTask } from "../hooks/use-deleteTask";
 import { Switch } from "@/components/ui/switch";
 import { useUptTimeFrameStatus } from "../hooks/use-uptTimeFrameStatus";
 import { Progress } from "@/components/ui/progress";
+import { DialogContentNoX, DialogDescriptionNoX, DialogHeaderNoX, DialogNoX, DialogTitleNoX } from "@/components/ui/dialogNoX";
 interface TaskDetailsDialogProps {
     task: Task,
     open: boolean
@@ -54,8 +54,8 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
     const [progress, setProgress] = useState(0);
     //const {data: goals} = useGoals();
     const [date, setDate] = useState<DateRange | undefined>({
-        from: new Date(),
-        to: new Date(),
+        from: startOfToday(),
+        to: startOfToday(),
     })
     const [value, setValue] = useState<muiDateRange<Dayjs>>(() => [
         dayjs(),
@@ -80,7 +80,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
 
     function handleTimeFrameCreation() {
         if (date?.from && value[0] && value[1]) {
-            if (isBeforeStripingTime(date.from, new Date())) {
+            if (isBeforeStripingTime(date.from, startOfToday())) {
                 toast.error("The selected date range must be in the future.");
                 return;
             }
@@ -145,7 +145,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
     }
 
     return (
-        <Dialog
+        <DialogNoX
             open={open}
             onOpenChange={() => {
                 form.reset();
@@ -157,25 +157,16 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
 
 
 
-            <DialogContent className="flex flex-col md:flex-row gap-6 p-6 max-w-4xl">
+            <DialogContentNoX className="flex flex-col md:flex-row gap-6 p-6 max-w-4xl">
 
                 <div className="flex-1 min-w-[320px]">
-                    <div className="flex justify-between items-center w-full text-sm font-medium text-muted-foreground mb-4">
-                        <div>
-                            <span className="font-semibold text-black">Goal Start Date: </span>
-                            {format(new Date(goalStartDate), "LLL dd, yyyy")}
-                        </div>
-                        <div>
-                            <span className="font-semibold text-black">Goal End Date: </span>
-                            {format(new Date(goalEndDate), "LLL dd, yyyy")}
-                        </div>
-                    </div>
-                    <DialogHeader className="mb-4">
-                        <DialogTitle className="text-xl font-semibold">Task</DialogTitle>
-                        <DialogDescription className="text-sm text-muted-foreground">
+                    
+                    <DialogHeaderNoX className="mb-4">
+                        <DialogTitleNoX className="text-xl font-semibold">Task</DialogTitleNoX>
+                        <DialogDescriptionNoX className="text-sm text-muted-foreground">
                             <Progress value={progress} className="w-[60%]" indicatorClassName={cn(progress > 30 ? "bg-green-500" : (progress > 60 ? "bg-purple-500" : "bg-yellow-500"))} />
-                        </DialogDescription>
-                    </DialogHeader>
+                        </DialogDescriptionNoX>
+                    </DialogHeaderNoX>
 
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -234,15 +225,15 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                     </Form>
                 </div>
 
-                <div className="flex-1 min-w-[320px] space-y-4  bg-purple-50">
+                <div className="flex-1 min-w-[320px] space-y-4 ">
                 <div className="flex justify-between items-center w-full text-sm font-medium text-muted-foreground mb-4">
                         <div>
                             <span className="font-semibold text-black">Goal Start Date: </span>
-                            {format(new Date(goalStartDate), "LLL dd, yyyy")}
+                            {format(parseISO(goalStartDate), "LLL dd, yyyy")}
                         </div>
                         <div>
                             <span className="font-semibold text-black">Goal End Date: </span>
-                            {format(new Date(goalEndDate), "LLL dd, yyyy")}
+                            {format(parseISO(goalEndDate), "LLL dd, yyyy")}
                         </div>
                     </div>
                     <h1 className="text-lg font-semibold">TimeFrames</h1>
@@ -283,7 +274,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                                     numberOfMonths={2}
                                     disabled=
                                     {(date) =>
-                                        date < addDays(new Date(goalStartDate), -1) || date > new Date(goalEndDate) || date < addDays(new Date(), -1)
+                                        date < addDays(parseISO(goalStartDate), -1) || date > parseISO(goalEndDate) || date < startOfToday()
                                     }
 
                                 />
@@ -321,11 +312,11 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                                     className="flex justify-between items-center p-3 rounded-lg hover:bg-muted/50 transition-colors"
                                 >
                                     <div className="text-sm font-medium">
-                                        <span className="text-muted-foreground"> {format(new Date(tf.date), "LLL dd, y")}</span>
+                                        <span className="text-muted-foreground"> {format( parseISO(tf.date), "LLL dd, y")}</span>
                                         <span className="mx-2">|</span>
-                                        <span>{format(new Date(`${tf.date}T${tf.startTime}`), "hh:mm a")}</span>
+                                        <span>{format( parseISO(`${tf.date}T${tf.startTime}`), "hh:mm a")}</span>
                                         <span className="mx-2">-</span>
-                                        <span>{format(new Date(`${tf.date}T${tf.endTime}`), "hh:mm a")}</span>
+                                        <span>{format( parseISO(`${tf.date}T${tf.endTime}`), "hh:mm a")}</span>
                                     </div>
                                     <div>
                                         {(new Date(`${tf.date}T${tf.startTime}`) < new Date()) && (
@@ -360,7 +351,7 @@ export function TaskDetailsDialog({ task, open, setOpen, goalEndDate, goalStartD
                         </Button>
                     </div>
                 </div>
-            </DialogContent>
-        </Dialog>
+            </DialogContentNoX>
+        </DialogNoX>
     );
 }
