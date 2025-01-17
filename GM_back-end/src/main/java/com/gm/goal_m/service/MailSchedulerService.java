@@ -76,14 +76,13 @@ public class MailSchedulerService {
 
                     for(TimeFrameDTO timeFrame : task.getTimeFrames()){
     
-                        Duration duration = Duration.between(timeFrame.getStartTime(), now);
-    
-                        if (!duration.isNegative() && duration.toMinutes() <= 1 && !timeFrame.isStatus()) {
+                        Duration duration = Duration.between(now,timeFrame.getStartTime());
+                        if (!duration.isNegative() && duration.toMinutes() <= 1) {
 
     
                             StringBuilder sb = new StringBuilder();
                             sb.append("Hi " + user.getFirstName()).append(",").append("\n");
-                            sb.append("Goal: " + goal);
+                            sb.append("Goal: " + goal.getObjective()).append("\n");
                             sb.append("Task name: " + task.getName()).append("\n");
                             sb.append("Start time: " + timeFrame.getStartTime()).append("\n");
                             sb.append("End time: " + timeFrame.getEndTime()).append("\n");    
