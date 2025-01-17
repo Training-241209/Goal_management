@@ -78,12 +78,7 @@ export function LoginForm({RenderSignUp}: loginFormProps) {
                     <FormItem>
                       <div className="flex items-center">
                         <Label htmlFor="password">Password</Label>
-                        <a
-                          href="#"
-                          className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                        >
-                          Forgot your password?
-                        </a>
+                        
                       </div>
                       <FormControl>
                         <Input {...field} type="Password" className={handleErrorStyling(errors.password)}/>

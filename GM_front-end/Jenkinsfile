@@ -43,12 +43,16 @@ pipeline {
         }*/
 
         stage('Deploy to EC2') {
-            steps {
-                script {
-                    // SSH into EC2 and stop/remove any old container
-                  sshagent(['ec2-private']) { sh """
+    steps {
+        script {
+            // SSH into EC2 and stop/remove any old container
+            sshagent(['ec2-private']) {
+                sh """
                     ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_EC2_HOST 'docker stop ${DOCKER_IMAGE} || true'
                     ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_EC2_HOST 'docker rm ${DOCKER_IMAGE} || true'
+                    
+                    // Ensure frontend folder on EC2 has proper permissions
+                    ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_EC2_HOST 'chmod -R 755 /home/$AWS_USER/${FRONTEND_FOLDER} || true'
 
                     // Copy the code from the Jenkins workspace to the EC2 instance
                     scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/${FRONTEND_FOLDER} $AWS_USER@$AWS_EC2_HOST:/home/$AWS_USER/${FRONTEND_FOLDER}
@@ -59,12 +63,11 @@ pipeline {
                         docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .  # Build Docker image
                         docker run -d -p 80:80 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}  # Run container
                     EOF
-                    """}
-                }
+                """
             }
         }
     }
-
+}
     post {
         success {
             echo 'Frontend pipeline executed successfully!'
